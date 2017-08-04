@@ -10,9 +10,7 @@ import UIKit
 import CoreData
 
 class NutritionTab: UIViewController {
-    
-    public var name: String?
-    
+        
     @IBOutlet weak var ShowName: UILabel!
     
     
@@ -20,19 +18,16 @@ class NutritionTab: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ShowName.text = TabController.name
+        ShowName.text = TabController.username
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
         request.returnsObjectsAsFaults = false
         
         do {
             let results = try context.fetch(request) as! [NSManagedObject]
             for result in results {
-                if result.value(forKey: "name") as! String? == TabController.name {
-                    print(result.value(forKey: "name")! as Any)
-                    print(result.value(forKey: "bodyweight")! as Any)
-                    
+                if result.value(forKey: "username") as! String? == TabController.username {
                 }
             }
         }
@@ -40,8 +35,6 @@ class NutritionTab: UIViewController {
             //add code
         }
         
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

@@ -10,7 +10,8 @@ import UIKit
 
 class TabController: UITabBarController {
     
-    public static var name: String?
+    public static var username: String?
+    public static var password: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()

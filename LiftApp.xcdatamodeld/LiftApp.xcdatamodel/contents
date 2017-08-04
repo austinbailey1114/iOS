@@ -5,7 +5,12 @@
         <attribute name="deadlift" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Users" representedClassName="Users" syncable="YES" codeGenerationType="class">
+        <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Person" positionX="-63" positionY="-18" width="128" height="90"/>
+        <element name="Users" positionX="-63" positionY="9" width="128" height="75"/>
     </elements>
 </model>

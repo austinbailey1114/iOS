@@ -14,7 +14,13 @@ class ViewController: UIViewController {
     //MARK: Properties
     
     @IBOutlet weak var UserName: UITextField!
+    
+    @IBOutlet weak var Password: UITextField!
+    
+    @IBOutlet weak var noLogin: UILabel!
+    
     public var name: String = ""
+    public var pass: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,35 +31,67 @@ class ViewController: UIViewController {
     //MARK: Actions
     
     @IBAction func EnterButton(_ sender: UIButton) {
+        //Passing data to TabController to be used in tabs
         name = UserName.text!
-        TabController.name = name
-        //Storing Core Data:
+        pass = Password.text!
+        TabController.username = name
+        TabController.password = pass
+        //Searching Core Data for user + password
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        let NewUser = NSEntityDescription.insertNewObject(forEntityName: "Person", into: context)
-        NewUser.setValue(UserName.text, forKey: "name")
-        NewUser.setValue(180, forKey: "bodyweight")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
+        request.returnsObjectsAsFaults = false
+        var userExists: Bool = false
+        do {
+            let results = try context.fetch(request) as! [NSManagedObject]
+            for result in results {
+                if result.value(forKey: "username") as! String? == UserName.text!
+                && result.value(forKey: "password") as! String? == Password.text! {
+                    userExists = true
+                    
+                }
+            }
+        }
+            
+        catch {
+            //add code
+        }
+        if userExists == false {
+            noLogin.text = "Incorrect login!"
+        }
+        else {
+            if(userExists == true) {
+                self.performSegue(withIdentifier: "LoginSegue", sender: self)
+            }
+        }
+    }
+    
+    
+    @IBAction func SignUpButton(_ sender: UIButton) {
+        //Creating a new user in Core Data
+        name = UserName.text!
+        pass = Password.text!
+        TabController.username = name
+        TabController.password = pass
+        //Storing new users core data
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let NewUser = NSEntityDescription.insertNewObject(forEntityName: "Users", into: context)
+        NewUser.setValue(UserName.text, forKey: "username")
+        NewUser.setValue(Password.text, forKey: "password")
         
         do {
             try context.save()
-            print("SAVED")
         }
         catch {
             //do stuff
         }
-        //to get the data back
-        //put this in the other view controllers
-        //let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
-        //request.returnObjectsAsFaults = false
-        
-        
-        
+
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationViewController = segue.destination as? NutritionTab {
-            destinationViewController.name = UserName.text!
-        }
+        
     }
 
     override func didReceiveMemoryWarning() {
