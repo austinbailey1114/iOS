@@ -13,19 +13,47 @@ class ViewController: UIViewController {
     
     //MARK: Properties
     
-    @IBOutlet weak var UserName: UITextField!    
+    @IBOutlet weak var UserName: UITextField!
+    public var name: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-                
+        
+        
     }
     //MARK: Actions
     
     @IBAction func EnterButton(_ sender: UIButton) {
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        name = UserName.text!
+        TabController.name = name
+        //Storing Core Data:
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let NewUser = NSEntityDescription.insertNewObject(forEntityName: "Person", into: context)
+        NewUser.setValue(UserName.text, forKey: "name")
+        NewUser.setValue(180, forKey: "bodyweight")
         
+        do {
+            try context.save()
+            print("SAVED")
+        }
+        catch {
+            //do stuff
+        }
+        //to get the data back
+        //put this in the other view controllers
+        //let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
+        //request.returnObjectsAsFaults = false
+        
+        
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationViewController = segue.destination as? NutritionTab {
+            destinationViewController.name = UserName.text!
+        }
     }
 
     override func didReceiveMemoryWarning() {

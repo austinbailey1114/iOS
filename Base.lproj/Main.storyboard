@@ -55,10 +55,10 @@
             </objects>
             <point key="canvasLocation" x="32.799999999999997" y="38.23088455772114"/>
         </scene>
-        <!--Item 2-->
+        <!--Nutrition-->
         <scene sceneID="4xz-ke-a2B">
             <objects>
-                <viewController id="jHg-QA-rUx" sceneMemberID="viewController">
+                <viewController id="jHg-QA-rUx" customClass="NutritionTab" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MzS-ZT-qbi"/>
                         <viewControllerLayoutGuide type="bottom" id="eQu-rw-djS"/>
@@ -66,18 +66,30 @@
                     <view key="view" contentMode="scaleToFill" id="ugG-xP-WuT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="shG-pr-Vo4">
+                                <rect key="frame" x="166" y="89" width="42" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="a8V-Bb-Ne0"/>
+                    <tabBarItem key="tabBarItem" title="Nutrition" id="a8V-Bb-Ne0"/>
+                    <connections>
+                        <outlet property="ShowName" destination="shG-pr-Vo4" id="9lV-5C-wpj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cTR-Xg-hfg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1909" y="364"/>
+            <point key="canvasLocation" x="1908" y="363.86806596701655"/>
         </scene>
-        <!--Item 1-->
+        <!--Lift-->
         <scene sceneID="vyz-AV-dAq">
             <objects>
-                <viewController id="BCP-5e-8Xe" sceneMemberID="viewController">
+                <viewController id="BCP-5e-8Xe" customClass="NewLiftTab" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Cyp-xM-weZ"/>
                         <viewControllerLayoutGuide type="bottom" id="1nh-B4-nxG"/>
@@ -85,13 +97,25 @@
                     <view key="view" contentMode="scaleToFill" id="2zj-4C-89t">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SRW-68-TpQ">
+                                <rect key="frame" x="53" y="58" width="269" height="76"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 1" id="Ub9-Wn-9VT"/>
+                    <tabBarItem key="tabBarItem" title="Lift" id="Ub9-Wn-9VT"/>
+                    <connections>
+                        <outlet property="NameLabel" destination="SRW-68-TpQ" id="RFC-mI-8ih"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IOk-88-D8A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1909" y="-289"/>
+            <point key="canvasLocation" x="1908" y="-289.20539730134936"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="nuD-yb-mHk">
