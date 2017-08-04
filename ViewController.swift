@@ -11,12 +11,10 @@ import CoreData
 
 class ViewController: UIViewController {
     
-    //MARK: Properties
+    //Properties
     
     @IBOutlet weak var UserName: UITextField!
-    
     @IBOutlet weak var Password: UITextField!
-    
     @IBOutlet weak var noLogin: UILabel!
     
     public var name: String = ""
@@ -26,9 +24,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        
     }
-    //MARK: Actions
+    //Actions
     
     @IBAction func EnterButton(_ sender: UIButton) {
         //Passing data to TabController to be used in tabs
@@ -48,7 +45,6 @@ class ViewController: UIViewController {
                 if result.value(forKey: "username") as! String? == UserName.text!
                 && result.value(forKey: "password") as! String? == Password.text! {
                     userExists = true
-                    
                 }
             }
         }
@@ -56,6 +52,7 @@ class ViewController: UIViewController {
         catch {
             //add code
         }
+        
         if userExists == false {
             noLogin.text = "Incorrect login!"
         }
@@ -65,7 +62,6 @@ class ViewController: UIViewController {
             }
         }
     }
-    
     
     @IBAction func SignUpButton(_ sender: UIButton) {
         //Creating a new user in Core Data
@@ -88,7 +84,6 @@ class ViewController: UIViewController {
         }
 
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         

@@ -18,23 +18,32 @@ class NutritionTab: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ShowName.text = TabController.username
+        //
+        //try taking all of this out of the viewDidLoad() function to stop Sigabrt
+        //
+        /*ShowName.text = TabController.username
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
         request.returnsObjectsAsFaults = false
         
+        
         do {
             let results = try context.fetch(request) as! [NSManagedObject]
             for result in results {
                 if result.value(forKey: "username") as! String? == TabController.username {
+                    //pull result.value(forKey: "whatever field") ....
+                    //set these to another variable and stuff
+                    //use those variables to do calculations
+                    //update the CoreData that needs to be updated
+                    //dont forget .save()
                 }
             }
         }
         catch {
             //add code
         }
-        
+        */
     }
 
     override func didReceiveMemoryWarning() {
