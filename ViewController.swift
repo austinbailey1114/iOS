@@ -52,7 +52,7 @@ class ViewController: UIViewController {
         catch {
             //add code
         }
-        
+        //login only if the user exists
         if userExists == false {
             noLogin.text = "Incorrect login!"
         }
@@ -75,6 +75,9 @@ class ViewController: UIViewController {
         let NewUser = NSEntityDescription.insertNewObject(forEntityName: "Users", into: context)
         NewUser.setValue(UserName.text, forKey: "username")
         NewUser.setValue(Password.text, forKey: "password")
+        NewUser.setValue("0", forKey: "squat")
+        NewUser.setValue("0", forKey: "deadlift")
+        NewUser.setValue("0", forKey: "bench")
         
         do {
             try context.save()

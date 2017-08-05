@@ -7,15 +7,45 @@
 //
 
 import UIKit
-
+import CoreData
 class NewLiftTab: UIViewController {
 
     @IBOutlet weak var NameLabel: UILabel!
+    @IBOutlet weak var displaySquat: UILabel!
+    @IBOutlet weak var displayDeadlift: UILabel!
+    @IBOutlet weak var displayBench: UILabel!
+    @IBOutlet weak var weightInput: UITextField!
+    @IBOutlet weak var repsInput: UITextField!
+    @IBOutlet weak var typeInput: UITextField!
+    var username: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //load in the current user's data
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
+        request.returnsObjectsAsFaults = false
+        var user: NSManagedObject
+        do {
+            let results = try context.fetch(request) as! [NSManagedObject]
+            for result in results {
+                if result.value(forKey: "username") as! String? == TabController.username!
+                && result.value(forKey: "password") as! String? == TabController.password! {
+                    displaySquat.text = result.value(forKey: "squat") as? String
+                    displayDeadlift.text = result.value(forKey: "deadlift") as? String
+                    displayBench.text = result.value(forKey: "bench") as? String
+                    user = result
+                }
+            }
+        }
+        catch {
+           //do stuff
+        }
 
-        // Do any additional setup after loading the view.
+
+    }
+    @IBAction func saveLiftButton(_ sender: UIButton) {
     }
 
     override func didReceiveMemoryWarning() {
