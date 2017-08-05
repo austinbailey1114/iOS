@@ -78,6 +78,7 @@ class ViewController: UIViewController {
         NewUser.setValue("0", forKey: "squat")
         NewUser.setValue("0", forKey: "deadlift")
         NewUser.setValue("0", forKey: "bench")
+        NewUser.setValue([String](), forKey: "previousLifts")
         
         do {
             try context.save()

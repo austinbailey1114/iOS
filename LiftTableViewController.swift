@@ -7,14 +7,34 @@
 //
 
 import UIKit
+import CoreData
 
 class LiftTableViewController: UITableViewController {
 
     var testNames = ["item1", "item2", "item3"]
+    var user: NSManagedObject?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
+        request.returnsObjectsAsFaults = false
+        do {
+            let results = try context.fetch(request) as! [NSManagedObject]
+            for result in results {
+                if result.value(forKey: "username") as! String? == TabController.username!
+                    && result.value(forKey: "password") as! String? == TabController.password! {
+                    user = result
+                }
+            }
+        }
+        catch {
+            //do stuff
+        }
+        
+
 
 
         // Uncomment the following line to preserve selection between presentations
@@ -36,7 +56,8 @@ class LiftTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return testNames.count
+        let liftHistory = user!.value(forKey: "previousLifts") as? [String]
+        return liftHistory!.count
     }
 
     
@@ -45,8 +66,9 @@ class LiftTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "LiftTableViewCell", for: indexPath) as? LiftTableViewCell else {
             fatalError("Fatal error")
         }
+        let liftHistory = user!.value(forKey: "previousLifts") as? [String]
         
-        let name = testNames[indexPath.row]
+        let name = liftHistory![indexPath.row]
         cell.UserNameLabel.text = name
 
         // Configure the cell...

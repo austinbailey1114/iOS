@@ -18,15 +18,17 @@ class NewLiftTab: UIViewController {
     @IBOutlet weak var repsInput: UITextField!
     @IBOutlet weak var typeInput: UITextField!
     var username: String?
-    
+    var user: NSManagedObject?
+    var keepContext: NSManagedObjectContext?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         //load in the current user's data
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
+        keepContext = context
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
         request.returnsObjectsAsFaults = false
-        var user: NSManagedObject
         do {
             let results = try context.fetch(request) as! [NSManagedObject]
             for result in results {
@@ -43,9 +45,19 @@ class NewLiftTab: UIViewController {
            //do stuff
         }
 
-
     }
     @IBAction func saveLiftButton(_ sender: UIButton) {
+        let liftHistory = user!.value(forKey: "previousLifts") as? [String]
+        let newLift = weightInput.text! + "," + repsInput.text! + "," + typeInput.text!
+        let newLiftHistory = [newLift] + liftHistory!
+        user!.setValue(newLiftHistory, forKey: "previousLifts")
+        do {
+            try keepContext!.save()
+        }
+        catch {
+            
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
