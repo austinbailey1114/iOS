@@ -24,6 +24,7 @@ class NewUserViewController: UIViewController {
     }
 
     @IBAction func CreateAccountButton(_ sender: UIButton) {
+        //create a new user in CoreData
         username = TabController.username
         pass = TabController.password
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

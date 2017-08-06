@@ -52,6 +52,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         self.typeInput.delegate = self
 
     }
+    
     @IBAction func saveLiftButton(_ sender: UIButton) {
         //pull date
         let date = Date()
@@ -63,6 +64,21 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         let newLift = weightInput.text! + "," + repsInput.text! + "," + typeInput.text! + "," + result
         let newLiftHistory = [newLift] + liftHistory!
         user!.setValue(newLiftHistory, forKey: "previousLifts")
+        let max = String(calculateMax(weight: Double(weightInput.text!)!, reps: Double(repsInput.text!)!))
+        if (typeInput.text!.lowercased() == "bench") {
+            user!.setValue(max, forKey: "bench")
+            displayBench.text = user!.value(forKey: "bench") as? String
+        }
+        else if (typeInput.text!.lowercased() == "squat") {
+            user!.setValue(max, forKey: "squat")
+            displaySquat.text = user!.value(forKey: "squat") as? String
+        }
+        else if (typeInput.text!.lowercased() == "deadlift") {
+            user!.setValue(max, forKey: "deadlift")
+            displayDeadlift.text = user!.value(forKey: "deadlift") as? String
+        }
+
+        //save 1RM calculation of input
         //reset text boxes
         weightInput.text! = ""
         repsInput.text! = ""
@@ -86,6 +102,10 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         repsInput.resignFirstResponder()
         typeInput.resignFirstResponder()
         return true
+    }
+    
+    func calculateMax (weight: Double, reps: Double) -> Int32 {
+        return Int32(weight*(1+(reps/30)))
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
