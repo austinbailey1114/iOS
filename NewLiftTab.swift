@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-class NewLiftTab: UIViewController {
+class NewLiftTab: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var NameLabel: UILabel!
     @IBOutlet weak var displaySquat: UILabel!
@@ -38,12 +38,17 @@ class NewLiftTab: UIViewController {
                     displayDeadlift.text = result.value(forKey: "deadlift") as? String
                     displayBench.text = result.value(forKey: "bench") as? String
                     user = result
+                    break
                 }
             }
         }
         catch {
            //do stuff
         }
+        //set delegates for keyboard purposes
+        self.weightInput.delegate = self
+        self.repsInput.delegate = self
+        self.typeInput.delegate = self
 
     }
     @IBAction func saveLiftButton(_ sender: UIButton) {
@@ -62,7 +67,18 @@ class NewLiftTab: UIViewController {
             
         }
     }
+    //close keyboard when user touches outside the keyboard
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 
+    //close keyboard when return is hit
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        weightInput.resignFirstResponder()
+        repsInput.resignFirstResponder()
+        typeInput.resignFirstResponder()
+        return true
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

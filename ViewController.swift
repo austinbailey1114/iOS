@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
     
     //Properties
     
@@ -24,6 +24,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        //set delegates for keyboard purposes
+        self.UserName.delegate = self
+        self.Password.delegate = self
     }
     //Actions
     
@@ -87,6 +90,17 @@ class ViewController: UIViewController {
             //do stuff
         }
 
+    }
+    //close keyboard when touching outside keyboard
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    //close keyboard when return key is hit
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        UserName.resignFirstResponder()
+        Password.resignFirstResponder()
+        return true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
