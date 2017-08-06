@@ -82,6 +82,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         NewUser.setValue("0", forKey: "deadlift")
         NewUser.setValue("0", forKey: "bench")
         NewUser.setValue([String](), forKey: "previousLifts")
+        NewUser.setValue([String](), forKey: "previousMeals")
         
         do {
             try context.save()

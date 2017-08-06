@@ -110,27 +110,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NJo-Sd-1zr">
-                                <rect key="frame" x="164" y="565" width="46" height="30"/>
+                                <rect key="frame" x="117" y="565" width="141" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="View Previous Meals"/>
                                 <connections>
                                     <segue destination="odn-9d-j3C" kind="show" id="dd3-k9-Kqv"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Go to meal view" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="shG-pr-Vo4">
-                                <rect key="frame" x="126" y="526" width="122" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Nutrition" id="a8V-Bb-Ne0"/>
-                    <connections>
-                        <outlet property="ShowName" destination="shG-pr-Vo4" id="9lV-5C-wpj"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cTR-Xg-hfg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -188,17 +178,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="View Your Lift History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SRW-68-TpQ">
-                                <rect key="frame" x="53" y="523" width="269" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C7o-Ih-BXW">
-                                <rect key="frame" x="170" y="563" width="34" height="30"/>
+                                <rect key="frame" x="122" y="563" width="130" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="View"/>
+                                <state key="normal" title="View Previous Lifts"/>
                                 <connections>
                                     <segue destination="vkV-uc-IXi" kind="show" id="q3N-pg-gEs"/>
                                 </connections>
@@ -314,7 +297,6 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Lift" id="Ub9-Wn-9VT"/>
                     <connections>
-                        <outlet property="NameLabel" destination="SRW-68-TpQ" id="RFC-mI-8ih"/>
                         <outlet property="displayBench" destination="LrN-dy-UHb" id="gVG-wX-lK8"/>
                         <outlet property="displayDeadlift" destination="JHD-Y3-A3N" id="kNX-fH-hvk"/>
                         <outlet property="displaySquat" destination="LLV-cF-unK" id="QK1-hf-vPu"/>
@@ -351,14 +333,21 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Weight" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tdb-H0-QCc">
-                                            <rect key="frame" x="185" y="39" width="85" height="21"/>
+                                            <rect key="frame" x="145" y="21" width="85" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Reps" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UPM-Ca-A0Y">
-                                            <rect key="frame" x="278" y="39" width="74" height="21"/>
+                                            <rect key="frame" x="150" y="50" width="74" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3V-Js-dHE">
+                                            <rect key="frame" x="238" y="38" width="118" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -368,6 +357,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="UserNameLabel" destination="nlB-Sy-84N" id="sVZ-RI-TCU"/>
+                                    <outlet property="displayDateLabel" destination="j3V-Js-dHE" id="tJV-Qe-eVf"/>
                                     <outlet property="displayRepsLabel" destination="UPM-Ca-A0Y" id="IWC-eA-vYG"/>
                                     <outlet property="displayWeightLabel" destination="Tdb-H0-QCc" id="TTk-qZ-5bG"/>
                                 </connections>
@@ -381,7 +371,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="St5-LP-Jix" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2794" y="-289"/>
+            <point key="canvasLocation" x="2792.8000000000002" y="-289.20539730134936"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="nuD-yb-mHk">

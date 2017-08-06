@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+
 class NewLiftTab: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var NameLabel: UILabel!
@@ -52,8 +53,12 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
 
     }
     @IBAction func saveLiftButton(_ sender: UIButton) {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        let result = formatter.string(from: date)
         let liftHistory = user!.value(forKey: "previousLifts") as? [String]
-        let newLift = weightInput.text! + "," + repsInput.text! + "," + typeInput.text!
+        let newLift = weightInput.text! + "," + repsInput.text! + "," + typeInput.text! + "," + result
         let newLiftHistory = [newLift] + liftHistory!
         user!.setValue(newLiftHistory, forKey: "previousLifts")
         weightInput.text! = ""

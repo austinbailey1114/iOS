@@ -11,9 +11,7 @@ import CoreData
 
 class LiftTableViewController: UITableViewController {
 
-    var testNames = ["item1", "item2", "item3"]
     var user: NSManagedObject?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,14 +68,11 @@ class LiftTableViewController: UITableViewController {
         
         let name = liftHistory![indexPath.row]
         let details = name.components(separatedBy: ",")
+        cell.displayDateLabel.text = details[3]
         cell.UserNameLabel.text = details[2]
         cell.displayWeightLabel.text = details[0]
         cell.displayRepsLabel.text = details[1]
         
-        
-
-        // Configure the cell...
-
         return cell
     }
     
