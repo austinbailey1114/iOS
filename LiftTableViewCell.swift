@@ -12,6 +12,8 @@ import CoreData
 class LiftTableViewCell: UITableViewCell {
     
     @IBOutlet weak var UserNameLabel: UILabel!
+    @IBOutlet weak var displayWeightLabel: UILabel!
+    @IBOutlet weak var displayRepsLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

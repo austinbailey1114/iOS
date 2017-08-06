@@ -51,13 +51,16 @@ class NewLiftTab: UIViewController {
         let newLift = weightInput.text! + "," + repsInput.text! + "," + typeInput.text!
         let newLiftHistory = [newLift] + liftHistory!
         user!.setValue(newLiftHistory, forKey: "previousLifts")
+        weightInput.text! = ""
+        repsInput.text! = ""
+        typeInput.text! = ""
         do {
+            //the key to actually saving the data
             try keepContext!.save()
         }
         catch {
             
         }
-        
     }
 
     override func didReceiveMemoryWarning() {

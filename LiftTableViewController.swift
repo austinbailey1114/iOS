@@ -69,7 +69,12 @@ class LiftTableViewController: UITableViewController {
         let liftHistory = user!.value(forKey: "previousLifts") as? [String]
         
         let name = liftHistory![indexPath.row]
-        cell.UserNameLabel.text = name
+        let details = name.components(separatedBy: ",")
+        cell.UserNameLabel.text = details[2]
+        cell.displayWeightLabel.text = details[0]
+        cell.displayRepsLabel.text = details[1]
+        
+        
 
         // Configure the cell...
 
