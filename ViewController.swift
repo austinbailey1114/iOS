@@ -72,26 +72,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         pass = Password.text!
         TabController.username = name
         TabController.password = pass
-        //Storing new users core data
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let NewUser = NSEntityDescription.insertNewObject(forEntityName: "Users", into: context)
-        NewUser.setValue(UserName.text, forKey: "username")
-        NewUser.setValue(Password.text, forKey: "password")
-        NewUser.setValue("0", forKey: "squat")
-        NewUser.setValue("0", forKey: "deadlift")
-        NewUser.setValue("0", forKey: "bench")
-        NewUser.setValue([String](), forKey: "previousLifts")
-        NewUser.setValue([String](), forKey: "previousMeals")
-        
-        do {
-            try context.save()
         }
-        catch {
-            //do stuff
-        }
-
-    }
     //close keyboard when touching outside keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

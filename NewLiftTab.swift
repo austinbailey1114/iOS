@@ -53,14 +53,17 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
 
     }
     @IBAction func saveLiftButton(_ sender: UIButton) {
+        //pull date
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         let result = formatter.string(from: date)
+        //pull users lift history and add the new lift
         let liftHistory = user!.value(forKey: "previousLifts") as? [String]
         let newLift = weightInput.text! + "," + repsInput.text! + "," + typeInput.text! + "," + result
         let newLiftHistory = [newLift] + liftHistory!
         user!.setValue(newLiftHistory, forKey: "previousLifts")
+        //reset text boxes
         weightInput.text! = ""
         repsInput.text! = ""
         typeInput.text! = ""
