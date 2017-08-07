@@ -13,6 +13,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     //Properties
     
+    @IBOutlet weak var navBar: UINavigationItem!
     @IBOutlet weak var UserName: UITextField!
     @IBOutlet weak var Password: UITextField!
     @IBOutlet weak var noLogin: UILabel!
@@ -23,7 +24,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
         //set delegates for keyboard purposes
         self.UserName.delegate = self
         self.Password.delegate = self
