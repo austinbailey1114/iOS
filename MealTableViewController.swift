@@ -7,13 +7,31 @@
 //
 
 import UIKit
+import CoreData
 
 class MealTableViewController: UITableViewController {
     
-    var testMeals = ["pasta", "chicken", "apples"]
-
+    var user: NSManagedObject?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
+        request.returnsObjectsAsFaults = false
+        do {
+            let results = try context.fetch(request) as! [NSManagedObject]
+            for result in results {
+                if result.value(forKey: "username") as! String? == TabController.username!
+                    && result.value(forKey: "password") as! String? == TabController.password! {
+                    user = result
+                }
+            }
+        }
+        catch {
+            //do stuff
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -31,24 +49,36 @@ class MealTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
+        
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return testMeals.count
+        let mealHistory = user!.value(forKey: "previousMeals") as? [String]
+        return mealHistory!.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MealTableViewCell", for: indexPath) as? MealTableViewCell else {
-            fatalError("fatal error")
+            fatalError("Fatal error")
         }
-        let meal = testMeals[indexPath.row]
-        cell.mealLabel.text = meal
-
-        // Configure the cell...
-
+        let mealHistory = user!.value(forKey: "previousMeals") as? [String]
+        
+        let name = mealHistory![indexPath.row]
+        let details = name.components(separatedBy: ",")
+        //name,cals,fat,protein,carbs,date
+        for item in details {
+            print(item)
+        }
+        cell.mealLabel.text = details[0]
+        cell.caloriesLabel.text = details[1]
+        cell.fatLabel.text = details[2]
+        cell.proteinLabel.text = details[3]
+        cell.carbsLabel.text = details[4]
+        cell.dateLabel.text = details[5]
+        
         return cell
     }
     

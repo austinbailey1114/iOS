@@ -10,40 +10,38 @@ import UIKit
 import CoreData
 
 class NutritionTab: UIViewController {
-        
-    @IBOutlet weak var ShowName: UILabel!
     
-    
-    
+    @IBOutlet weak var nameInput: UITextField!
+    @IBOutlet weak var calsInput: UITextField!
+    @IBOutlet weak var proteinInput: UITextField!
+    @IBOutlet weak var fatInput: UITextField!
+    @IBOutlet weak var carbsInput: UITextField!
+    var user: NSManagedObject?
+    var keepContext: NSManagedObjectContext?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //
-        //try taking all of this out of the viewDidLoad() function to stop Sigabrt
-        //
-        /*ShowName.text = TabController.username
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        keepContext = context
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
         request.returnsObjectsAsFaults = false
-        
-        
         do {
             let results = try context.fetch(request) as! [NSManagedObject]
             for result in results {
-                if result.value(forKey: "username") as! String? == TabController.username {
-                    //pull result.value(forKey: "whatever field") ....
-                    //set these to another variable and stuff
-                    //use those variables to do calculations
-                    //update the CoreData that needs to be updated
-                    //dont forget .save()
+                if result.value(forKey: "username") as! String? == TabController.username!
+                    && result.value(forKey: "password") as! String? == TabController.password! {
+                    user = result
+                    break
                 }
             }
         }
         catch {
-            //add code
+            //do stuff
         }
-        */
+
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,6 +49,30 @@ class NutritionTab: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func saveButton(_ sender: UIButton) {
+        //pull date
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        let result = formatter.string(from: date)
+        //pull users lift history and add the new lift
+        let mealHistory = user!.value(forKey: "previousMeals") as? [String]
+        let newMeal = nameInput.text! + "," + calsInput.text! + "," + proteinInput.text! + "," + fatInput.text! + "," + carbsInput.text! + "," + result
+        let newMealHistory = [newMeal] + mealHistory!
+        user!.setValue(newMealHistory, forKey: "previousMeals")
+        nameInput.text = ""
+        calsInput.text = ""
+        proteinInput.text = ""
+        fatInput.text = ""
+        carbsInput.text = ""
+        do {
+            //the key to actually saving the data
+            try keepContext!.save()
+        }
+        catch {
+            
+        }
+    }
 
     /*
     // MARK: - Navigation
