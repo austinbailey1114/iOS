@@ -40,7 +40,7 @@ class NutritionTab: UIViewController {
         catch {
             //do stuff
         }
-
+        //set delegates for keyboard purposes
         
     }
 
@@ -72,7 +72,28 @@ class NutritionTab: UIViewController {
         catch {
             
         }
+        nameInput.resignFirstResponder()
+        calsInput.resignFirstResponder()
+        proteinInput.resignFirstResponder()
+        fatInput.resignFirstResponder()
+        carbsInput.resignFirstResponder()
     }
+    
+    //close keyboard when user touches outside the keyboard
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    //close keyboard when return is hit
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        nameInput.resignFirstResponder()
+        calsInput.resignFirstResponder()
+        proteinInput.resignFirstResponder()
+        fatInput.resignFirstResponder()
+        carbsInput.resignFirstResponder()
+        return true
+    }
+
 
     /*
     // MARK: - Navigation
