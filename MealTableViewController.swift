@@ -69,9 +69,6 @@ class MealTableViewController: UITableViewController {
         let name = mealHistory![indexPath.row]
         let details = name.components(separatedBy: ",")
         //name,cals,fat,protein,carbs,date
-        for item in details {
-            print(item)
-        }
         cell.mealLabel.text = details[0]
         cell.caloriesLabel.text = details[1]
         cell.fatLabel.text = details[2]

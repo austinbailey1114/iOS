@@ -21,25 +21,8 @@ class NutritionTab: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        keepContext = context
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
-        request.returnsObjectsAsFaults = false
-        do {
-            let results = try context.fetch(request) as! [NSManagedObject]
-            for result in results {
-                if result.value(forKey: "username") as! String? == TabController.username!
-                    && result.value(forKey: "password") as! String? == TabController.password! {
-                    user = result
-                    break
-                }
-            }
-        }
-        catch {
-            //do stuff
-        }
+        keepContext = TabController.currentContext
+        user = TabController.currentUser
         //set delegates for keyboard purposes
         
     }

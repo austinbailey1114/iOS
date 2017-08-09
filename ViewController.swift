@@ -21,12 +21,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
     public var name: String = ""
     public var pass: String = ""
     
+    var user: NSManagedObject?
+    var thisContext: NSManagedObjectContext?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         //set delegates for keyboard purposes
         self.UserName.delegate = self
         self.Password.delegate = self
+        
     }
     //Actions
     
@@ -39,6 +43,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         //Searching Core Data for user + password
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
+        thisContext = context
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
         request.returnsObjectsAsFaults = false
         var userExists: Bool = false
@@ -47,6 +52,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             for result in results {
                 if result.value(forKey: "username") as! String? == UserName.text!
                 && result.value(forKey: "password") as! String? == Password.text! {
+                    user = result
                     userExists = true
                 }
             }
@@ -61,6 +67,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         else {
             if(userExists == true) {
+                TabController.currentUser = user
+                TabController.currentContext = thisContext
                 self.performSegue(withIdentifier: "LoginSegue", sender: self)
             }
         }

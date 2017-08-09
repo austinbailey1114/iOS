@@ -1,23 +1,18 @@
 //
-//  TabController.swift
+//  MoreTabViewController.swift
 //  LiftApp
 //
-//  Created by Austin Bailey on 8/4/17.
+//  Created by Austin Bailey on 8/9/17.
 //  Copyright © 2017 Austin Bailey. All rights reserved.
 //
 
 import UIKit
-import CoreData
 
-class TabController: UITabBarController {
-    
-    public static var username: String?
-    public static var password: String?
-    public static var currentUser: NSManagedObject?
-    public static var currentContext: NSManagedObjectContext?
+class MoreTabViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
 

@@ -25,27 +25,11 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         //load in the current user's data
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        keepContext = context
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
-        request.returnsObjectsAsFaults = false
-        do {
-            let results = try context.fetch(request) as! [NSManagedObject]
-            for result in results {
-                if result.value(forKey: "username") as! String? == TabController.username!
-                && result.value(forKey: "password") as! String? == TabController.password! {
-                    displaySquat.text = result.value(forKey: "squat") as? String
-                    displayDeadlift.text = result.value(forKey: "deadlift") as? String
-                    displayBench.text = result.value(forKey: "bench") as? String
-                    user = result
-                    break
-                }
-            }
-        }
-        catch {
-           //do stuff
-        }
+        keepContext = TabController.currentContext
+        user = TabController.currentUser
+        displaySquat.text = user!.value(forKey: "squat") as? String
+        displayDeadlift.text = user!.value(forKey: "deadlift") as? String
+        displayBench.text = user!.value(forKey: "bench") as? String
         //set delegates for keyboard purposes
         self.weightInput.delegate = self
         self.repsInput.delegate = self
