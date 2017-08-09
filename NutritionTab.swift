@@ -43,11 +43,34 @@ class NutritionTab: UIViewController {
         let newMeal = nameInput.text! + "," + calsInput.text! + "," + proteinInput.text! + "," + fatInput.text! + "," + carbsInput.text! + "," + result
         let newMealHistory = [newMeal] + mealHistory!
         user!.setValue(newMealHistory, forKey: "previousMeals")
-        nameInput.text = ""
-        calsInput.text = ""
-        proteinInput.text = ""
-        fatInput.text = ""
-        carbsInput.text = ""
+        //save new meal, if it does not already exist
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Meals")
+        request.returnsObjectsAsFaults = false
+        var mealExists = false
+        do {
+            let results = try keepContext!.fetch(request) as! [NSManagedObject]
+            for result in results {
+                if result.value(forKey: "name") as! String? == nameInput.text! {
+                    mealExists = true
+                    break
+                }
+            }
+        }
+        catch {
+            //add code
+        }
+        
+        if mealExists == false {
+            let newMeal = NSEntityDescription.insertNewObject(forEntityName: "Meals", into: keepContext!)
+            newMeal.setValue(nameInput.text!, forKey: "name")
+            newMeal.setValue(calsInput.text!, forKey: "calories")
+            newMeal.setValue(fatInput.text!, forKey: "fat")
+            newMeal.setValue(proteinInput.text!, forKey: "protein")
+            newMeal.setValue(carbsInput.text!, forKey: "carbs")
+            
+        }
+        
+        
         do {
             //the key to actually saving the data
             try keepContext!.save()
@@ -55,6 +78,13 @@ class NutritionTab: UIViewController {
         catch {
             
         }
+        
+        nameInput.text = ""
+        calsInput.text = ""
+        proteinInput.text = ""
+        fatInput.text = ""
+        carbsInput.text = ""
+        
         nameInput.resignFirstResponder()
         calsInput.resignFirstResponder()
         proteinInput.resignFirstResponder()

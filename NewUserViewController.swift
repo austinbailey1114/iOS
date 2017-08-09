@@ -46,6 +46,8 @@ class NewUserViewController: UIViewController {
         catch {
             //do stuff
         }
+        TabController.currentUser = NewUser
+        TabController.currentContext = context
         
 
     }

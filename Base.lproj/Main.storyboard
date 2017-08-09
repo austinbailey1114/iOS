@@ -268,22 +268,66 @@
             </objects>
             <point key="canvasLocation" x="1908" y="363.86806596701655"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Saved Meals Table View Controller-->
         <scene sceneID="cbz-Gc-AUB">
             <objects>
-                <tableViewController id="9ow-Fg-cb4" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="hSo-dp-kjM">
+                <tableViewController id="9ow-Fg-cb4" customClass="SavedMealsTableViewController" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="99" sectionHeaderHeight="28" sectionFooterHeight="28" id="hSo-dp-kjM">
                         <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NutritionHistoryCell" id="8kh-is-8Lp">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SavedMealTableViewCell" rowHeight="99" id="8kh-is-8Lp" customClass="SavedMealTableViewCell" customModule="LiftApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="99"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8kh-is-8Lp" id="Zoy-jF-aCP">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="98.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="NameLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nLo-Jp-9Lw">
+                                            <rect key="frame" x="30" y="8" width="87" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CalsLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhj-Is-LfL">
+                                            <rect key="frame" x="30" y="39" width="75" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FatLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lt6-71-iP1">
+                                            <rect key="frame" x="231" y="8" width="66" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ProteinLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rpk-Ng-DVR">
+                                            <rect key="frame" x="231" y="37" width="96" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CarbsLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jJG-GH-Zu2">
+                                            <rect key="frame" x="231" y="66" width="87" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="calsLabel" destination="bhj-Is-LfL" id="pJe-BT-Q3R"/>
+                                    <outlet property="carbsLabel" destination="jJG-GH-Zu2" id="HOb-Ct-wXF"/>
+                                    <outlet property="fatLabel" destination="lt6-71-iP1" id="pnj-Er-SP6"/>
+                                    <outlet property="nameLabel" destination="nLo-Jp-9Lw" id="Nci-hM-BRb"/>
+                                    <outlet property="proteinLabel" destination="rpk-Ng-DVR" id="6o5-VE-Sah"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -294,7 +338,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b2W-N5-acd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1907" y="1086"/>
+            <point key="canvasLocation" x="1908" y="1208"/>
         </scene>
         <!--Nutrition History-->
         <scene sceneID="hD3-Dm-sBM">
@@ -376,10 +420,10 @@
             </objects>
             <point key="canvasLocation" x="2794.4000000000001" y="368.36581709145429"/>
         </scene>
-        <!--Item-->
+        <!--More-->
         <scene sceneID="KSC-qQ-Tc4">
             <objects>
-                <viewController id="ykd-rs-WJV" customClass="MoreTabViewController" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="More" id="ykd-rs-WJV" customClass="MoreTabViewController" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pgN-GF-a40"/>
                         <viewControllerLayoutGuide type="bottom" id="M5c-8p-1lY"/>
@@ -389,7 +433,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="n0f-y1-URl"/>
+                    <tabBarItem key="tabBarItem" systemItem="more" id="n0f-y1-URl"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hid-0h-0Pp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

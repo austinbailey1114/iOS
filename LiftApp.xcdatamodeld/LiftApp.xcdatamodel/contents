@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Meals" representedClassName="Meals" syncable="YES" codeGenerationType="class"/>
+    <entity name="Meals" representedClassName="Meals" syncable="YES" codeGenerationType="class">
+        <attribute name="calories" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="carbs" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fat" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="protein" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Person" representedClassName="Person" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -18,6 +24,6 @@
     <elements>
         <element name="Person" positionX="-63" positionY="-18" width="128" height="60"/>
         <element name="Users" positionX="-63" positionY="9" width="128" height="180"/>
-        <element name="Meals" positionX="-63" positionY="63" width="128" height="45"/>
+        <element name="Meals" positionX="-63" positionY="63" width="128" height="120"/>
     </elements>
 </model>

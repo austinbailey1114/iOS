@@ -1,21 +1,34 @@
 //
-//  LiftTableViewController.swift
+//  SavedMealsTableViewController.swift
 //  LiftApp
 //
-//  Created by Austin Bailey on 8/4/17.
+//  Created by Austin Bailey on 8/9/17.
 //  Copyright © 2017 Austin Bailey. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-class LiftTableViewController: UITableViewController {
-
-    var user: NSManagedObject?
+class SavedMealsTableViewController: UITableViewController {
+    
+    var keepContext : NSManagedObjectContext?
+    var results: [NSManagedObject]?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        user = TabController.currentUser
+        
+        keepContext = TabController.currentContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Meals")
+        request.returnsObjectsAsFaults = false
+        do {
+            results = try keepContext!.fetch(request) as? [NSManagedObject]
+        }
+        catch {
+            
+        }
+        
+
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -32,29 +45,34 @@ class LiftTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let liftHistory = user!.value(forKey: "previousLifts") as? [String]
-        return liftHistory!.count
+        // #warning Incomplete implementation, return the number of rows
+        return (results?.count)!
     }
+
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //remember to change the identifier to the appropriate name
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "LiftTableViewCell", for: indexPath) as? LiftTableViewCell else {
-            fatalError("Fatal error")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SavedMealTableViewCell", for: indexPath) as? SavedMealTableViewCell else {
+            fatalError("fatal error")
         }
-        let liftHistory = user!.value(forKey: "previousLifts") as? [String]
+        let result = results![indexPath.row]
         
-        let name = liftHistory![indexPath.row]
-        let details = name.components(separatedBy: ",")
-        //weight,reps,name,date
-        cell.displayDateLabel.text = details[3]
-        cell.UserNameLabel.text = details[2]
-        cell.displayWeightLabel.text = details[0]
-        cell.displayRepsLabel.text = details[1]
         
+        cell.nameLabel.text! = result.value(forKey: "name") as! String
+        cell.calsLabel.text! = result.value(forKey: "calories") as! String
+        cell.fatLabel.text! = result.value(forKey: "fat") as! String
+        cell.carbsLabel.text! = result.value(forKey: "carbs") as! String
+        cell.proteinLabel.text! = result.value(forKey: "protein") as! String
+        
+        
+
+        // Configure the cell...
+        
+
         return cell
     }
     
