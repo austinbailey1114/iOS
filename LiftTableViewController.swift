@@ -15,25 +15,7 @@ class LiftTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
-        request.returnsObjectsAsFaults = false
-        do {
-            let results = try context.fetch(request) as! [NSManagedObject]
-            for result in results {
-                if result.value(forKey: "username") as! String? == TabController.username!
-                    && result.value(forKey: "password") as! String? == TabController.password! {
-                    user = result
-                }
-            }
-        }
-        catch {
-            //do stuff
-        }
-        
-
-
+        user = TabController.currentUser
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
