@@ -21,27 +21,43 @@ class ProgressViewController: UIViewController {
         var xvalues = [String]()
         var yvalues = [Double]()
         user = TabController.currentUser
-        let liftHistory = user!.value(forKey: "previousLifts") as? [String]
-        for lift in liftHistory! {
+        let templiftHistory = user!.value(forKey: "previousLifts") as? [String]
+        let liftHistory = templiftHistory!.reversed()
+        for lift in liftHistory {
             var details = lift.components(separatedBy: ",")
             yvalues.append(calculateMax(weight: details[0], reps: details[1]))
-            xvalues.append(details[3])
+            xvalues.append(details[3] + "," + details[2])
         }
         setChart(dataPoints: xvalues, values: yvalues)
         
     }
     func setChart(dataPoints: [String], values: [Double]) {
-        var lineChartEntry = [ChartDataEntry]()
+        //consider adding a function here to create more data sets?
+        var deadChartEntry = [ChartDataEntry]()
+        var squatChartEntry = [ChartDataEntry]()
+        var benchChartEntry = [ChartDataEntry]()
         for i in 0..<dataPoints.count {
             let value = ChartDataEntry(x: Double(i), y: values[i])
-            lineChartEntry.append(value)
+            let details = dataPoints[i].components(separatedBy: ",")
+            if details[1].lowercased() == "deadlift" {
+                deadChartEntry.append(value)
+            }
+            else if details[1].lowercased() == "squat" {
+                squatChartEntry.append(value)
+            }
+            else if details[1].lowercased() == "bench" {
+                benchChartEntry.append(value)
+            }
         }
-        let line1 = LineChartDataSet(values: lineChartEntry, label: "TestLifts")
+        let deadline = LineChartDataSet(values: deadChartEntry, label: "Deadlift")
+        let squatline = LineChartDataSet(values: squatChartEntry, label: "Squat")
+        let benchline = LineChartDataSet(values: benchChartEntry, label: "Bench")
         let data = LineChartData()
-        data.addDataSet(line1)
-        liftChartView.data = data
-        
-        
+        //this line is the key to adding multiple lines
+        data.addDataSet(deadline)
+        data.addDataSet(squatline)
+        data.addDataSet(benchline)
+        liftChartView.data = data        
     }
 
     func calculateMax(weight: String, reps: String) -> Double {
