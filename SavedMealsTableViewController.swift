@@ -75,22 +75,18 @@ class SavedMealsTableViewController: UITableViewController {
         formatter.dateFormat = "dd.MM.yyyy"
         let result = formatter.string(from: date)
         let indexpath = tableView.indexPathForSelectedRow
-        print("stop1")
         let cell = tableView.cellForRow(at: indexpath!) as! SavedMealTableViewCell
         let newMeal = cell.nameLabel.text! + "," + cell.calsLabel.text! + "," + cell.fatLabel.text! + "," + cell.carbsLabel.text! + "," + cell.proteinLabel.text! + "," + result
-        print("stop2")
         let mealHistory = user!.value(forKey: "previousMeals") as? [String]
-        print("stop3")
         let newMealHistory = [newMeal] + mealHistory!
-        print("stop4")
         user!.setValue(newMealHistory, forKey: "previousMeals")
-        print("stop5")
         do {
             try keepContext!.save()
         }
         catch {
             
         }
+        tableView.deselectRow(at: indexpath!, animated: true)
         return
     }
     
