@@ -13,11 +13,13 @@ class SavedMealsTableViewController: UITableViewController {
     
     var keepContext : NSManagedObjectContext?
     var results: [NSManagedObject]?
+    var user: NSManagedObject?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        user = TabController.currentUser
         keepContext = TabController.currentContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Meals")
         request.returnsObjectsAsFaults = false
@@ -27,8 +29,7 @@ class SavedMealsTableViewController: UITableViewController {
         catch {
             
         }
-        
-
+        tableView.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -45,35 +46,52 @@ class SavedMealsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return (results?.count)!
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("made it here")
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SavedMealTableViewCell", for: indexPath) as? SavedMealTableViewCell else {
             fatalError("fatal error")
         }
         let result = results![indexPath.row]
-        
         
         cell.nameLabel.text! = result.value(forKey: "name") as! String
         cell.calsLabel.text! = result.value(forKey: "calories") as! String
         cell.fatLabel.text! = result.value(forKey: "fat") as! String
         cell.carbsLabel.text! = result.value(forKey: "carbs") as! String
         cell.proteinLabel.text! = result.value(forKey: "protein") as! String
-        
-        
-
-        // Configure the cell...
-        
-
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        let result = formatter.string(from: date)
+        let indexpath = tableView.indexPathForSelectedRow
+        print("stop1")
+        let cell = tableView.cellForRow(at: indexpath!) as! SavedMealTableViewCell
+        let newMeal = cell.nameLabel.text! + "," + cell.calsLabel.text! + "," + cell.fatLabel.text! + "," + cell.carbsLabel.text! + "," + cell.proteinLabel.text! + "," + result
+        print("stop2")
+        let mealHistory = user!.value(forKey: "previousMeals") as? [String]
+        print("stop3")
+        let newMealHistory = [newMeal] + mealHistory!
+        print("stop4")
+        user!.setValue(newMealHistory, forKey: "previousMeals")
+        print("stop5")
+        do {
+            try keepContext!.save()
+        }
+        catch {
+            
+        }
+        return
     }
     
 

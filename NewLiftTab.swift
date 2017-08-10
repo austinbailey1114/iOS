@@ -48,6 +48,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         let newLift = weightInput.text! + "," + repsInput.text! + "," + typeInput.text! + "," + result
         let newLiftHistory = [newLift] + liftHistory!
         user!.setValue(newLiftHistory, forKey: "previousLifts")
+        //set new display of 1RM
         let max = String(calculateMax(weight: Double(weightInput.text!)!, reps: Double(repsInput.text!)!))
         if (typeInput.text!.lowercased() == "bench") {
             user!.setValue(max, forKey: "bench")
