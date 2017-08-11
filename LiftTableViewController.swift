@@ -52,8 +52,8 @@ class LiftTableViewController: UITableViewController {
         //weight,reps,name,date
         cell.displayDateLabel.text = details[3]
         cell.UserNameLabel.text = details[2]
-        cell.displayWeightLabel.text = details[0]
-        cell.displayRepsLabel.text = details[1]
+        cell.displayWeightLabel.text = "Weight: " + details[0]
+        cell.displayRepsLabel.text = "Reps: " + details[1]
         
         return cell
     }
