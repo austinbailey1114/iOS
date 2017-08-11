@@ -48,7 +48,13 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         let newLift = weightInput.text! + "," + repsInput.text! + "," + typeInput.text! + "," + result
         let newLiftHistory = [newLift] + liftHistory!
         user!.setValue(newLiftHistory, forKey: "previousLifts")
+        //close keyboard
+        weightInput.resignFirstResponder()
+        repsInput.resignFirstResponder()
+        typeInput.resignFirstResponder()
+
         //set new display of 1RM
+        
         let max = String(calculateMax(weight: Double(weightInput.text!)!, reps: Double(repsInput.text!)!))
         if (typeInput.text!.lowercased() == "bench") {
             user!.setValue(max, forKey: "bench")
@@ -61,6 +67,11 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         else if (typeInput.text!.lowercased() == "deadlift") {
             user!.setValue(max, forKey: "deadlift")
             displayDeadlift.text = user!.value(forKey: "deadlift") as? String
+        }
+        else {
+            let title = "Untracked Lift Type"
+            let message = "Because the lift " + typeInput.text! + " is not a tracked type, it will not be tracked in the Progress Tab graphs. It will still appear in your previous lifts."
+            createAlert(title: title, message: message)
         }
 
         //save 1RM calculation of input
@@ -75,9 +86,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         catch {
             
         }
-        weightInput.resignFirstResponder()
-        repsInput.resignFirstResponder()
-        typeInput.resignFirstResponder()
     }
     //close keyboard when user touches outside the keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -98,6 +106,14 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func createAlert (title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
 
