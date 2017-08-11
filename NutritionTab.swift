@@ -19,11 +19,43 @@ class NutritionTab: UIViewController {
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
     
+    @IBOutlet weak var todaysCals: UILabel!
+    @IBOutlet weak var todaysFat: UILabel!
+    @IBOutlet weak var todaysCarbs: UILabel!
+    @IBOutlet weak var todaysProtein: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         keepContext = TabController.currentContext
         user = TabController.currentUser
-        //set delegates for keyboard purposes
+        //pull date
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        let result = formatter.string(from: date)
+        //add up todays nutrient totals
+        var Cals: Int = 0
+        var Fat: Int = 0
+        var Carbs: Int = 0
+        var Protein: Int = 0
+        
+        let mealHistory = user!.value(forKey: "previousMeals")
+        for meal in mealHistory as! [String] {
+            var details = meal.components(separatedBy: ",")
+            if details[5] == result {
+                Cals += Int(details[1])!
+                Fat += Int(details[2])!
+                Carbs += Int(details[3])!
+                Protein += Int(details[4])!
+            }
+            else {
+                break
+            }
+        }
+        todaysCals.text! = "Today's calories: " + String(Cals) + "cals"
+        todaysFat.text! = "Today's fat: " + String(Fat) + "g"
+        todaysCarbs.text! = "Today's carbs: " + String(Carbs) + "g"
+        todaysProtein.text! = "Today's protein: " + String(Protein) + "g"
         
     }
 
