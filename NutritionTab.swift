@@ -34,6 +34,10 @@ class NutritionTab: UIViewController {
     
     @IBAction func saveButton(_ sender: UIButton) {
         //pull date
+        if nameInput.text! == "" || calsInput.text! == "" || fatInput.text! == "" || carbsInput.text! == "" || proteinInput.text! == "" {
+            createAlert(title: "Missing Input", message: "Please enter a value in all fields")
+            return
+        }
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
@@ -105,6 +109,14 @@ class NutritionTab: UIViewController {
         fatInput.resignFirstResponder()
         carbsInput.resignFirstResponder()
         return true
+    }
+    
+    func createAlert (title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 
 

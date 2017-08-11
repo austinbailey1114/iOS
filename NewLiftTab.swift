@@ -38,6 +38,10 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {
+        if weightInput.text! == "" || repsInput.text! == "" || typeInput.text! == "" {
+            createAlert(title: "Missing Input", message: "Please enter a value in all boxes")
+            return
+        }
         //pull date
         let date = Date()
         let formatter = DateFormatter()

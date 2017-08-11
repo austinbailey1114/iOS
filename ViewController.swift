@@ -63,7 +63,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         //login only if the user exists
         if userExists == false {
-            noLogin.text = "Incorrect login!"
+            createAlert(title: "User Does Not Exist", message: "This username and password combination does not exist")
         }
         else {
             if(userExists == true) {
@@ -92,6 +92,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         Password.resignFirstResponder()
         return true
     }
+    
+    func createAlert (title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
