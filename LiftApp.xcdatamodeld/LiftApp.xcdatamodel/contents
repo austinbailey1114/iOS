@@ -18,12 +18,13 @@
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="previousLifts" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="previousMeals" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="previousWeights" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="squat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Person" positionX="-63" positionY="-18" width="128" height="60"/>
-        <element name="Users" positionX="-63" positionY="9" width="128" height="180"/>
         <element name="Meals" positionX="-63" positionY="63" width="128" height="120"/>
+        <element name="Person" positionX="-63" positionY="-18" width="128" height="60"/>
+        <element name="Users" positionX="-63" positionY="9" width="128" height="195"/>
     </elements>
 </model>

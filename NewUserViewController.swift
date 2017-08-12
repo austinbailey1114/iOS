@@ -24,6 +24,11 @@ class NewUserViewController: UIViewController {
     }
 
     @IBAction func CreateAccountButton(_ sender: UIButton) {
+        //pull date
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        let result = formatter.string(from: date)
         //create a new user in CoreData
         username = TabController.username
         pass = TabController.password
@@ -37,6 +42,7 @@ class NewUserViewController: UIViewController {
         NewUser.setValue("0", forKey: "bench")
         NewUser.setValue([String](), forKey: "previousLifts")
         NewUser.setValue([String](), forKey: "previousMeals")
+        NewUser.setValue(bodyWeightInput.text! + "," + result, forKey: "previousWeights")
         NewUser.setValue(bodyWeightInput.text!, forKey: "bodyWeight")
         NewUser.setValue(heightInput.text!, forKey: "height")
         
