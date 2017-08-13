@@ -15,9 +15,13 @@ class ProgressViewController: UIViewController {
     var user: NSManagedObject?
 
     @IBOutlet weak var liftChartView: LineChartView!
+    
+    @IBOutlet weak var weightChartView: LineChartView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        //Build lifting graph
         var xvalues = [String]()
         var yvalues = [Double]()
         user = TabController.currentUser
@@ -29,6 +33,18 @@ class ProgressViewController: UIViewController {
             xvalues.append(details[3] + "," + details[2])
         }
         setChart(dataPoints: xvalues, values: yvalues)
+        
+        //build bodyweight graph
+        var dates = [String]()
+        var bodyweight = [Double]()
+        let tempweightHistory = user!.value(forKey: "previousWeights") as? [String]
+        let weightHistory = tempweightHistory!.reversed()
+        for weight in weightHistory {
+            var details = weight.components(separatedBy: ",")
+            bodyweight.append(Double(details[0])!)
+            dates.append(details[1])
+        }
+        setWeightChart(dataPoints: dates, values: bodyweight)
         
     }
     func setChart(dataPoints: [String], values: [Double]) {
@@ -80,6 +96,22 @@ class ProgressViewController: UIViewController {
         data.addDataSet(benchline)
         liftChartView.drawGridBackgroundEnabled = false
         liftChartView.data = data
+    }
+    
+    func setWeightChart(dataPoints: [String], values: [Double]) {
+        var lineChartEntry = [ChartDataEntry]()
+        for i in 0..<dataPoints.count {
+            let value = ChartDataEntry(x: Double(i), y: values[i])
+            lineChartEntry.append(value)
+        }
+        let lineChartData = LineChartDataSet(values: lineChartEntry, label: "BodyWeight")
+        lineChartData.setColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
+        lineChartData.setCircleColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
+        lineChartData.circleHoleRadius = 0
+        lineChartData.circleRadius = 5
+        let data = LineChartData()
+        data.addDataSet(lineChartData)
+        weightChartView.data = data
     }
 
     func calculateMax(weight: String, reps: String) -> Double {

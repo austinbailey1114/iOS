@@ -12,7 +12,6 @@ import CoreData
 class MoreTabViewController: UIViewController {
 
     @IBOutlet weak var newWeightInput: UITextField!
-    @IBOutlet weak var newHeightInput: UITextField!
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
     
@@ -40,21 +39,16 @@ class MoreTabViewController: UIViewController {
         let newWeightHistory = [newWeight] + weightHistory!
         user!.setValue(newWeightHistory, forKey: "previousWeights")
         newWeightInput.resignFirstResponder()
-        newHeightInput.resignFirstResponder()
         do {
             try keepContext!.save()
         }
         catch {
             
         }
-        newHeightInput.text! = ""
         newWeightInput.text! = ""
         
     }
-    @IBAction func updateHeightButton(_ sender: UIButton) {
         
-    }
-    
     func createAlert (title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
@@ -71,7 +65,6 @@ class MoreTabViewController: UIViewController {
     //close keyboard when return key is hit
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         newWeightInput.resignFirstResponder()
-        newHeightInput.resignFirstResponder()
         return true
     }
 
