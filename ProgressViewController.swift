@@ -30,7 +30,8 @@ class ProgressViewController: UIViewController {
         for lift in liftHistory {
             var details = lift.components(separatedBy: ",")
             yvalues.append(calculateMax(weight: details[0], reps: details[1]))
-            xvalues.append(details[3] + "," + details[2])
+            let dateData = details[3].components(separatedBy: ".")
+            xvalues.append(dateData[1] + "/" + dateData[0] + "," + details[2])
         }
         setChart(dataPoints: xvalues, values: yvalues)
         
@@ -58,6 +59,7 @@ class ProgressViewController: UIViewController {
         var j: Double = 0
         var h: Double = 0
         var k: Double = 0
+        var dates = [String]()
         for i in 0..<dataPoints.count {
             let details = dataPoints[i].components(separatedBy: ",")
             if details[1].lowercased() == "deadlift" {
@@ -75,6 +77,7 @@ class ProgressViewController: UIViewController {
                 benchChartEntry.append(value)
                 k = k + 1
             }
+            dates.append(details[0])
         }
         //add data to the graph
         let deadline = LineChartDataSet(values: deadChartEntry, label: "Deadlift")
@@ -96,7 +99,19 @@ class ProgressViewController: UIViewController {
         data.addDataSet(deadline)
         data.addDataSet(squatline)
         data.addDataSet(benchline)
-        liftChartView.drawGridBackgroundEnabled = false
+        //convert x axis to dates
+        let xAxis = liftChartView.xAxis
+        xAxis.labelPosition = .bottom
+        xAxis.drawLabelsEnabled = true
+        xAxis.drawLimitLinesBehindDataEnabled = true
+        xAxis.avoidFirstLastClippingEnabled = true
+        xAxis.drawLimitLinesBehindDataEnabled = true
+        xAxis.granularityEnabled = true
+        xAxis.granularity = 1
+        liftChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dates)
+        liftChartView.xAxis.granularity = 1
+        liftChartView.xAxis.labelCount = 5
+        //add data
         liftChartView.data = data
     }
     
