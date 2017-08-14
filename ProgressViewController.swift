@@ -42,7 +42,9 @@ class ProgressViewController: UIViewController {
         for weight in weightHistory {
             var details = weight.components(separatedBy: ",")
             bodyweight.append(Double(details[0])!)
-            dates.append(details[1])
+            let dateData = details[1].components(separatedBy: ".")
+            let date = dateData[1] + "/" + dateData[0]
+            dates.append(date)
         }
         setWeightChart(dataPoints: dates, values: bodyweight)
         
@@ -122,7 +124,7 @@ class ProgressViewController: UIViewController {
         xAxis.granularity = 1
         weightChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dataPoints)
         weightChartView.xAxis.granularity = 1
-        weightChartView.xAxis.labelCount = 3
+        weightChartView.xAxis.labelCount = 5
         
         // Set the x values date formatter
         //let xValuesNumberFormatter = ChartXAxisFormatter()
