@@ -101,7 +101,7 @@ class ProgressViewController: UIViewController {
     func setWeightChart(dataPoints: [String], values: [Double]) {
         var lineChartEntry = [ChartDataEntry]()
         for i in 0..<dataPoints.count {
-            let value = ChartDataEntry(x: Double(i), y: values[i])
+            let value = ChartDataEntry(x: Double(i), y: values[i], data: "test" as AnyObject)
             lineChartEntry.append(value)
         }
         let lineChartData = LineChartDataSet(values: lineChartEntry, label: "BodyWeight")
@@ -111,6 +111,23 @@ class ProgressViewController: UIViewController {
         lineChartData.circleRadius = 5
         let data = LineChartData()
         data.addDataSet(lineChartData)
+        //create proper x axis
+        let xAxis = weightChartView.xAxis
+        xAxis.labelPosition = .bottom
+        xAxis.drawLabelsEnabled = true
+        xAxis.drawLimitLinesBehindDataEnabled = true
+        xAxis.avoidFirstLastClippingEnabled = true
+        xAxis.drawLimitLinesBehindDataEnabled = true
+        xAxis.granularityEnabled = true
+        xAxis.granularity = 1
+        weightChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dataPoints)
+        weightChartView.xAxis.granularity = 1
+        weightChartView.xAxis.labelCount = 3
+        
+        // Set the x values date formatter
+        //let xValuesNumberFormatter = ChartXAxisFormatter()
+        //xValuesNumberFormatter.dateFormatter = dayNumberAndShortNameFormatter // e.g. "wed 26"
+        //xAxis.valueFormatter = xValuesNumberFormatter
         weightChartView.data = data
     }
 
