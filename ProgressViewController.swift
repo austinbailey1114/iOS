@@ -113,6 +113,8 @@ class ProgressViewController: UIViewController {
         liftChartView.xAxis.labelCount = 5
         //add data
         liftChartView.data = data
+        liftChartView.data!.setDrawValues(false)
+
     }
     
     func setWeightChart(dataPoints: [String], values: [Double]) {
@@ -141,11 +143,8 @@ class ProgressViewController: UIViewController {
         weightChartView.xAxis.granularity = 1
         weightChartView.xAxis.labelCount = 5
         
-        // Set the x values date formatter
-        //let xValuesNumberFormatter = ChartXAxisFormatter()
-        //xValuesNumberFormatter.dateFormatter = dayNumberAndShortNameFormatter // e.g. "wed 26"
-        //xAxis.valueFormatter = xValuesNumberFormatter
         weightChartView.data = data
+        weightChartView.data?.setDrawValues(false)
     }
 
     func calculateMax(weight: String, reps: String) -> Double {
