@@ -82,19 +82,16 @@ class ProgressViewController: UIViewController {
         //add data to the graph
         let deadline = LineChartDataSet(values: deadChartEntry, label: "Deadlift")
         deadline.setColor(UIColor(red:0.00, green:0.73, blue:0.50, alpha:1.0))
-        deadline.setCircleColor(UIColor(red:0.00, green:0.73, blue:0.50, alpha:1.0))
-        deadline.circleHoleRadius = 0
-        deadline.circleRadius = 5
+        deadline.drawCirclesEnabled = false
+        deadline.lineWidth = 2
         let squatline = LineChartDataSet(values: squatChartEntry, label: "Squat")
         squatline.setColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
-        squatline.setCircleColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
-        squatline.circleHoleRadius = 0
-        squatline.circleRadius = 5
+        squatline.drawCirclesEnabled = false
+        squatline.lineWidth = 2
         let benchline = LineChartDataSet(values: benchChartEntry, label: "Bench")
         benchline.setColor(UIColor(red:0.87, green:0.08, blue:0.09, alpha:1.0))
-        benchline.setCircleColor(UIColor(red:0.87, green:0.08, blue:0.09, alpha:1.0))
-        benchline.circleHoleRadius = 0
-        benchline.circleRadius = 5
+        benchline.drawCirclesEnabled = false
+        benchline.lineWidth = 2
         let data = LineChartData()
         data.addDataSet(deadline)
         data.addDataSet(squatline)
@@ -120,14 +117,13 @@ class ProgressViewController: UIViewController {
     func setWeightChart(dataPoints: [String], values: [Double]) {
         var lineChartEntry = [ChartDataEntry]()
         for i in 0..<dataPoints.count {
-            let value = ChartDataEntry(x: Double(i), y: values[i], data: "test" as AnyObject)
+            let value = ChartDataEntry(x: Double(i), y: values[i])
             lineChartEntry.append(value)
         }
         let lineChartData = LineChartDataSet(values: lineChartEntry, label: "BodyWeight")
         lineChartData.setColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
-        lineChartData.setCircleColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
-        lineChartData.circleHoleRadius = 0
-        lineChartData.circleRadius = 5
+        lineChartData.drawCirclesEnabled = false
+        lineChartData.lineWidth = 2
         let data = LineChartData()
         data.addDataSet(lineChartData)
         //create proper x axis
