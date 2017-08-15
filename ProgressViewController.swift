@@ -61,6 +61,10 @@ class ProgressViewController: UIViewController {
         var k: Double = 0
         var dates = [String]()
         for i in 0..<dataPoints.count {
+            // if == "lifttype" {
+            //      if currentdate != details[0]
+                        //j = j + 1
+            //rest of the code
             let details = dataPoints[i].components(separatedBy: ",")
             if details[1].lowercased() == "deadlift" {
                 let value = ChartDataEntry(x: j, y: values[i])

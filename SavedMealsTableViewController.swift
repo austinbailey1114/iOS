@@ -14,13 +14,59 @@ class SavedMealsTableViewController: UITableViewController {
     var keepContext : NSManagedObjectContext?
     var results: [NSManagedObject]?
     var user: NSManagedObject?
-    
+    //let searchController = UISearchController(searchResultsController: nil)
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         user = TabController.currentUser
         keepContext = TabController.currentContext
+        
+        //searchController.searchResultsUpdater = self
+        //searchController.dimsBackgroundDuringPresentation = false
+        //definesPresentationContext = true
+        //tableView.tableHeaderView = searchController.searchBar
+        
+        
+        
+        let url1 = "https://api.nutritionix.com/v1_1/search/"
+        let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
+        
+        //let url3 = "https://api.nutritionix.com/v1_1/item?id="
+        //let url4 = "&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
+        
+        let urlString = URL(string: url1 + "oikos" + url2)
+        let task = URLSession.shared.dataTask(with: urlString!) { (data, response, error) in
+            if error != nil {
+                print("error")
+            }
+            else {
+                if let content = data {
+                    do {
+                        let myjson = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                        print(myjson)
+                        let hits = myjson["hits"] as! [NSDictionary]
+                        for item in hits {
+                            print(item["_id"]!)
+                            let info = item["fields"] as! NSDictionary
+                            print(info["item_name"]!)
+                        }
+                        /*let keys = myjson.allKeys
+                        let values = myjson.allValues as! [NSDictionary]
+                        for item in values {
+                            print(item["item_name"]!)
+                        }*/
+                    }
+                    catch {
+                        print("error")
+                    }
+                }
+                
+            }
+        }
+        task.resume()
+        
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Meals")
         request.returnsObjectsAsFaults = false
         do {
@@ -89,6 +135,8 @@ class SavedMealsTableViewController: UITableViewController {
         tableView.deselectRow(at: indexpath!, animated: true)
         return
     }
+    
+    
     
     
     /*
