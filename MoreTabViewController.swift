@@ -31,27 +31,28 @@ class MoreTabViewController: UIViewController {
     }
     
     @IBAction func updateWeightButton(_ sender: UIButton) {
-        //pull date
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy"
-        let result = formatter.string(from: date)
-        //add new weight to user's previous weights
-        user = TabController.currentUser
-        keepContext = TabController.currentContext
-        let weightHistory = user!.value(forKey: "previousWeights") as? [String]
-        let newWeight = newWeightInput.text! + "," + result
-        let newWeightHistory = [newWeight] + weightHistory!
-        user!.setValue(newWeightHistory, forKey: "previousWeights")
-        newWeightInput.resignFirstResponder()
-        do {
-            try keepContext!.save()
+        if newWeightInput.text! != "" {
+            //pull date
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd.MM.yyyy"
+            let result = formatter.string(from: date)
+            //add new weight to user's previous weights
+            user = TabController.currentUser
+            keepContext = TabController.currentContext
+            let weightHistory = user!.value(forKey: "previousWeights") as? [String]
+            let newWeight = newWeightInput.text! + "," + result
+            let newWeightHistory = [newWeight] + weightHistory!
+            user!.setValue(newWeightHistory, forKey: "previousWeights")
+            newWeightInput.resignFirstResponder()
+            do {
+                try keepContext!.save()
+            }
+            catch {
+                
+            }
+            newWeightInput.text! = ""
         }
-        catch {
-            
-        }
-        newWeightInput.text! = ""
-        
     }
     
     @IBAction func updateTracked(_ sender: UIButton) {

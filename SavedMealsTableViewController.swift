@@ -13,19 +13,20 @@ class SavedMealsTableViewController: UITableViewController {
     
     var keepContext : NSManagedObjectContext?
     var user: NSManagedObject?
+    public static var searchText: String?
     //let searchController = UISearchController(searchResultsController: nil)
     
-    func getResults(url: String) -> [String] {
+    func getResults() -> [String] {
         
         var isFinished: Bool = false
         
         let url1 = "https://api.nutritionix.com/v1_1/search/"
-        let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=0af8b9cd&appKey=07ed209f3e49ec4e97c57be6e6fdaf00"
+        let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=592ced70&appKey=4dcb7f7bd109b3975dd3bad0020b6f2a"
         
         //let url3 = "https://api.nutritionix.com/v1_1/item?id="
         //let url4 = "&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
         
-        let urlString = URL(string: url1 + "oikos" + url2)
+        let urlString = URL(string: url1 + SavedMealsTableViewController.searchText! + url2)
         var searchResults = [String]()
 
         let task = URLSession.shared.dataTask(with: urlString!) { (data, response, error) in
@@ -43,7 +44,6 @@ class SavedMealsTableViewController: UITableViewController {
                             let info = item["fields"] as! NSDictionary
                             item_string += "~"
                             item_string += info["item_name"]! as! String
-                            //print(item_string)
                             searchResults.append(item_string)
                             isFinished = true
                         }
@@ -65,12 +65,6 @@ class SavedMealsTableViewController: UITableViewController {
         while(!isFinished) {
             
         }
-        
-        
-        for item in searchResults {
-            print(item)
-        }
-        print(searchResults.count)
         
         return searchResults
         
@@ -112,7 +106,7 @@ class SavedMealsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return getResults(url: "test").count
+        return getResults().count
     }
 
     
@@ -121,7 +115,7 @@ class SavedMealsTableViewController: UITableViewController {
             fatalError("fatal error")
         }
         
-        let results = getResults(url: "https://api.nutritionix.com/v1_1/search/" + "oikos" + "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586")
+        let results = getResults()
         let result = results[indexPath.row]
         print(result)
         
@@ -167,8 +161,6 @@ class SavedMealsTableViewController: UITableViewController {
                         newMeal += String(myjson["nf_total_carbohydrate"]! as! Int)
                         newMeal += "`"
                         newMeal += result
-                        print(myjson)
-                        print(newMeal)
                         isFinished = true
                         /*let keys = myjson.allKeys
                          let values = myjson.allValues as! [NSDictionary]
