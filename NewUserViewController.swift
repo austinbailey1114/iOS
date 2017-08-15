@@ -45,6 +45,9 @@ class NewUserViewController: UIViewController {
         NewUser.setValue([bodyWeightInput.text! + "," + result], forKey: "previousWeights")
         NewUser.setValue(bodyWeightInput.text!, forKey: "bodyWeight")
         NewUser.setValue(heightInput.text!, forKey: "height")
+        NewUser.setValue("deadlift", forKey: "lift1")
+        NewUser.setValue("squat", forKey: "lift2")
+        NewUser.setValue("bench", forKey: "lift3")
         
         do {
             try context.save()

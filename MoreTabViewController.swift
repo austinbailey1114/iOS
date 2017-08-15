@@ -12,6 +12,11 @@ import CoreData
 class MoreTabViewController: UIViewController {
 
     @IBOutlet weak var newWeightInput: UITextField!
+    
+    @IBOutlet weak var lift1: UITextField!
+    @IBOutlet weak var lift2: UITextField!
+    @IBOutlet weak var lift3: UITextField!
+    
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
     
@@ -48,6 +53,27 @@ class MoreTabViewController: UIViewController {
         newWeightInput.text! = ""
         
     }
+    
+    @IBAction func updateTracked(_ sender: UIButton) {
+        user = TabController.currentUser
+        keepContext = TabController.currentContext
+        if lift1.text! != "" {
+            user!.setValue(lift1.text!, forKey: "lift1")
+        }
+        if lift2.text! != "" {
+            user!.setValue(lift2.text!, forKey: "lift2")
+        }
+        if lift3.text! != "" {
+            user!.setValue(lift3.text!, forKey: "lift3")
+        }
+        do {
+            try keepContext!.save()
+        }
+        catch {
+            
+        }
+    }
+    
         
     func createAlert (title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)

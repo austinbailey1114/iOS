@@ -66,17 +66,17 @@ class ProgressViewController: UIViewController {
                         //j = j + 1
             //rest of the code
             let details = dataPoints[i].components(separatedBy: ",")
-            if details[1].lowercased() == "deadlift" {
+            if details[1].lowercased() == user!.value(forKey: "lift1") as? String {
                 let value = ChartDataEntry(x: j, y: values[i])
                 deadChartEntry.append(value)
                 j = j + 1
             }
-            else if details[1].lowercased() == "squat" {
+            else if details[1].lowercased() == user!.value(forKey: "lift2") as? String {
                 let value = ChartDataEntry(x: h, y: values[i])
                 squatChartEntry.append(value)
                 h = h + 1
             }
-            else if details[1].lowercased() == "bench" {
+            else if details[1].lowercased() == user!.value(forKey: "lift3") as? String {
                 let value = ChartDataEntry(x: k, y: values[i])
                 benchChartEntry.append(value)
                 k = k + 1
@@ -84,15 +84,15 @@ class ProgressViewController: UIViewController {
             dates.append(details[0])
         }
         //add data to the graph
-        let deadline = LineChartDataSet(values: deadChartEntry, label: "Deadlift")
+        let deadline = LineChartDataSet(values: deadChartEntry, label: user!.value(forKey: "lift1") as? String)
         deadline.setColor(UIColor(red:0.00, green:0.73, blue:0.50, alpha:1.0))
         deadline.drawCirclesEnabled = false
         deadline.lineWidth = 2
-        let squatline = LineChartDataSet(values: squatChartEntry, label: "Squat")
+        let squatline = LineChartDataSet(values: squatChartEntry, label: user!.value(forKey: "lift2") as? String)
         squatline.setColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
         squatline.drawCirclesEnabled = false
         squatline.lineWidth = 2
-        let benchline = LineChartDataSet(values: benchChartEntry, label: "Bench")
+        let benchline = LineChartDataSet(values: benchChartEntry, label: user!.value(forKey: "lift3") as? String)
         benchline.setColor(UIColor(red:0.87, green:0.08, blue:0.09, alpha:1.0))
         benchline.drawCirclesEnabled = false
         benchline.lineWidth = 2
