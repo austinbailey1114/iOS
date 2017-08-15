@@ -17,6 +17,8 @@ class SavedMealsTableViewController: UITableViewController {
     
     func getResults(url: String) -> [String] {
         
+        var isFinished: Bool = false
+        
         let url1 = "https://api.nutritionix.com/v1_1/search/"
         let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=0af8b9cd&appKey=07ed209f3e49ec4e97c57be6e6fdaf00"
         
@@ -43,8 +45,7 @@ class SavedMealsTableViewController: UITableViewController {
                             item_string += info["item_name"]! as! String
                             //print(item_string)
                             searchResults.append(item_string)
-                            print(item_string)
-                            print(searchResults.count)
+                            isFinished = true
                         }
                         /*let keys = myjson.allKeys
                          let values = myjson.allValues as! [NSDictionary]
@@ -61,14 +62,17 @@ class SavedMealsTableViewController: UITableViewController {
         }
         task.resume()
         
+        while(!isFinished) {
+            
+        }
+        
+        
         for item in searchResults {
             print(item)
         }
         print(searchResults.count)
-        let tempResults = ["5~Oikos", "6~Chicken", "8~Pizza"]
-        return tempResults
         
-        //return searchResults
+        return searchResults
         
     }
 
@@ -141,7 +145,8 @@ class SavedMealsTableViewController: UITableViewController {
         let url3 = "https://api.nutritionix.com/v1_1/item?id="
         let url4 = "&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
         
-        let urlString = URL(string: url3 + "551084f54ae943dd31ce3313" + url4)
+        var isFinished: Bool = false
+        let urlString = URL(string: url3 + cell.idLabel.text! + url4)
         var newMeal = ""
         let task = URLSession.shared.dataTask(with: urlString!) { (data, response, error) in
             if error != nil {
@@ -164,6 +169,7 @@ class SavedMealsTableViewController: UITableViewController {
                         newMeal += result
                         print(myjson)
                         print(newMeal)
+                        isFinished = true
                         /*let keys = myjson.allKeys
                          let values = myjson.allValues as! [NSDictionary]
                          for item in values {
@@ -178,6 +184,10 @@ class SavedMealsTableViewController: UITableViewController {
             }
         }
         task.resume()
+        
+        while(!isFinished) {
+            
+        }
 
         
         let mealHistory = user!.value(forKey: "previousMeals") as? [String]
