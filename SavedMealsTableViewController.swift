@@ -12,23 +12,10 @@ import CoreData
 class SavedMealsTableViewController: UITableViewController {
     
     var keepContext : NSManagedObjectContext?
-    var results: [NSManagedObject]?
     var user: NSManagedObject?
     //let searchController = UISearchController(searchResultsController: nil)
-
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        user = TabController.currentUser
-        keepContext = TabController.currentContext
-        
-        //searchController.searchResultsUpdater = self
-        //searchController.dimsBackgroundDuringPresentation = false
-        //definesPresentationContext = true
-        //tableView.tableHeaderView = searchController.searchBar
-        
-        
+    func getResults(url: String) -> [String] {
         
         let url1 = "https://api.nutritionix.com/v1_1/search/"
         let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
@@ -37,6 +24,8 @@ class SavedMealsTableViewController: UITableViewController {
         //let url4 = "&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
         
         let urlString = URL(string: url1 + "oikos" + url2)
+        var searchResults = [String]()
+
         let task = URLSession.shared.dataTask(with: urlString!) { (data, response, error) in
             if error != nil {
                 print("error")
@@ -45,18 +34,23 @@ class SavedMealsTableViewController: UITableViewController {
                 if let content = data {
                     do {
                         let myjson = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                        print(myjson)
                         let hits = myjson["hits"] as! [NSDictionary]
                         for item in hits {
-                            print(item["_id"]!)
+                            var item_string: String = ""
+                            item_string += item["_id"]! as! String
                             let info = item["fields"] as! NSDictionary
-                            print(info["item_name"]!)
+                            item_string += "~"
+                            item_string += info["item_name"]! as! String
+                            //print(item_string)
+                            searchResults.append(item_string)
+                            print(searchResults.count)
                         }
+                        self.tableView.reloadData()
                         /*let keys = myjson.allKeys
-                        let values = myjson.allValues as! [NSDictionary]
-                        for item in values {
-                            print(item["item_name"]!)
-                        }*/
+                         let values = myjson.allValues as! [NSDictionary]
+                         for item in values {
+                         print(item["item_name"]!)
+                         }*/
                     }
                     catch {
                         print("error")
@@ -67,14 +61,29 @@ class SavedMealsTableViewController: UITableViewController {
         }
         task.resume()
         
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Meals")
-        request.returnsObjectsAsFaults = false
-        do {
-            results = try keepContext!.fetch(request) as? [NSManagedObject]
+        for item in searchResults {
+            print(item)
         }
-        catch {
-            
-        }
+        print(searchResults.count)
+        return searchResults
+        
+    }
+
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        user = TabController.currentUser
+        keepContext = TabController.currentContext
+        //searchController.searchResultsUpdater = self
+        //searchController.dimsBackgroundDuringPresentation = false
+        //definesPresentationContext = true
+        //tableView.tableHeaderView = searchController.searchBar
+        
+        
+        //print("-----------------------")
+        //print(results)
+        
         tableView.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
@@ -96,22 +105,22 @@ class SavedMealsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (results?.count)!
+        return getResults(url: "test").count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("made it here")
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SavedMealTableViewCell", for: indexPath) as? SavedMealTableViewCell else {
             fatalError("fatal error")
         }
-        let result = results![indexPath.row]
         
-        cell.nameLabel.text! = result.value(forKey: "name") as! String
-        cell.calsLabel.text! = result.value(forKey: "calories") as! String
-        cell.fatLabel.text! = result.value(forKey: "fat") as! String
-        cell.carbsLabel.text! = result.value(forKey: "carbs") as! String
-        cell.proteinLabel.text! = result.value(forKey: "protein") as! String
+        let results = getResults(url: "https://api.nutritionix.com/v1_1/search/" + "oikos" + "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586")
+        let result = results[indexPath.row]
+        print(result)
+        
+        let details = result.components(separatedBy: "~")
+        
+        cell.nameLabel.text! = details[0]
         return cell
     }
     
