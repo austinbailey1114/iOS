@@ -11,10 +11,8 @@ import UIKit
 class SavedMealTableViewCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var calsLabel: UILabel!
-    @IBOutlet weak var fatLabel: UILabel!
-    @IBOutlet weak var proteinLabel: UILabel!
-    @IBOutlet weak var carbsLabel: UILabel!
+    @IBOutlet weak var idLabel: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

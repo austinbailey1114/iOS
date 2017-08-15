@@ -41,8 +41,8 @@ class NutritionTab: UIViewController {
         
         let mealHistory = user!.value(forKey: "previousMeals")
         for meal in mealHistory as! [String] {
-            var details = meal.components(separatedBy: ",")
-            if details[5] == result {
+            var details = meal.components(separatedBy: "`")
+            /*if details[5] == result {
                 Cals += Int(details[1])!
                 Fat += Int(details[2])!
                 Carbs += Int(details[3])!
@@ -50,7 +50,7 @@ class NutritionTab: UIViewController {
             }
             else {
                 break
-            }
+            }*/
         }
         todaysCals.text! = "Today's calories: " + String(Cals) + "cals"
         todaysFat.text! = "Today's fat: " + String(Fat) + "g"

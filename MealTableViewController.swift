@@ -51,7 +51,7 @@ class MealTableViewController: UITableViewController {
         let mealHistory = user!.value(forKey: "previousMeals") as? [String]
         
         let name = mealHistory![indexPath.row]
-        let details = name.components(separatedBy: ",")
+        let details = name.components(separatedBy: "`")
         //name,cals,fat,protein,carbs,date
         cell.mealLabel.text = details[0]
         cell.caloriesLabel.text = details[1] + " calories"

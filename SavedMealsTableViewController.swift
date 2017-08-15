@@ -18,7 +18,7 @@ class SavedMealsTableViewController: UITableViewController {
     func getResults(url: String) -> [String] {
         
         let url1 = "https://api.nutritionix.com/v1_1/search/"
-        let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
+        let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=0af8b9cd&appKey=07ed209f3e49ec4e97c57be6e6fdaf00"
         
         //let url3 = "https://api.nutritionix.com/v1_1/item?id="
         //let url4 = "&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
@@ -43,9 +43,9 @@ class SavedMealsTableViewController: UITableViewController {
                             item_string += info["item_name"]! as! String
                             //print(item_string)
                             searchResults.append(item_string)
+                            print(item_string)
                             print(searchResults.count)
                         }
-                        self.tableView.reloadData()
                         /*let keys = myjson.allKeys
                          let values = myjson.allValues as! [NSDictionary]
                          for item in values {
@@ -65,7 +65,10 @@ class SavedMealsTableViewController: UITableViewController {
             print(item)
         }
         print(searchResults.count)
-        return searchResults
+        let tempResults = ["5~Oikos", "6~Chicken", "8~Pizza"]
+        return tempResults
+        
+        //return searchResults
         
     }
 
@@ -120,7 +123,8 @@ class SavedMealsTableViewController: UITableViewController {
         
         let details = result.components(separatedBy: "~")
         
-        cell.nameLabel.text! = details[0]
+        cell.nameLabel.text! = details[1]
+        cell.idLabel.text! = details[0]
         return cell
     }
     
@@ -131,7 +135,51 @@ class SavedMealsTableViewController: UITableViewController {
         let result = formatter.string(from: date)
         let indexpath = tableView.indexPathForSelectedRow
         let cell = tableView.cellForRow(at: indexpath!) as! SavedMealTableViewCell
-        let newMeal = cell.nameLabel.text! + "," + cell.calsLabel.text! + "," + cell.fatLabel.text! + "," + cell.carbsLabel.text! + "," + cell.proteinLabel.text! + "," + result
+        //let url1 = "https://api.nutritionix.com/v1_1/search/"
+        //let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=0af8b9cd&appKey=07ed209f3e49ec4e97c57be6e6fdaf00"
+        
+        let url3 = "https://api.nutritionix.com/v1_1/item?id="
+        let url4 = "&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
+        
+        let urlString = URL(string: url3 + "551084f54ae943dd31ce3313" + url4)
+        var newMeal = ""
+        let task = URLSession.shared.dataTask(with: urlString!) { (data, response, error) in
+            if error != nil {
+                print("error")
+            }
+            else {
+                if let content = data {
+                    do {
+                        let myjson = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                        newMeal += myjson["item_name"]! as! String
+                        newMeal += "`"
+                        newMeal += String(myjson["nf_calories"]! as! Int)
+                        newMeal += "`"
+                        newMeal += String(myjson["nf_protein"]! as! Int)
+                        newMeal += "`"
+                        newMeal += String(myjson["nf_total_fat"]! as! Int)
+                        newMeal += "`"
+                        newMeal += String(myjson["nf_total_carbohydrate"]! as! Int)
+                        newMeal += "`"
+                        newMeal += result
+                        print(myjson)
+                        print(newMeal)
+                        /*let keys = myjson.allKeys
+                         let values = myjson.allValues as! [NSDictionary]
+                         for item in values {
+                         print(item["item_name"]!)
+                         }*/
+                    }
+                    catch {
+                        print("error")
+                    }
+                }
+                
+            }
+        }
+        task.resume()
+
+        
         let mealHistory = user!.value(forKey: "previousMeals") as? [String]
         let newMealHistory = [newMeal] + mealHistory!
         user!.setValue(newMealHistory, forKey: "previousMeals")
