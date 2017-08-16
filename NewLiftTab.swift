@@ -31,8 +31,8 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         self.repsInput.delegate = self
         self.typeInput.delegate = self
         
-        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: navigationController, action: nil)
-        navigationItem.leftBarButtonItem = backButton
+        self.navigationItem.hidesBackButton = true
+
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {
@@ -95,6 +95,11 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
             alert.dismiss(animated: true, completion: nil)
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.navigationItem.hidesBackButton = true
     }
     
 

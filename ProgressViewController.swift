@@ -49,7 +49,8 @@ class ProgressViewController: UIViewController {
         }
         setWeightChart(dataPoints: dates, values: bodyweight)
         
-        
+        self.navigationItem.hidesBackButton = true
+
         createAlert(title: "Change Tracked Lifts", message: "To view different lifts on your lift progress graph, navigate to the More tab to update what lifts you would like to see")
         
     }

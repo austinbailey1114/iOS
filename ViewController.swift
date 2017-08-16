@@ -11,24 +11,6 @@ import CoreData
 
 /*extension UIView {
     
-    func dropShadow() {
-
-        self.layer.masksToBounds = false
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.5
-        self.layer.shadowOffset = CGSize(width: -1, height: 1)
-        self.layer.shadowRadius = 1
-        
-        self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
-        self.layer.shouldRasterize = true
-        
-        self.layer.rasterizationScale = UIScreen.main.scale
-        
-    }
-}*/
-
-extension UIView {
-    
     @IBInspectable var shadow: Bool {
         get {
             return layer.shadowOpacity > 0.0
@@ -64,7 +46,57 @@ extension UIView {
         layer.shadowOpacity = shadowOpacity
         layer.shadowRadius = shadowRadius
     }
+}*/
+
+extension UIView {
+    
+    @IBInspectable
+    var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+            layer.masksToBounds = newValue > 0
+        }
+    }
+    
+    /*@IBInspectable
+    var borderWidth: CGFloat {
+        get {
+            return layer.borderWidth
+        }
+        set {
+            layer.borderWidth = newValue
+        }
+    }*/
+    
+    @IBInspectable
+    var borderColor: UIColor? {
+        get {
+            let color = UIColor(cgColor: layer.borderColor!)
+            return color
+        }
+        set {
+            layer.borderColor = newValue?.cgColor
+        }
+    }
+    
+    /*@IBInspectable
+    var shadowRadius: CGFloat {
+        get {
+            return layer.shadowRadius
+        }
+        set {
+            layer.shadowColor = UIColor.black.cgColor
+            layer.shadowOffset = CGSize(width: 0, height: 2)
+            layer.shadowOpacity = 0.4
+            layer.shadowRadius = shadowRadius
+        }
+    }*/
+    
 }
+
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
@@ -87,6 +119,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         //set delegates for keyboard purposes
         self.UserName.delegate = self
         self.Password.delegate = self
+        self.navigationItem.hidesBackButton = true
+
         
     }
     //Actions

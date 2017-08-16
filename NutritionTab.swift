@@ -53,6 +53,9 @@ class NutritionTab: UIViewController {
         todaysCarbs.text! = "Today's carbs: " + String(Carbs) + "g"
         todaysProtein.text! = "Today's protein: " + String(Protein) + "g"
         
+        self.navigationItem.hidesBackButton = true
+
+        
     }
 
     override func didReceiveMemoryWarning() {
