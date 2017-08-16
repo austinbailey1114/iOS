@@ -18,6 +18,9 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
 
+    @IBOutlet var mainView: UIView!
+    @IBOutlet weak var background1: UIView!
+    @IBOutlet weak var background2: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         //load in the current user's data
@@ -27,7 +30,9 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         self.weightInput.delegate = self
         self.repsInput.delegate = self
         self.typeInput.delegate = self
-
+        
+        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: navigationController, action: nil)
+        navigationItem.leftBarButtonItem = backButton
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {
