@@ -11,10 +11,6 @@ import CoreData
 
 class NewLiftTab: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet weak var NameLabel: UILabel!
-    @IBOutlet weak var displaySquat: UILabel!
-    @IBOutlet weak var displayDeadlift: UILabel!
-    @IBOutlet weak var displayBench: UILabel!
     @IBOutlet weak var weightInput: UITextField!
     @IBOutlet weak var repsInput: UITextField!
     @IBOutlet weak var typeInput: UITextField!
@@ -27,9 +23,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         //load in the current user's data
         keepContext = TabController.currentContext
         user = TabController.currentUser
-        displaySquat.text = user!.value(forKey: "squat") as? String
-        displayDeadlift.text = user!.value(forKey: "deadlift") as? String
-        displayBench.text = user!.value(forKey: "bench") as? String
         //set delegates for keyboard purposes
         self.weightInput.delegate = self
         self.repsInput.delegate = self
@@ -57,23 +50,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         repsInput.resignFirstResponder()
         typeInput.resignFirstResponder()
 
-        //set new display of 1RM
-        
-        let max = String(calculateMax(weight: Double(weightInput.text!)!, reps: Double(repsInput.text!)!))
-        if (typeInput.text!.lowercased() == "bench") {
-            user!.setValue(max, forKey: "bench")
-            displayBench.text = user!.value(forKey: "bench") as? String
-        }
-        else if (typeInput.text!.lowercased() == "squat") {
-            user!.setValue(max, forKey: "squat")
-            displaySquat.text = user!.value(forKey: "squat") as? String
-        }
-        else if (typeInput.text!.lowercased() == "deadlift") {
-            user!.setValue(max, forKey: "deadlift")
-            displayDeadlift.text = user!.value(forKey: "deadlift") as? String
-        }
-        
-        //save 1RM calculation of input
         //reset text boxes
         weightInput.text! = ""
         repsInput.text! = ""

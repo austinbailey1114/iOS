@@ -62,7 +62,6 @@ class ManualMealViewController: UIViewController {
         fatInput.resignFirstResponder()
         proteinInput.resignFirstResponder()
         
-        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

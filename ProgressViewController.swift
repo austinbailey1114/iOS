@@ -49,6 +49,8 @@ class ProgressViewController: UIViewController {
         }
         setWeightChart(dataPoints: dates, values: bodyweight)
         
+        createAlert(title: "Change Tracked Lifts", message: "To view different lifts on your lift progress graph, navigate to the More tab to update what lifts you would like to see")
+        
     }
     func setChart(dataPoints: [String], values: [Double]) {
         //create data entries for each lift
@@ -158,7 +160,14 @@ class ProgressViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    func createAlert (title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 

@@ -40,9 +40,9 @@ class NutritionTab: UIViewController {
             var details = meal.components(separatedBy: "`")
             if details[5] == result {
                 Cals += Int(details[1])!
-                Fat += Int(details[2])!
-                Carbs += Int(details[3])!
-                Protein += Int(details[4])!
+                Protein += Int(details[2])!
+                Fat += Int(details[3])!
+                Carbs += Int(details[4])!
             }
             else {
                 break

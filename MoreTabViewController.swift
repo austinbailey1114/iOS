@@ -31,7 +31,7 @@ class MoreTabViewController: UIViewController {
     }
     
     @IBAction func updateWeightButton(_ sender: UIButton) {
-        if newWeightInput.text! != "" {
+        if newWeightInput.text! != "" && newWeightInput.text!.doubleValue != nil {
             //pull date
             let date = Date()
             let formatter = DateFormatter()
@@ -53,6 +53,10 @@ class MoreTabViewController: UIViewController {
             }
             newWeightInput.text! = ""
         }
+        else {
+            createAlert(title: "Invalid Input", message: "Please make sure that your input for new body weight is a number value.")
+        }
+    
     }
     
     @IBAction func updateTracked(_ sender: UIButton) {
