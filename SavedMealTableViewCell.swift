@@ -12,6 +12,7 @@ class SavedMealTableViewCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var idLabel: UILabel!
+    @IBOutlet weak var brandLabel: UILabel!
     
     
     override func awakeFromNib() {

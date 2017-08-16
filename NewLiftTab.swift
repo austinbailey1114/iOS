@@ -38,8 +38,8 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {
-        if weightInput.text! == "" || repsInput.text! == "" || typeInput.text! == "" {
-            createAlert(title: "Missing Input", message: "Please enter a value in all boxes")
+        if weightInput.text!.doubleValue == nil || repsInput.text!.doubleValue == nil || typeInput.text! == "" {
+            createAlert(title: "Invalid Input", message: "Please make sure that weight and reps boxes contain numbers, and type is not blank.")
             return
         }
         //pull date
@@ -72,12 +72,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
             user!.setValue(max, forKey: "deadlift")
             displayDeadlift.text = user!.value(forKey: "deadlift") as? String
         }
-        else {
-            let title = "Untracked Lift Type"
-            let message = "Because the lift " + typeInput.text! + " is not a tracked type, it will not be tracked in the Progress Tab graphs. It will still appear in your previous lifts."
-            createAlert(title: title, message: message)
-        }
-
+        
         //save 1RM calculation of input
         //reset text boxes
         weightInput.text! = ""

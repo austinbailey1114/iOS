@@ -14,6 +14,7 @@ class SavedMealsTableViewController: UITableViewController {
     var keepContext : NSManagedObjectContext?
     var user: NSManagedObject?
     public static var searchText: String?
+    var results = [String]()
     //let searchController = UISearchController(searchResultsController: nil)
     
     func getResults() -> [String] {
@@ -22,9 +23,6 @@ class SavedMealsTableViewController: UITableViewController {
         
         let url1 = "https://api.nutritionix.com/v1_1/search/"
         let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=592ced70&appKey=4dcb7f7bd109b3975dd3bad0020b6f2a"
-        
-        //let url3 = "https://api.nutritionix.com/v1_1/item?id="
-        //let url4 = "&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
         
         let urlString = URL(string: url1 + SavedMealsTableViewController.searchText! + url2)
         var searchResults = [String]()
@@ -44,14 +42,11 @@ class SavedMealsTableViewController: UITableViewController {
                             let info = item["fields"] as! NSDictionary
                             item_string += "~"
                             item_string += info["item_name"]! as! String
+                            item_string += "~"
+                            item_string += info["brand_name"]! as! String
                             searchResults.append(item_string)
-                            isFinished = true
                         }
-                        /*let keys = myjson.allKeys
-                         let values = myjson.allValues as! [NSDictionary]
-                         for item in values {
-                         print(item["item_name"]!)
-                         }*/
+                        isFinished = true
                     }
                     catch {
                         print("error")
@@ -76,15 +71,8 @@ class SavedMealsTableViewController: UITableViewController {
         
         user = TabController.currentUser
         keepContext = TabController.currentContext
-        //searchController.searchResultsUpdater = self
-        //searchController.dimsBackgroundDuringPresentation = false
-        //definesPresentationContext = true
-        //tableView.tableHeaderView = searchController.searchBar
         
-        
-        //print("-----------------------")
-        //print(results)
-        
+        results = getResults()
         tableView.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
@@ -115,14 +103,12 @@ class SavedMealsTableViewController: UITableViewController {
             fatalError("fatal error")
         }
         
-        let results = getResults()
         let result = results[indexPath.row]
-        print(result)
-        
         let details = result.components(separatedBy: "~")
         
         cell.nameLabel.text! = details[1]
         cell.idLabel.text! = details[0]
+        cell.brandLabel.text! = "Brand: " + details[2]
         return cell
     }
     
@@ -162,11 +148,6 @@ class SavedMealsTableViewController: UITableViewController {
                         newMeal += "`"
                         newMeal += result
                         isFinished = true
-                        /*let keys = myjson.allKeys
-                         let values = myjson.allValues as! [NSDictionary]
-                         for item in values {
-                         print(item["item_name"]!)
-                         }*/
                     }
                     catch {
                         print("error")

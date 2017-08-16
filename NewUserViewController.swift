@@ -9,6 +9,18 @@
 import UIKit
 import CoreData
 
+extension String {
+    var doubleValue: Double? {
+        return Double(self)
+    }
+    var floatValue: Float? {
+        return Float(self)
+    }
+    var integerValue: Int? {
+        return Int(self)
+    }
+}
+
 class NewUserViewController: UIViewController {
 
     @IBOutlet weak var bodyWeightInput: UITextField!
@@ -24,45 +36,57 @@ class NewUserViewController: UIViewController {
     }
 
     @IBAction func CreateAccountButton(_ sender: UIButton) {
-        //pull date
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy"
-        let result = formatter.string(from: date)
-        //create a new user in CoreData
-        username = TabController.username
-        pass = TabController.password
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let NewUser = NSEntityDescription.insertNewObject(forEntityName: "Users", into: context)
-        NewUser.setValue(username!, forKey: "username")
-        NewUser.setValue(pass!, forKey: "password")
-        NewUser.setValue("0", forKey: "squat")
-        NewUser.setValue("0", forKey: "deadlift")
-        NewUser.setValue("0", forKey: "bench")
-        NewUser.setValue([String](), forKey: "previousLifts")
-        NewUser.setValue([String](), forKey: "previousMeals")
-        NewUser.setValue([bodyWeightInput.text! + "," + result], forKey: "previousWeights")
-        NewUser.setValue(bodyWeightInput.text!, forKey: "bodyWeight")
-        NewUser.setValue(heightInput.text!, forKey: "height")
-        NewUser.setValue("deadlift", forKey: "lift1")
-        NewUser.setValue("squat", forKey: "lift2")
-        NewUser.setValue("bench", forKey: "lift3")
-        
-        do {
-            try context.save()
+        if bodyWeightInput.text!.doubleValue != nil && heightInput.text!.doubleValue != nil {
+            //pull date
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd.MM.yyyy"
+            let result = formatter.string(from: date)
+            //create a new user in CoreData
+            username = TabController.username
+            pass = TabController.password
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            let NewUser = NSEntityDescription.insertNewObject(forEntityName: "Users", into: context)
+            NewUser.setValue(username!, forKey: "username")
+            NewUser.setValue(pass!, forKey: "password")
+            NewUser.setValue("0", forKey: "squat")
+            NewUser.setValue("0", forKey: "deadlift")
+            NewUser.setValue("0", forKey: "bench")
+            NewUser.setValue([String](), forKey: "previousLifts")
+            NewUser.setValue([String](), forKey: "previousMeals")
+            NewUser.setValue([bodyWeightInput.text! + "," + result], forKey: "previousWeights")
+            NewUser.setValue(bodyWeightInput.text!, forKey: "bodyWeight")
+            NewUser.setValue(heightInput.text!, forKey: "height")
+            NewUser.setValue("deadlift", forKey: "lift1")
+            NewUser.setValue("squat", forKey: "lift2")
+            NewUser.setValue("bench", forKey: "lift3")
+            
+            do {
+                try context.save()
+            }
+            catch {
+                //do stuff
+            }
+            TabController.currentUser = NewUser
+            TabController.currentContext = context
         }
-        catch {
-            //do stuff
+        else {
+            createAlert(title: "Invalid Input", message: "Please make sure that your input for height and bodyweight are numbers!")
         }
-        TabController.currentUser = NewUser
-        TabController.currentContext = context
         
-
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func createAlert (title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
 

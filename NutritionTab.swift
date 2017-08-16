@@ -71,7 +71,7 @@ class NutritionTab: UIViewController {
         return true
     }
     @IBAction func searchDatabaseButton(_ sender: UIButton) {
-        SavedMealsTableViewController.searchText = searchDatabase.text!
+        SavedMealsTableViewController.searchText = searchDatabase.text!.replacingOccurrences(of: " ", with: "_")
     }
     
     func createAlert (title: String, message: String) {
