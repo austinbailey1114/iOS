@@ -17,55 +17,6 @@ class SavedMealsTableViewController: UITableViewController {
     var results = [String]()
     //let searchController = UISearchController(searchResultsController: nil)
     
-    func getResults() -> [String] {
-        
-        var isFinished: Bool = false
-        
-        let url1 = "https://api.nutritionix.com/v1_1/search/"
-        let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=592ced70&appKey=4dcb7f7bd109b3975dd3bad0020b6f2a"
-        
-        let urlString = URL(string: url1 + SavedMealsTableViewController.searchText! + url2)
-        var searchResults = [String]()
-
-        let task = URLSession.shared.dataTask(with: urlString!) { (data, response, error) in
-            if error != nil {
-                print("error")
-            }
-            else {
-                if let content = data {
-                    do {
-                        let myjson = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                        let hits = myjson["hits"] as! [NSDictionary]
-                        for item in hits {
-                            var item_string: String = ""
-                            item_string += item["_id"]! as! String
-                            let info = item["fields"] as! NSDictionary
-                            item_string += "~"
-                            item_string += info["item_name"]! as! String
-                            item_string += "~"
-                            item_string += info["brand_name"]! as! String
-                            searchResults.append(item_string)
-                        }
-                        isFinished = true
-                    }
-                    catch {
-                        print("error")
-                    }
-                }
-                
-            }
-        }
-        task.resume()
-        
-        while(!isFinished) {
-            
-        }
-        
-        return searchResults
-        
-    }
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -173,11 +124,66 @@ class SavedMealsTableViewController: UITableViewController {
             
         }
         tableView.deselectRow(at: indexpath!, animated: true)
+        
+        createAlert(title: "Meal Added", message: "Meal added to your meal history.")
         return
     }
     
+    func createAlert (title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
     
-    
+    func getResults() -> [String] {
+        
+        var isFinished: Bool = false
+        
+        let url1 = "https://api.nutritionix.com/v1_1/search/"
+        let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=592ced70&appKey=4dcb7f7bd109b3975dd3bad0020b6f2a"
+        
+        let urlString = URL(string: url1 + SavedMealsTableViewController.searchText! + url2)
+        var searchResults = [String]()
+        
+        let task = URLSession.shared.dataTask(with: urlString!) { (data, response, error) in
+            if error != nil {
+                print("error")
+            }
+            else {
+                if let content = data {
+                    do {
+                        let myjson = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                        let hits = myjson["hits"] as! [NSDictionary]
+                        for item in hits {
+                            var item_string: String = ""
+                            item_string += item["_id"]! as! String
+                            let info = item["fields"] as! NSDictionary
+                            item_string += "~"
+                            item_string += info["item_name"]! as! String
+                            item_string += "~"
+                            item_string += info["brand_name"]! as! String
+                            searchResults.append(item_string)
+                        }
+                        isFinished = true
+                    }
+                    catch {
+                        print("error")
+                    }
+                }
+                
+            }
+        }
+        task.resume()
+        
+        while(!isFinished) {
+            
+        }
+        
+        return searchResults
+        
+    }
     
     /*
     // Override to support conditional editing of the table view.

@@ -1,30 +1,33 @@
 //
-//  TabController.swift
+//  ManualMealViewController.swift
 //  LiftApp
 //
-//  Created by Austin Bailey on 8/4/17.
+//  Created by Austin Bailey on 8/16/17.
 //  Copyright © 2017 Austin Bailey. All rights reserved.
 //
 
 import UIKit
-import CoreData
 
-class TabController: UITabBarController {
-    
-    public static var username: String?
-    public static var password: String?
-    public static var currentUser: NSManagedObject?
-    public static var currentContext: NSManagedObjectContext?
+class ManualMealViewController: UIViewController {
 
+    @IBOutlet weak var nameInput: UITextField!
+    @IBOutlet weak var calsInput: UITextField!
+    @IBOutlet weak var fatInput: UITextField!
+    @IBOutlet weak var carbsInput: UITextField!
+    @IBOutlet weak var proteinInput: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
 
+    @IBAction func saveMeal(_ sender: UIButton) {
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 
     /*
     // MARK: - Navigation

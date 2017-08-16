@@ -85,6 +85,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         catch {
             
         }
+        
     }
     //close keyboard when user touches outside the keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

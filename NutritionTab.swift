@@ -81,7 +81,9 @@ class NutritionTab: UIViewController {
         }))
         self.present(alert, animated: true, completion: nil)
     }
-
+    
+    public static func reloadView() {
+    }
 
     /*
     // MARK: - Navigation
