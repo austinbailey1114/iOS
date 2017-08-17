@@ -34,7 +34,8 @@ class ProgressViewController: UIViewController {
             xvalues.append(dateData[1] + "/" + dateData[0] + "," + details[2] + "," + String(calculateMax(weight: details[0], reps: details[1])))
         }
         
-        let testData = ["8/17,bench,180", "8/17,bench,185,", "8/18,bench,200", "8/18,deadlift,350", "8/19,deadlift,360"]
+        let testData = ["1/12,bench,185", "1/12,bench,185", "1/12,bench,180", "1/12,deadlift,315", "1/12,deadlift,320", "1/15,deadlift,315", "1/15,deadlift,315", "1/15,deadlift,320", "1/15,bench,190", "1/15,bench,185", "1/17,deadlift,350"]
+        
         setChart(dataPoints: testData, values: yvalues)
         
         //build bodyweight graph
@@ -67,7 +68,9 @@ class ProgressViewController: UIViewController {
         var h: Double = 0
         var k: Double = 0
         var dates = [String]()
-        var currentDate = dataPoints[0].components(separatedBy: ",")[0]
+        var lift1Date = ""
+        var lift2Date = ""
+        var lift3Date = ""
         for i in 0..<dataPoints.count {
             //if date is == current date
             //  if this.calculatemax > the other point that already exists
@@ -75,7 +78,7 @@ class ProgressViewController: UIViewController {
             //if its !=, increment the value before plotting
             let details = dataPoints[i].components(separatedBy: ",")
             if details[1].lowercased() == user!.value(forKey: "lift1") as? String {
-                if details[0] == currentDate {
+                if details[0] == lift1Date {
                     if deadChartEntry.last != nil {
                         if Double(details[2])! > deadChartEntry.last!.y {
                             deadChartEntry.popLast()!
@@ -96,12 +99,12 @@ class ProgressViewController: UIViewController {
                     j = j + 1
                     let value = ChartDataEntry(x: j, y: Double(details[2])!)
                     deadChartEntry.append(value)
-                    currentDate = details[0]
+                    lift1Date = details[0]
                 }
                 
             }
             else if details[1].lowercased() == user!.value(forKey: "lift2") as? String {
-                if details[0] == currentDate {
+                if details[0] == lift2Date {
                     if squatChartEntry.last != nil {
                         if Double(details[2])! > squatChartEntry.last!.y {
                             squatChartEntry.popLast()!
@@ -122,12 +125,12 @@ class ProgressViewController: UIViewController {
                     h = h + 1
                     let value = ChartDataEntry(x: h, y: Double(details[2])!)
                     squatChartEntry.append(value)
-                    currentDate = details[0]
+                    lift2Date = details[0]
                 }
 
             }
             else if details[1].lowercased() == user!.value(forKey: "lift3") as? String {
-                if details[0] == currentDate {
+                if details[0] == lift3Date {
                     if benchChartEntry.last != nil {
                         if Double(details[2])! > benchChartEntry.last!.y {
                             benchChartEntry.popLast()!
@@ -148,7 +151,7 @@ class ProgressViewController: UIViewController {
                     k = k + 1
                     let value = ChartDataEntry(x: k, y: Double(details[2])!)
                     benchChartEntry.append(value)
-                    currentDate = details[0]
+                    lift3Date = details[0]
                 }
 
             }
