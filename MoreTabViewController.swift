@@ -67,12 +67,6 @@ class MoreTabViewController: UIViewController {
         if lift1.text! != "" {
             user!.setValue(lift1.text!, forKey: "lift1")
         }
-        if lift2.text! != "" {
-            user!.setValue(lift2.text!, forKey: "lift2")
-        }
-        if lift3.text! != "" {
-            user!.setValue(lift3.text!, forKey: "lift3")
-        }
         do {
             try keepContext!.save()
         }

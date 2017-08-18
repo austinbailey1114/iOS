@@ -34,9 +34,7 @@ class ProgressViewController: UIViewController {
             xvalues.append(dateData[1] + "/" + dateData[0] + "," + details[2] + "," + String(calculateMax(weight: details[0], reps: details[1])))
         }
         
-        let testData = ["1/12,bench,185", "1/12,bench,185", "1/12,bench,180", "1/12,deadlift,315", "1/12,deadlift,320", "1/15,deadlift,315", "1/15,deadlift,315", "1/15,deadlift,320", "1/15,bench,190", "1/15,bench,185", "1/17,deadlift,350"]
-        
-        setChart(dataPoints: testData, values: yvalues)
+        setChart(dataPoints: xvalues, values: yvalues)
         
         //build bodyweight graph
         var dates = [String]()
@@ -55,125 +53,52 @@ class ProgressViewController: UIViewController {
         
         self.navigationItem.hidesBackButton = true
 
-        createAlert(title: "Change Tracked Lifts", message: "To view different lifts on your lift progress graph, navigate to the More tab to update what lifts you would like to see")
+        createAlert(title: "View A Different Lift", message: "To view a different lift on the lift history graph, head to the More tab under Update Graphed Lift.")
         
     }
     func setChart(dataPoints: [String], values: [Double]) {
         //create data entries for each lift
-        var deadChartEntry = [ChartDataEntry]()
-        var squatChartEntry = [ChartDataEntry]()
-        var benchChartEntry = [ChartDataEntry]()
-        //add data each lift into the correct line
-        var j: Double = 0
-        var h: Double = 0
-        var k: Double = 0
+        var liftChartEntry = [ChartDataEntry]()
         var dates = [String]()
-        var lift1Date = ""
-        var lift2Date = ""
-        var lift3Date = ""
+        dates.append("")
+        //strings to track most recent date of each lift
+        var currentDate = ""
+        var currentIndex = 0
         for i in 0..<dataPoints.count {
             //if date is == current date
             //  if this.calculatemax > the other point that already exists
             //      replace the point
             //if its !=, increment the value before plotting
             let details = dataPoints[i].components(separatedBy: ",")
-            if details[1].lowercased() == user!.value(forKey: "lift1") as? String {
-                if details[0] == lift1Date {
-                    if deadChartEntry.last != nil {
-                        if Double(details[2])! > deadChartEntry.last!.y {
-                            deadChartEntry.popLast()!
-                            let value = ChartDataEntry(x: j, y: Double(details[2])!)
-                            deadChartEntry.append(value)
-                        }
-                        else {
-                            //do nothing
-                        }
-                    }
-                    else {
-                        j = j + 1
-                        let value = ChartDataEntry(x: j, y: Double(details[2])!)
-                        deadChartEntry.append(value)
+            if details[1] == user!.value(forKey: "lift1") as? String {
+                if details[0] == currentDate {
+                    if liftChartEntry.last!.y < Double(details[2])! {
+                        liftChartEntry.removeLast()
+                        let value = ChartDataEntry(x: Double(currentIndex), y: Double(details[2])!)
+                        liftChartEntry.append(value)
                     }
                 }
                 else {
-                    j = j + 1
-                    let value = ChartDataEntry(x: j, y: Double(details[2])!)
-                    deadChartEntry.append(value)
-                    lift1Date = details[0]
-                }
-                
-            }
-            else if details[1].lowercased() == user!.value(forKey: "lift2") as? String {
-                if details[0] == lift2Date {
-                    if squatChartEntry.last != nil {
-                        if Double(details[2])! > squatChartEntry.last!.y {
-                            squatChartEntry.popLast()!
-                            let value = ChartDataEntry(x: h, y: Double(details[2])!)
-                            squatChartEntry.append(value)
-                        }
-                        else {
-                            //do nothing
-                        }
-                    }
-                    else {
-                        h = h + 1
-                        let value = ChartDataEntry(x: h, y: Double(details[2])!)
-                        squatChartEntry.append(value)
-                    }
-                }
-                else {
-                    h = h + 1
-                    let value = ChartDataEntry(x: h, y: Double(details[2])!)
-                    squatChartEntry.append(value)
-                    lift2Date = details[0]
+                    currentIndex += 1
+                    let value = ChartDataEntry(x: Double(currentIndex), y: Double(details[2])!)
+                    liftChartEntry.append(value)
+                    currentDate = details[0]
+                    dates.append(details[0])
                 }
 
             }
-            else if details[1].lowercased() == user!.value(forKey: "lift3") as? String {
-                if details[0] == lift3Date {
-                    if benchChartEntry.last != nil {
-                        if Double(details[2])! > benchChartEntry.last!.y {
-                            benchChartEntry.popLast()!
-                            let value = ChartDataEntry(x: k, y: Double(details[2])!)
-                            benchChartEntry.append(value)
-                        }
-                        else {
-                            //do nothing
-                        }
-                    }
-                    else {
-                        k = k + 1
-                        let value = ChartDataEntry(x: k, y: Double(details[2])!)
-                        benchChartEntry.append(value)
-                    }
-                }
-                else {
-                    k = k + 1
-                    let value = ChartDataEntry(x: k, y: Double(details[2])!)
-                    benchChartEntry.append(value)
-                    lift3Date = details[0]
-                }
-
-            }
-            dates.append(details[0])
         }
         //add data to the graph
-        let deadline = LineChartDataSet(values: deadChartEntry, label: user!.value(forKey: "lift1") as? String)
+        /*let deadline = LineChartDataSet(values: deadChartEntry, label: user!.value(forKey: "lift1") as? String)
         deadline.setColor(UIColor(red:0.00, green:0.73, blue:0.50, alpha:1.0))
         deadline.drawCirclesEnabled = false
-        deadline.lineWidth = 2
-        let squatline = LineChartDataSet(values: squatChartEntry, label: user!.value(forKey: "lift2") as? String)
-        squatline.setColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
-        squatline.drawCirclesEnabled = false
-        squatline.lineWidth = 2
-        let benchline = LineChartDataSet(values: benchChartEntry, label: user!.value(forKey: "lift3") as? String)
-        benchline.setColor(UIColor(red:0.87, green:0.08, blue:0.09, alpha:1.0))
-        benchline.drawCirclesEnabled = false
-        benchline.lineWidth = 2
+        deadline.lineWidth = 2*/
+        let liftline = LineChartDataSet(values: liftChartEntry, label: user!.value(forKey: "lift1") as? String)
+        liftline.setColor(UIColor(red:0.96, green:0.47, blue:0.40, alpha:1.0))
+        liftline.drawCirclesEnabled = false
+        liftline.lineWidth = 2
         let data = LineChartData()
-        data.addDataSet(deadline)
-        data.addDataSet(squatline)
-        data.addDataSet(benchline)
+        data.addDataSet(liftline)
         //convert x axis to dates
         let xAxis = liftChartView.xAxis
         xAxis.labelPosition = .bottom
