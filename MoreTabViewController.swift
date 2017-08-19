@@ -67,21 +67,6 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     
     }
     
-    @IBAction func updateTracked(_ sender: UIButton) {
-        user = TabController.currentUser
-        keepContext = TabController.currentContext
-        if lift1.text! != "" {
-            user!.setValue(lift1.text!, forKey: "lift1")
-        }
-        do {
-            try keepContext!.save()
-        }
-        catch {
-            
-        }
-    }
-    
-        
     func createAlert (title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in

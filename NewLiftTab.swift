@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NewLiftTab: UIViewController, UITextFieldDelegate {
+class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var weightInput: UITextField!
     @IBOutlet weak var repsInput: UITextField!
@@ -17,7 +17,13 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
     var username: String?
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
+    
+    var allLifts = [String]()
+    var liftType = ""
+    var noLifts = ["No Lifts Available"]
+    
 
+    @IBOutlet weak var liftPicker: UIPickerView!
     @IBOutlet var mainView: UIView!
     @IBOutlet weak var background1: UIView!
     @IBOutlet weak var background2: UIView!
@@ -32,11 +38,17 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         self.typeInput.delegate = self
         
         self.navigationItem.hidesBackButton = true
+        
+        //get data for picker wheel
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+
 
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {
-        if weightInput.text!.doubleValue == nil || repsInput.text!.doubleValue == nil || typeInput.text! == "" {
+        //print(liftType!)
+        print("break0")
+        if weightInput.text!.doubleValue == nil || repsInput.text!.doubleValue == nil {
             createAlert(title: "Invalid Input", message: "Please make sure that weight and reps boxes contain numbers, and type is not blank.")
             return
         }
@@ -47,12 +59,22 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         let result = formatter.string(from: date)
         //pull users lift history and add the new lift
         let liftHistory = user!.value(forKey: "previousLifts") as? [String]
-        let newLift = weightInput.text! + "," + repsInput.text! + "," + typeInput.text! + "," + result
+        print("break1")
+        if typeInput.text! != "" {
+            liftType = typeInput.text!
+        }
+        print("break2")
+        if liftType == "" {
+            createAlert(title: "Please Enter a Lift Type", message: "Please enter a lift type with either the picker wheel or the text box.")
+            return
+        }
+        let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + result
         let newLiftHistory = [newLift] + liftHistory!
         user!.setValue(newLiftHistory, forKey: "previousLifts")
         //add lift to allLifts if it does not exist in it
+        print("break3")
         var allLifts = user!.value(forKey: "allLifts") as? [String]
-        if !(allLifts!.contains(typeInput.text!)) {
+        if !(allLifts!.contains(typeInput.text!))  && typeInput.text! != "" {
             allLifts! = [typeInput.text!] + allLifts!
             user!.setValue(allLifts!, forKey: "allLifts")
         }
@@ -107,6 +129,33 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
         self.tabBarController?.navigationItem.hidesBackButton = true
     }
+    
+    //picker view
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if allLifts.count > 0 {
+            return allLifts[row]
+        }
+        return noLifts[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if allLifts.count > 0 {
+            return allLifts.count
+        }
+        return noLifts.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        user = TabController.currentUser
+        if allLifts.count > 0 {
+            liftType = allLifts[row]
+        }
+    }
+
     
 
     /*
