@@ -9,13 +9,18 @@
 import UIKit
 import CoreData
 
-class MoreTabViewController: UIViewController {
+class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     @IBOutlet weak var newWeightInput: UITextField!
     
     @IBOutlet weak var lift1: UITextField!
     @IBOutlet weak var lift2: UITextField!
     @IBOutlet weak var lift3: UITextField!
+    @IBOutlet weak var liftPicker: UIPickerView!
+    
+    
+    //let items = user!.value(forKey: "lifts")
+    let testItems = ["bench", "pull ups", "deadlift"]
     
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
@@ -94,8 +99,23 @@ class MoreTabViewController: UIViewController {
         newWeightInput.resignFirstResponder()
         return true
     }
-
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return testItems[row]
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return testItems.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        user = TabController.currentUser
+        user!.setValue(testItems[row], forKey: "lift1")
+    }
 
     /*
     // MARK: - Navigation
