@@ -18,9 +18,7 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     @IBOutlet weak var lift3: UITextField!
     @IBOutlet weak var liftPicker: UIPickerView!
     
-    
-    //let items = user!.value(forKey: "lifts")
-    let testItems = ["bench", "pull ups", "deadlift"]
+    var allLifts = [String]()
     
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
@@ -28,6 +26,9 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.hidesBackButton = true
+        
+        user = TabController.currentUser
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
 
         
     }
@@ -105,16 +106,16 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return testItems[row]
+        return allLifts[row]
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return testItems.count
+        return allLifts.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         user = TabController.currentUser
-        user!.setValue(testItems[row], forKey: "lift1")
+        user!.setValue(allLifts[row], forKey: "lift1")
     }
 
     /*

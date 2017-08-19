@@ -50,6 +50,12 @@ class NewLiftTab: UIViewController, UITextFieldDelegate {
         let newLift = weightInput.text! + "," + repsInput.text! + "," + typeInput.text! + "," + result
         let newLiftHistory = [newLift] + liftHistory!
         user!.setValue(newLiftHistory, forKey: "previousLifts")
+        //add lift to allLifts if it does not exist in it
+        var allLifts = user!.value(forKey: "allLifts") as? [String]
+        if !(allLifts!.contains(typeInput.text!)) {
+            allLifts! = [typeInput.text!] + allLifts!
+            user!.setValue(allLifts!, forKey: "allLifts")
+        }
         //close keyboard
         weightInput.resignFirstResponder()
         repsInput.resignFirstResponder()

@@ -50,17 +50,12 @@ class NewUserViewController: UIViewController {
             let NewUser = NSEntityDescription.insertNewObject(forEntityName: "Users", into: context)
             NewUser.setValue(username!, forKey: "username")
             NewUser.setValue(pass!, forKey: "password")
-            NewUser.setValue("0", forKey: "squat")
-            NewUser.setValue("0", forKey: "deadlift")
-            NewUser.setValue("0", forKey: "bench")
             NewUser.setValue([String](), forKey: "previousLifts")
             NewUser.setValue([String](), forKey: "previousMeals")
             NewUser.setValue([bodyWeightInput.text! + "," + result], forKey: "previousWeights")
-            NewUser.setValue(bodyWeightInput.text!, forKey: "bodyWeight")
             NewUser.setValue(heightInput.text!, forKey: "height")
             NewUser.setValue("deadlift", forKey: "lift1")
-            NewUser.setValue("squat", forKey: "lift2")
-            NewUser.setValue("bench", forKey: "lift3")
+            NewUser.setValue([String](), forKey: "allLifts")
             
             do {
                 try context.save()
