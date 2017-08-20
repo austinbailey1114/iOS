@@ -113,7 +113,6 @@ class SavedMealsTableViewController: UITableViewController {
             
         }
 
-        
         let mealHistory = user!.value(forKey: "previousMeals") as? [String]
         let newMealHistory = [newMeal] + mealHistory!
         user!.setValue(newMealHistory, forKey: "previousMeals")
@@ -124,8 +123,10 @@ class SavedMealsTableViewController: UITableViewController {
             
         }
         tableView.deselectRow(at: indexpath!, animated: true)
-        
+                
         createAlert(title: "Meal Added", message: "Meal added to your meal history.")
+        
+        
         return
     }
     

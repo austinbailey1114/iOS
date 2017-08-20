@@ -165,6 +165,44 @@ class ProgressViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //Build lifting graph
+        var xvalues = [String]()
+        var yvalues = [Double]()
+        user = TabController.currentUser
+        let templiftHistory = user!.value(forKey: "previousLifts") as? [String]
+        let liftHistory = templiftHistory!.reversed()
+        for lift in liftHistory {
+            var details = lift.components(separatedBy: ",")
+            yvalues.append(calculateMax(weight: details[0], reps: details[1]))
+            let dateData = details[3].components(separatedBy: ".")
+            xvalues.append(dateData[1] + "/" + dateData[0] + "," + details[2] + "," + String(calculateMax(weight: details[0], reps: details[1])))
+        }
+        
+        setChart(dataPoints: xvalues, values: yvalues)
+        
+        //build bodyweight graph
+        var dates = [String]()
+        var bodyweight = [Double]()
+        let tempweightHistory = user!.value(forKey: "previousWeights") as? [String]
+        let weightHistory = tempweightHistory!.reversed()
+        for weight in weightHistory {
+            var details = weight.components(separatedBy: ",")
+            bodyweight.append(Double(details[0])!)
+            let dateData = details[1].components(separatedBy: ".")
+            let date = dateData[1] + "/" + dateData[0]
+            dates.append(date)
+        }
+        
+        setWeightChart(dataPoints: dates, values: bodyweight)
+        
+        self.navigationItem.hidesBackButton = true
+        
+        createAlert(title: "View A Different Lift", message: "To view a different lift on the lift history graph, head to the More tab under Update Graphed Lift.")
+
+    }
+    
+    
     /*
     // MARK: - Navigation
 

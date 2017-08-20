@@ -125,11 +125,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         self.present(alert, animated: true, completion: nil)
     }
     
-    func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tabBarController?.navigationItem.hidesBackButton = true
-    }
-    
     //picker view
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -155,8 +150,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             liftType = allLifts[row]
         }
     }
-
-    
 
     /*
     // MARK: - Navigation

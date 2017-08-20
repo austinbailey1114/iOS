@@ -276,6 +276,7 @@
                         <inset key="imageInsets" minX="0.0" minY="8" maxX="0.0" maxY="-4"/>
                     </tabBarItem>
                     <connections>
+                        <outlet property="nutritionView" destination="ugG-xP-WuT" id="zGi-kb-C6r"/>
                         <outlet property="searchDatabase" destination="Q5m-4U-FpD" id="dbc-Mt-E35"/>
                         <outlet property="searchDisplayController" destination="Wqf-NP-sm0" id="qAT-Hv-Jdj"/>
                         <outlet property="todaysCals" destination="QuV-Qs-n8F" id="mhc-2w-kmp"/>
