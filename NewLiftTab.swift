@@ -75,7 +75,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         print("break3")
         var allLifts = user!.value(forKey: "allLifts") as? [String]
         if !(allLifts!.contains(typeInput.text!))  && typeInput.text! != "" {
-            allLifts! = [typeInput.text!] + allLifts!
+            allLifts! = allLifts! + [typeInput.text!]
             user!.setValue(allLifts!, forKey: "allLifts")
         }
         //close keyboard

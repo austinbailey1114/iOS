@@ -12,6 +12,7 @@ import CoreData
 class MealTableViewController: UITableViewController {
     
     var user: NSManagedObject?
+    var keepContext: NSManagedObjectContext?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +62,30 @@ class MealTableViewController: UITableViewController {
         cell.dateLabel.text = details[5]
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Delete")
+            
+            keepContext = TabController.currentContext
+            
+            var mealHistory = user!.value(forKey: "previousMeals") as? [String]
+            mealHistory!.remove(at: indexPath.row)
+            user!.setValue(mealHistory!, forKey: "previousMeals")
+            
+            do {
+                try keepContext!.save()
+            }
+            catch {
+                
+            }
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
     
 

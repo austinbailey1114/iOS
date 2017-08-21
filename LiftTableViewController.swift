@@ -12,10 +12,12 @@ import CoreData
 class LiftTableViewController: UITableViewController {
 
     var user: NSManagedObject?
+    var keepContext: NSManagedObjectContext?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         user = TabController.currentUser
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -55,6 +57,30 @@ class LiftTableViewController: UITableViewController {
         cell.displayRepsLabel.text = "Reps: " + details[1]
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Delete")
+            
+            keepContext = TabController.currentContext
+            
+            var liftHistory = user!.value(forKey: "previousLifts") as? [String]
+            liftHistory!.remove(at: indexPath.row)
+            user!.setValue(liftHistory!, forKey: "previousLifts")
+            
+            do {
+                try keepContext!.save()
+            }
+            catch {
+                
+            }
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
     
     

@@ -55,7 +55,7 @@ class NewUserViewController: UIViewController {
             NewUser.setValue([bodyWeightInput.text! + "," + result], forKey: "previousWeights")
             NewUser.setValue(heightInput.text!, forKey: "height")
             NewUser.setValue("deadlift", forKey: "lift1")
-            NewUser.setValue([String](), forKey: "allLifts")
+            NewUser.setValue(["No Type Selected"], forKey: "allLifts")
             
             do {
                 try context.save()
