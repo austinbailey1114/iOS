@@ -9,6 +9,18 @@
 import UIKit
 import CoreData
 
+extension String {
+    var doubleValue: Double? {
+        return Double(self)
+    }
+    var floatValue: Float? {
+        return Float(self)
+    }
+    var integerValue: Int? {
+        return Int(self)
+    }
+}
+
 class TabController: UITabBarController {
     
     public static var username: String?
@@ -20,7 +32,7 @@ class TabController: UITabBarController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        
+        //self.tabBarController!.title! = "LiftApp"
         //Searching Core Data for user + password
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext

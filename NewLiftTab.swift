@@ -42,7 +42,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         //get data for picker wheel
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
 
-
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {

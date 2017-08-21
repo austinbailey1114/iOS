@@ -48,10 +48,9 @@ class ProgressViewController: UIViewController {
             let date = dateData[1] + "/" + dateData[0]
             dates.append(date)
         }
-        
-        setWeightChart(dataPoints: dates, values: bodyweight)
-        
-        self.navigationItem.hidesBackButton = true
+        if bodyweight.count > 0 {
+            setWeightChart(dataPoints: dates, values: bodyweight)
+        }
 
         createAlert(title: "View A Different Lift", message: "To view a different lift on the lift history graph, head to the More tab under Update Graphed Lift.")
         
