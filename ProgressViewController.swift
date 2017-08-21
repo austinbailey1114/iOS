@@ -197,8 +197,6 @@ class ProgressViewController: UIViewController {
         
         self.navigationItem.hidesBackButton = true
         
-        createAlert(title: "View A Different Lift", message: "To view a different lift on the lift history graph, head to the More tab under Update Graphed Lift.")
-
     }
     
     

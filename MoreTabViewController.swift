@@ -90,8 +90,10 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         return 1
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return allLifts[row]
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let titleData = allLifts[row]
+        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.white])
+        return myTitle
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -101,6 +103,10 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         user = TabController.currentUser
         user!.setValue(allLifts[row], forKey: "lift1")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        liftPicker.reloadAllComponents()
     }
 
     /*
