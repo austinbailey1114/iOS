@@ -91,17 +91,19 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
         let titleData = allLifts[row]
         let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.white])
         return myTitle
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
         return allLifts.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        user = TabController.currentUser
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
         user!.setValue(allLifts[row], forKey: "lift1")
     }
     
