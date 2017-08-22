@@ -8,15 +8,15 @@
 
 import UIKit
 import CoreData
+import Charts
 
 class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     @IBOutlet weak var newWeightInput: UITextField!
     
-    @IBOutlet weak var lift1: UITextField!
-    @IBOutlet weak var lift2: UITextField!
-    @IBOutlet weak var lift3: UITextField!
     @IBOutlet weak var liftPicker: UIPickerView!
+    
+    @IBOutlet weak var weightChartView: LineChartView!
     
     var allLifts = [String]()
     
@@ -29,6 +29,23 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         user = TabController.currentUser
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        
+        //build bodyweight graph
+        var dates = [String]()
+        var bodyweight = [Double]()
+        let tempweightHistory = user!.value(forKey: "previousWeights") as? [String]
+        let weightHistory = tempweightHistory!.reversed()
+        for weight in weightHistory {
+            var details = weight.components(separatedBy: ",")
+            bodyweight.append(Double(details[0])!)
+            let dateData = details[1].components(separatedBy: ".")
+            let date = dateData[1] + "/" + dateData[0]
+            dates.append(date)
+        }
+        if bodyweight.count > 0 {
+            setWeightChart(dataPoints: dates, values: bodyweight)
+        }
+
 
         
     }
@@ -110,6 +127,36 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     override func viewWillAppear(_ animated: Bool) {
         liftPicker.reloadAllComponents()
     }
+    
+    func setWeightChart(dataPoints: [String], values: [Double]) {
+        var lineChartEntry = [ChartDataEntry]()
+        for i in 0..<dataPoints.count {
+            let value = ChartDataEntry(x: Double(i), y: values[i])
+            lineChartEntry.append(value)
+        }
+        let lineChartData = LineChartDataSet(values: lineChartEntry, label: "BodyWeight")
+        lineChartData.setColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
+        lineChartData.drawCirclesEnabled = false
+        lineChartData.lineWidth = 2
+        let data = LineChartData()
+        data.addDataSet(lineChartData)
+        //create proper x axis
+        let xAxis = weightChartView.xAxis
+        xAxis.labelPosition = .bottom
+        xAxis.drawLabelsEnabled = true
+        xAxis.drawLimitLinesBehindDataEnabled = true
+        xAxis.avoidFirstLastClippingEnabled = true
+        xAxis.drawLimitLinesBehindDataEnabled = true
+        xAxis.granularityEnabled = true
+        xAxis.granularity = 1
+        weightChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dataPoints)
+        weightChartView.xAxis.granularity = 1
+        weightChartView.xAxis.labelCount = 5
+        
+        weightChartView.data = data
+        weightChartView.data?.setDrawValues(false)
+    }
+
 
     /*
     // MARK: - Navigation

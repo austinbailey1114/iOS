@@ -63,7 +63,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             liftType = typeInput.text!
         }
         print("break2")
-        if liftType == "" {
+        if liftType == "No Type Selected" {
             createAlert(title: "Please Enter a Lift Type", message: "Please enter a lift type with either the picker wheel or the text box.")
             return
         }
@@ -163,6 +163,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     override func viewWillAppear(_ animated: Bool) {
         liftPicker.reloadAllComponents()
     }
+    
 
     /*
     // MARK: - Navigation

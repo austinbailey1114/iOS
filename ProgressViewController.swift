@@ -10,13 +10,16 @@ import UIKit
 import Charts
 import CoreData
 
-class ProgressViewController: UIViewController {
+class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var user: NSManagedObject?
+    var allLifts = [String]()
 
     @IBOutlet weak var liftChartView: LineChartView!
     
     @IBOutlet weak var weightChartView: LineChartView!
+    
+    @IBOutlet weak var liftPicker: UIPickerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,25 +39,10 @@ class ProgressViewController: UIViewController {
         
         setChart(dataPoints: xvalues, values: yvalues)
         
-        //build bodyweight graph
-        var dates = [String]()
-        var bodyweight = [Double]()
-        let tempweightHistory = user!.value(forKey: "previousWeights") as? [String]
-        let weightHistory = tempweightHistory!.reversed()
-        for weight in weightHistory {
-            var details = weight.components(separatedBy: ",")
-            bodyweight.append(Double(details[0])!)
-            let dateData = details[1].components(separatedBy: ".")
-            let date = dateData[1] + "/" + dateData[0]
-            dates.append(date)
-        }
-        if bodyweight.count > 0 {
-            setWeightChart(dataPoints: dates, values: bodyweight)
-        }
-
-        createAlert(title: "View A Different Lift", message: "To view a different lift on the lift history graph, head to the More tab under Update Graphed Lift.")
+        allLifts = user!.value(forKey: "allLifts") as! [String]
         
     }
+    
     func setChart(dataPoints: [String], values: [Double]) {
         //create data entries for each lift
         var liftChartEntry = [ChartDataEntry]()
@@ -88,10 +76,6 @@ class ProgressViewController: UIViewController {
             }
         }
         //add data to the graph
-        /*let deadline = LineChartDataSet(values: deadChartEntry, label: user!.value(forKey: "lift1") as? String)
-        deadline.setColor(UIColor(red:0.00, green:0.73, blue:0.50, alpha:1.0))
-        deadline.drawCirclesEnabled = false
-        deadline.lineWidth = 2*/
         let liftline = LineChartDataSet(values: liftChartEntry, label: user!.value(forKey: "lift1") as? String)
         liftline.setColor(UIColor(red:0.96, green:0.47, blue:0.40, alpha:1.0))
         liftline.drawCirclesEnabled = false
@@ -116,35 +100,6 @@ class ProgressViewController: UIViewController {
 
     }
     
-    func setWeightChart(dataPoints: [String], values: [Double]) {
-        var lineChartEntry = [ChartDataEntry]()
-        for i in 0..<dataPoints.count {
-            let value = ChartDataEntry(x: Double(i), y: values[i])
-            lineChartEntry.append(value)
-        }
-        let lineChartData = LineChartDataSet(values: lineChartEntry, label: "BodyWeight")
-        lineChartData.setColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
-        lineChartData.drawCirclesEnabled = false
-        lineChartData.lineWidth = 2
-        let data = LineChartData()
-        data.addDataSet(lineChartData)
-        //create proper x axis
-        let xAxis = weightChartView.xAxis
-        xAxis.labelPosition = .bottom
-        xAxis.drawLabelsEnabled = true
-        xAxis.drawLimitLinesBehindDataEnabled = true
-        xAxis.avoidFirstLastClippingEnabled = true
-        xAxis.drawLimitLinesBehindDataEnabled = true
-        xAxis.granularityEnabled = true
-        xAxis.granularity = 1
-        weightChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dataPoints)
-        weightChartView.xAxis.granularity = 1
-        weightChartView.xAxis.labelCount = 5
-        
-        weightChartView.data = data
-        weightChartView.data?.setDrawValues(false)
-    }
-
     func calculateMax(weight: String, reps: String) -> Double {
         let weight = Double(weight)
         let reps = Double(reps)
@@ -164,6 +119,46 @@ class ProgressViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        let titleData = allLifts[row]
+        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.white])
+        return myTitle
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        return allLifts.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        user!.setValue(allLifts[row], forKey: "lift1")
+        
+        //Build lifting graph
+        var xvalues = [String]()
+        var yvalues = [Double]()
+        user = TabController.currentUser
+        let templiftHistory = user!.value(forKey: "previousLifts") as? [String]
+        let liftHistory = templiftHistory!.reversed()
+        for lift in liftHistory {
+            var details = lift.components(separatedBy: ",")
+            yvalues.append(calculateMax(weight: details[0], reps: details[1]))
+            let dateData = details[3].components(separatedBy: ".")
+            xvalues.append(dateData[1] + "/" + dateData[0] + "," + details[2] + "," + String(calculateMax(weight: details[0], reps: details[1])))
+        }
+        
+        setChart(dataPoints: xvalues, values: yvalues)
+        
+        allLifts = user!.value(forKey: "allLifts") as! [String]
+
+    }
+
+    
     override func viewWillAppear(_ animated: Bool) {
         //Build lifting graph
         var xvalues = [String]()
@@ -180,24 +175,9 @@ class ProgressViewController: UIViewController {
         
         setChart(dataPoints: xvalues, values: yvalues)
         
-        //build bodyweight graph
-        var dates = [String]()
-        var bodyweight = [Double]()
-        let tempweightHistory = user!.value(forKey: "previousWeights") as? [String]
-        let weightHistory = tempweightHistory!.reversed()
-        for weight in weightHistory {
-            var details = weight.components(separatedBy: ",")
-            bodyweight.append(Double(details[0])!)
-            let dateData = details[1].components(separatedBy: ".")
-            let date = dateData[1] + "/" + dateData[0]
-            dates.append(date)
-        }
-        
-        setWeightChart(dataPoints: dates, values: bodyweight)
-        
-        self.navigationItem.hidesBackButton = true
-        
     }
+    
+    
     
     
     /*
