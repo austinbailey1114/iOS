@@ -22,6 +22,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     var liftType = ""
     var noLifts = ["No Lifts Available"]
     
+    @IBOutlet weak var typeLabel: UILabel!
 
     @IBOutlet weak var liftPicker: UIPickerView!
     @IBOutlet var mainView: UIView!
@@ -29,6 +30,9 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     @IBOutlet weak var background2: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        typeInput.isHidden = true
+        typeLabel.isHidden = true
         //load in the current user's data
         keepContext = TabController.currentContext
         user = TabController.currentUser
@@ -41,6 +45,8 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         
         //get data for picker wheel
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        allLifts[1] = "Add New"
+        user!.setValue(allLifts, forKey: "allLifts")
 
     }
     
@@ -58,11 +64,9 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         let result = formatter.string(from: date)
         //pull users lift history and add the new lift
         let liftHistory = user!.value(forKey: "previousLifts") as? [String]
-        print("break1")
         if typeInput.text! != "" {
             liftType = typeInput.text!
         }
-        print("break2")
         if liftType == "No Type Selected" {
             createAlert(title: "Please Enter a Lift Type", message: "Please enter a lift type with either the picker wheel or the text box.")
             return
@@ -158,7 +162,14 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         if allLifts.count > 0 {
             liftType = allLifts[row]
         }
-        typeInput.text! = allLifts[row]
+        if allLifts[row] == "Add New" {
+            typeInput.isHidden = false
+            typeLabel.isHidden = false
+        }
+        else {
+            typeLabel.isHidden = true
+            typeInput.isHidden = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

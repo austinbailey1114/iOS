@@ -115,7 +115,7 @@ class TabController: UITabBarController {
             NewUser.setValue([String](), forKey: "previousMeals")
             NewUser.setValue([String](), forKey: "previousWeights")
             NewUser.setValue("deadlift", forKey: "lift1")
-            NewUser.setValue(["No Type Selected"], forKey: "allLifts")
+            NewUser.setValue(["No Type Selected", "Add New"], forKey: "allLifts")
             
             do {
                 try context.save()
