@@ -10,11 +10,9 @@ import UIKit
 import CoreData
 import Charts
 
-class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class MoreTabViewController: UIViewController {
 
     @IBOutlet weak var newWeightInput: UITextField!
-    
-    @IBOutlet weak var liftPicker: UIPickerView!
     
     @IBOutlet weak var weightChartView: LineChartView!
     
@@ -31,6 +29,7 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         
         //build bodyweight graph
+        print("here0")
         var dates = [String]()
         var bodyweight = [Double]()
         let tempweightHistory = user!.value(forKey: "previousWeights") as? [String]
@@ -81,6 +80,23 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         else {
             createAlert(title: "Invalid Input", message: "Please make sure that your input for new body weight is a number value.")
         }
+        
+        //rebuild chart
+        var dates = [String]()
+        var bodyweight = [Double]()
+        let tempweightHistory = user!.value(forKey: "previousWeights") as? [String]
+        let weightHistory = tempweightHistory!.reversed()
+        for weight in weightHistory {
+            var details = weight.components(separatedBy: ",")
+            bodyweight.append(Double(details[0])!)
+            let dateData = details[1].components(separatedBy: ".")
+            let date = dateData[1] + "/" + dateData[0]
+            dates.append(date)
+        }
+        if bodyweight.count > 0 {
+            setWeightChart(dataPoints: dates, values: bodyweight)
+        }
+
     
     }
     
@@ -107,28 +123,8 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         return 1
     }
     
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
-        let titleData = allLifts[row]
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.white])
-        return myTitle
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
-        return allLifts.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
-        user!.setValue(allLifts[row], forKey: "lift1")
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        liftPicker.reloadAllComponents()
-    }
-    
     func setWeightChart(dataPoints: [String], values: [Double]) {
+        print("made it here")
         var lineChartEntry = [ChartDataEntry]()
         for i in 0..<dataPoints.count {
             let value = ChartDataEntry(x: Double(i), y: values[i])
@@ -142,6 +138,7 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         data.addDataSet(lineChartData)
         //create proper x axis
         let xAxis = weightChartView.xAxis
+        print("herezero")
         xAxis.labelPosition = .bottom
         xAxis.drawLabelsEnabled = true
         xAxis.drawLimitLinesBehindDataEnabled = true
@@ -155,6 +152,7 @@ class MoreTabViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         weightChartView.data = data
         weightChartView.data?.setDrawValues(false)
+        print("here1")
     }
 
 

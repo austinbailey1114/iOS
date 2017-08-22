@@ -158,6 +158,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         if allLifts.count > 0 {
             liftType = allLifts[row]
         }
+        typeInput.text! = allLifts[row]
     }
     
     override func viewWillAppear(_ animated: Bool) {
