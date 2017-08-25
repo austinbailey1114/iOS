@@ -465,25 +465,6 @@
             </objects>
             <point key="canvasLocation" x="3497" y="392"/>
         </scene>
-        <!--Item-->
-        <scene sceneID="6cY-O5-68v">
-            <objects>
-                <navigationController id="Oww-Ib-lhI" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="uEA-O3-ONA"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="5yK-rN-UXN">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" red="0.40784313729999999" green="0.40784313729999999" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="barTintColor" red="0.40784313729999999" green="0.40784313729999999" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="TNz-YB-Qc7" kind="relationship" relationship="rootViewController" id="bSe-8D-wfO"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wfq-ZL-WBB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1490" y="-1709"/>
-        </scene>
         <!--Progress-->
         <scene sceneID="Ner-CR-jXE">
             <objects>
@@ -566,6 +547,11 @@
                         <inset key="imageInsets" minX="0.0" minY="7" maxX="0.0" maxY="-7"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
                     </tabBarItem>
+                    <toolbarItems>
+                        <barButtonItem title="Back" id="6lq-tY-szs">
+                            <color key="tintColor" red="0.16822278390000001" green="0.2778109681" blue="0.60384337980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Training Progress" id="hg1-GA-pv8"/>
                     <connections>
                         <outlet property="liftChartView" destination="7Kr-Kg-JcV" id="a8r-7Q-d7V"/>
@@ -575,7 +561,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yTy-8z-efV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2412" y="-1708"/>
+            <point key="canvasLocation" x="4724" y="-1021"/>
         </scene>
         <!--Item-->
         <scene sceneID="AKr-5Z-X0X">
@@ -801,19 +787,12 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Log a New Lift" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMM-qM-89P">
-                                <rect key="frame" x="0.0" y="72" width="375" height="56"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C7o-Ih-BXW">
                                 <rect key="frame" x="0.0" y="427" width="375" height="76"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                <state key="normal" title="View Previous Lifts       &gt;">
+                                <state key="normal" title="View Lift History       &gt;">
                                     <color key="titleColor" red="0.16822278387777778" green="0.27781096813333339" blue="0.60384337981944447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -835,6 +814,25 @@
                                     <segue destination="vkV-uc-IXi" kind="show" id="q3N-pg-gEs"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Log a New Lift" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMM-qM-89P">
+                                <rect key="frame" x="0.0" y="72" width="375" height="56"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rye-Vj-tlG">
+                                <rect key="frame" x="0.0" y="511" width="375" height="76"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <state key="normal" title="View Lift Progress       &gt;">
+                                    <color key="titleColor" red="0.16822278390000001" green="0.2778109681" blue="0.60384337980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="TNz-YB-Qc7" kind="show" id="P3B-cp-K4D"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -854,7 +852,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IOk-88-D8A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2412" y="-289.20539730134936"/>
+            <point key="canvasLocation" x="2412" y="-289"/>
         </scene>
         <!--Previous Lifts-->
         <scene sceneID="6eP-y3-acg">
@@ -959,7 +957,6 @@
                     <connections>
                         <segue destination="OCQ-kg-Mie" kind="relationship" relationship="viewControllers" id="ltE-Pl-XiN"/>
                         <segue destination="dYk-hT-Bbu" kind="relationship" relationship="viewControllers" id="mO4-SR-Ngx"/>
-                        <segue destination="Oww-Ib-lhI" kind="relationship" relationship="viewControllers" id="Jb1-QE-CJ1"/>
                         <segue destination="ags-Cn-xkO" kind="relationship" relationship="viewControllers" id="Sbk-st-xRb"/>
                     </connections>
                 </tabBarController>

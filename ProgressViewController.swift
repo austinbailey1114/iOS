@@ -125,6 +125,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        allLifts.remove(at: 1)
         let titleData = allLifts[row]
         let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.white])
         return myTitle
@@ -132,11 +133,13 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        allLifts.remove(at: 1)
         return allLifts.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        allLifts.remove(at: 1)
         user!.setValue(allLifts[row], forKey: "lift1")
         
         //Build lifting graph

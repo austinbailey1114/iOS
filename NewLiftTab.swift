@@ -41,7 +41,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         self.repsInput.delegate = self
         self.typeInput.delegate = self
         
-        self.navigationItem.hidesBackButton = true
+        self.navigationItem.leftItemsSupplementBackButton = true
         
         //get data for picker wheel
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
