@@ -151,6 +151,7 @@ class MoreTabViewController: UIViewController {
         weightChartView.xAxis.labelCount = 5
         
         weightChartView.data = data
+        weightChartView.chartDescription?.text! = ""
         weightChartView.data?.setDrawValues(false)
         print("here1")
     }

@@ -21,6 +21,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     @IBOutlet weak var liftPicker: UIPickerView!
     
+    @IBOutlet weak var noDataLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -38,12 +39,13 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         }
         
         setChart(dataPoints: xvalues, values: yvalues)
-        
         allLifts = user!.value(forKey: "allLifts") as! [String]
         
     }
     
     func setChart(dataPoints: [String], values: [Double]) {
+        liftChartView.isHidden = false
+        noDataLabel.isHidden = true
         //create data entries for each lift
         var liftChartEntry = [ChartDataEntry]()
         var dates = [String]()
@@ -75,10 +77,20 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
 
             }
         }
+        if liftChartEntry.count == 0 {
+            noDataLabel.isHidden = false
+            liftChartView.isHidden = true
+            view.bringSubview(toFront: noDataLabel)
+            return
+        }
         //add data to the graph
         let liftline = LineChartDataSet(values: liftChartEntry, label: user!.value(forKey: "lift1") as? String)
         liftline.setColor(UIColor(red:0.96, green:0.47, blue:0.40, alpha:1.0))
-        liftline.drawCirclesEnabled = false
+        liftline.drawCircleHoleEnabled = false
+        liftline.setCircleColor(UIColor(red:0.96, green:0.47, blue:0.40, alpha:1.0))
+        if liftline.entryCount != 1 {
+            liftline.drawCirclesEnabled = false
+        }
         liftline.lineWidth = 2
         let data = LineChartData()
         data.addDataSet(liftline)
@@ -96,6 +108,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         liftChartView.xAxis.labelCount = 5
         //add data
         liftChartView.data = data
+        liftChartView.chartDescription?.text = ""
         liftChartView.data!.setDrawValues(false)
 
     }
