@@ -1,31 +1,18 @@
 # iOS
 ## Features ##
 This repository is an iOS app for a user to track their weight lifting progress, nutrition, and bodyweight over time. 
-The app has 4 tabs. One for adding and tracking lifts, one for adding and tracking meals, one for showing graphs that show
-weightlifting progress over time to the user, and one that is currently miscellaneous.
+The app has 3 tabs. One for adding and tracking lifts, one for adding and tracking meals, and one for tracking changes in their bodyweight over time. 
 ### Lift Tab ###
-The lift tab is for logging a new lift, and contains a segue to a table view of the users lift history.
-The tab also shows the users most recent one rep max calculation for squats, deadlifts, and bench press. The users lift history
-will still display lifts other than those three. All lifts are saved in CoreData.
+The lift tab allows users to input and track their lifts quickly. The user simply inputs the weight, repetitions, and type of lift to track it. The user can input a new type of lift, and once they do it will be added to the picker wheel for quickly choosing it without typing it into the keyboard again. On this tab, the user can track their progress by either viewing their lift history as a table view, or by viewing it as a graph using [iOS Charts] (https://github.com/danielgindi/Charts). On the graph page, the user selects the lift they want to display from a picker wheel as well.
 ### Nutrition Tab ###
-The nutrition tab temporarily contains text fields for the user to input data about a food they've eaten. The user can also 
-view a table view of their nutrition history. Also, there is a "Choose From Saved Meals" button that allows the user to look
-at saved meals (meals are saved when they are input into the users nutrition history for the first time) and tap on a meal to add 
-it to their meal history. Users' nutrition history is also stored in CoreData.
-### Progress Tab ###
-The progress tab uses [iOS Charts] (https://github.com/danielgindi/Charts) to graph the user's lifting progress over time for
-squat, deadlift and bench press, to let them see their progress visually. In development is a graph to show the users changes in body weight over time.
-### More Tab ### 
-At the moment, the more tab does not have any functions, but it will be the place for the user to update their bodyweight,
-change their height, etc.
+The nutrition tab connects the user to https://www.nutritionix.com/ using a pre-formatted GET request to search for a food and return a JSON with name, brand, and nutrient information. Upon searching, the user is presented with a Table View which shows this information to the user who will tap on a food to add it to their nutrition history. The user is presented with an alert to let them know that it was added. The nutrition tab also allows for the user to view their nutrient consumption for today, and input meals manually.
+### Weight Tracking Tab ###
+The weight tab uses [iOS Charts] (https://github.com/danielgindi/Charts) to graph the user's weight over time so that they can see if they are reaching their bodyweight goals or not.
 ## In Development ##
-I am currently working on changing the nutrition tab to allow the user to search for foods stored in a nutrition database using
-REST calls. This way, the user will not have to look at their food for nutrition facts and manually input it. 
+The app is now on TestFlight, before I put it on the App Store. 
 ## Some Pictures ##
-![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/LiftTab.png)
+![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/image1.png)
 
-This tab is the main tab for entering and saving lifts. Pressing "View Lift History" leads to the following:
-![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/Lift%20History.png)
+![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/image2.png)
 
-The progress tab shows graphs of the user's progress with the three main lifts over time:
-![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/Screen%20Shot%202017-08-12%20at%202.55.47%20PM.png)
+![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/image3.png)
