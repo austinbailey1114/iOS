@@ -11,6 +11,8 @@ import CoreData
 
 class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
+    @IBOutlet weak var liftHistoryButton: UIButton!
+    @IBOutlet weak var liftProgressButton: UIButton!
     @IBOutlet weak var weightInput: UITextField!
     @IBOutlet weak var repsInput: UITextField!
     @IBOutlet weak var typeInput: UITextField!
@@ -26,13 +28,9 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
 
     @IBOutlet weak var liftPicker: UIPickerView!
     @IBOutlet var mainView: UIView!
-    @IBOutlet weak var background1: UIView!
-    @IBOutlet weak var background2: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        typeInput.isHidden = true
-        typeLabel.isHidden = true
         //load in the current user's data
         keepContext = TabController.currentContext
         user = TabController.currentUser
@@ -47,6 +45,13 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         allLifts[1] = "Add New"
         user!.setValue(allLifts, forKey: "allLifts")
+        
+        weightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        repsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        typeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        liftPicker.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        //liftHistoryButton.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        //liftProgressButton.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
 
     }
     
@@ -145,7 +150,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         let titleData = allLifts[row]
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.white])
+        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.black])
         return myTitle
     }
     
@@ -161,15 +166,13 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         if allLifts.count > 0 {
             liftType = allLifts[row]
+            typeInput.text! = allLifts[row]
         }
         if allLifts[row] == "Add New" {
-            typeInput.isHidden = false
-            typeLabel.isHidden = false
+            typeInput.text! = ""
+            typeInput.becomeFirstResponder()
         }
-        else {
-            typeLabel.isHidden = true
-            typeInput.isHidden = true
-        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
