@@ -15,7 +15,6 @@ class SavedMealsTableViewController: UITableViewController {
     var user: NSManagedObject?
     public static var searchText: String?
     var results = [String]()
-    //let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
