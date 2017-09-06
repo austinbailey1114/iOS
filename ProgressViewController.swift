@@ -21,6 +21,8 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     @IBOutlet weak var liftPicker: UIPickerView!
     
+    @IBOutlet weak var graphBackground: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var noDataLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +41,9 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         }
         
         setChart(dataPoints: xvalues, values: yvalues)
+        titleLabel.addBorder(side: .bottom, thickness: 1.1, color: UIColor.lightGray)
         allLifts = user!.value(forKey: "allLifts") as! [String]
+        graphBackground.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         
     }
     
@@ -140,7 +144,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         allLifts.remove(at: 1)
         let titleData = allLifts[row]
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.white])
+        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.black])
         return myTitle
     }
     

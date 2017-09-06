@@ -55,6 +55,9 @@ class NutritionTab: UIViewController {
         todaysCarbs.text! = "Today's carbs: " + String(Carbs) + "g"
         todaysProtein.text! = "Today's protein: " + String(Protein) + "g"
         
+        searchDatabase.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        todaysProtein.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        
         
         
 
