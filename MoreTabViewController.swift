@@ -16,6 +16,7 @@ class MoreTabViewController: UIViewController {
     
     @IBOutlet weak var weightChartView: LineChartView!
     
+    @IBOutlet weak var titleLabel2: UILabel!
     var allLifts = [String]()
     
     var user: NSManagedObject?
@@ -41,9 +42,16 @@ class MoreTabViewController: UIViewController {
             let date = dateData[1] + "/" + dateData[0]
             dates.append(date)
         }
+        
+        newWeightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        titleLabel2.addBorder(side: .bottom, thickness: 1.1, color: UIColor.lightGray)
+        
+        
         if bodyweight.count > 0 {
             setWeightChart(dataPoints: dates, values: bodyweight)
         }
+        
+    
 
 
         
@@ -131,7 +139,7 @@ class MoreTabViewController: UIViewController {
             lineChartEntry.append(value)
         }
         let lineChartData = LineChartDataSet(values: lineChartEntry, label: "BodyWeight")
-        lineChartData.setColor(UIColor(red:0.00, green:0.53, blue:0.69, alpha:1.0))
+        lineChartData.setColor(UIColor(red:0.96, green:0.47, blue:0.40, alpha:1.0))
         lineChartData.drawCirclesEnabled = false
         lineChartData.lineWidth = 2
         let data = LineChartData()
