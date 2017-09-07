@@ -59,7 +59,8 @@ class MealTableViewController: UITableViewController {
         cell.fatLabel.text = "Fat: " + details[3] + "g"
         cell.proteinLabel.text = "Protein: " + details[2] + "g"
         cell.carbsLabel.text = "Carbs: " + details[4] + "g"
-        cell.dateLabel.text = details[5]
+        let dateComponents = details[5].components(separatedBy: ".")
+        cell.dateLabel.text = dateComponents[1]+"/"+dateComponents[0]
         
         return cell
     }

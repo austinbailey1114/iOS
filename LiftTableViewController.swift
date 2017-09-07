@@ -51,7 +51,8 @@ class LiftTableViewController: UITableViewController {
         let name = liftHistory![indexPath.row]
         let details = name.components(separatedBy: ",")
         //weight,reps,name,date
-        cell.displayDateLabel.text = details[3]
+        let dateComponents = details[3].components(separatedBy: ".")
+        cell.displayDateLabel.text = dateComponents[1]+"/"+dateComponents[0]
         cell.UserNameLabel.text = details[2]
         cell.displayWeightLabel.text = "Weight: " + details[0]
         cell.displayRepsLabel.text = "Reps: " + details[1]
