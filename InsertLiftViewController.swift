@@ -9,12 +9,13 @@
 import UIKit
 import CoreData
 
-class InsertLiftViewController: UIViewController {
+class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource  {
 
     @IBOutlet weak var weightInput: UITextField!
     @IBOutlet weak var repsInput: UITextField!
     @IBOutlet weak var typeInput: UITextField!
     @IBOutlet weak var dateInput: UITextField!
+    @IBOutlet weak var liftPicker: UIPickerView!
     
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
