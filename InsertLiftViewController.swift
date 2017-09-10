@@ -33,17 +33,24 @@ class InsertLiftViewController: UIViewController {
         var liftHistory = user!.value(forKey: "previousLifts") as! [String]
         let newLift = weightInput.text! +  "," + repsInput.text! +  "," + typeInput.text! + "," + dateInput.text!
         var i = 0
+        var inserted = false
         for lift in liftHistory {
             let components = lift.components(separatedBy: ",")
             if compareDates(oldDate: components[3], newDate: dateInput.text!) == 0 {
                 liftHistory.insert(newLift, at: i)
+                inserted = true
                 break
             }
-            else if compareDates(oldDate: components[3], newDate: dateInput.text!) == -1 {
+            else if compareDates(oldDate: components[3], newDate: dateInput.text!) == 1 {
                 liftHistory.insert(newLift, at: i)
+                inserted = true
                 break
             }
             i += 1
+        }
+        
+        if !inserted {
+            liftHistory.append(newLift)
         }
         
         user!.setValue(liftHistory, forKey: "previousLifts")
