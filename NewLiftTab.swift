@@ -106,6 +106,10 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         liftPicker.reloadAllComponents()
         
     }
+    
+    @IBAction func insertLift(_ sender: Any) {
+    }
+    
     //close keyboard when user touches outside the keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

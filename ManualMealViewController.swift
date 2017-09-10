@@ -22,7 +22,7 @@ class ManualMealViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         proteinInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         nameInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         calsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
