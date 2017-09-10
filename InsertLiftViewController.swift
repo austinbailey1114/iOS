@@ -32,6 +32,18 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
         datePicker.timeZone = NSTimeZone.local
         dateInput.inputView = datePicker
         
+        datePicker.addTarget(self, action: #selector(self.datePickerValueChanged(_:)), for: .valueChanged)
+        
+        let dateFormatter: DateFormatter = DateFormatter()
+        
+        // Set date format
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        
+        // Apply date format
+        let selectedDate: String = dateFormatter.string(from: datePicker.date)
+        dateInput.text! = selectedDate
+        dateInput.isUserInteractionEnabled = true
+        
         user = TabController.currentUser
         keepContext = TabController.currentContext
         
@@ -39,6 +51,7 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
         repsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         dateInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         typeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        liftPicker.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
 
         // Do any additional setup after loading the view.
     }
@@ -77,6 +90,14 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
             
         }
         
+        weightInput.resignFirstResponder()
+        typeInput.resignFirstResponder()
+        dateInput.resignFirstResponder()
+        repsInput.resignFirstResponder()
+        
+        weightInput.text! = ""
+        typeInput.text! = ""
+        repsInput.text! = ""
 
     }
     
@@ -138,6 +159,19 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
             typeInput.becomeFirstResponder()
         }
         
+    }
+    
+    func datePickerValueChanged(_ sender: UIDatePicker){
+        
+        // Create date formatter
+        let dateFormatter: DateFormatter = DateFormatter()
+        
+        // Set date format
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        
+        // Apply date format
+        let selectedDate: String = dateFormatter.string(from: sender.date)
+        dateInput.text! = selectedDate
     }
     
     override func viewWillAppear(_ animated: Bool) {
