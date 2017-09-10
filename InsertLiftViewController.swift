@@ -27,6 +27,11 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = UIDatePickerMode.date
+        datePicker.timeZone = NSTimeZone.local
+        dateInput.inputView = datePicker
+        
         user = TabController.currentUser
         keepContext = TabController.currentContext
         
@@ -141,6 +146,13 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        weightInput.resignFirstResponder()
+        repsInput.resignFirstResponder()
+        typeInput.resignFirstResponder()
+        dateInput.resignFirstResponder()
     }
     
 
