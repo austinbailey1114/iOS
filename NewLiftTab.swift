@@ -115,10 +115,8 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
 
     //close keyboard when return is hit
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        weightInput.resignFirstResponder()
-        repsInput.resignFirstResponder()
-        typeInput.resignFirstResponder()
-        return true
+        self.view.endEditing(true)
+        return false
     }
     
     func calculateMax (weight: Double, reps: Double) -> Int32 {

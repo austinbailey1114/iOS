@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NutritionTab: UIViewController {
+class NutritionTab: UIViewController, UITextFieldDelegate {
     
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
@@ -58,10 +58,7 @@ class NutritionTab: UIViewController {
         searchDatabase.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         todaysProtein.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         
-        
-        
-
-        
+        self.searchDatabase.delegate = self
     }
 
     override func didReceiveMemoryWarning() {

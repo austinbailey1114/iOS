@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource  {
+class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate  {
 
     @IBOutlet weak var weightInput: UITextField!
     @IBOutlet weak var repsInput: UITextField!
@@ -52,6 +52,11 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
         dateInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         typeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         liftPicker.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        
+        self.weightInput.delegate = self
+        self.typeInput.delegate = self
+        self.dateInput.delegate = self
+        self.repsInput.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -187,6 +192,11 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
         repsInput.resignFirstResponder()
         typeInput.resignFirstResponder()
         dateInput.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
 

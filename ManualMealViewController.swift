@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ManualMealViewController: UIViewController {
+class ManualMealViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var nameInput: UITextField!
     @IBOutlet weak var calsInput: UITextField!
@@ -68,6 +68,12 @@ class ManualMealViewController: UIViewController {
         fatInput.resignFirstResponder()
         proteinInput.resignFirstResponder()
         
+        self.calsInput.delegate = self
+        self.nameInput.delegate = self
+        self.carbsInput.delegate = self
+        self.fatInput.delegate = self
+        self.proteinInput.delegate = self
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -79,15 +85,7 @@ class ManualMealViewController: UIViewController {
         self.view.endEditing(true)
     }
     
-    //close keyboard when return is hit
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        nameInput.resignFirstResponder()
-        calsInput.resignFirstResponder()
-        fatInput.resignFirstResponder()
-        carbsInput.resignFirstResponder()
-        proteinInput.resignFirstResponder()
-        return true
-    }
+    
 
     func createAlert (title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -95,6 +93,11 @@ class ManualMealViewController: UIViewController {
             alert.dismiss(animated: true, completion: nil)
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
 
     /*
