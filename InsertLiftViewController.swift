@@ -20,11 +20,20 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
     
+    var allLifts = [String]()
+    var liftType = ""
+    var noLifts = ["No Lifts Available"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         user = TabController.currentUser
         keepContext = TabController.currentContext
+        
+        weightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        repsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        dateInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        typeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
 
         // Do any additional setup after loading the view.
     }
@@ -96,6 +105,42 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        let titleData = allLifts[row]
+        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.black])
+        return myTitle
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        if allLifts.count > 0 {
+            return allLifts.count
+        }
+        return noLifts.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        if allLifts.count > 0 {
+            liftType = allLifts[row]
+            typeInput.text! = allLifts[row]
+        }
+        if allLifts[row] == "Add New" {
+            typeInput.text! = ""
+            typeInput.becomeFirstResponder()
+        }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        liftPicker.reloadAllComponents()
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
     }
     
 
