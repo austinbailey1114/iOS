@@ -761,6 +761,14 @@
                                     <segue destination="TNz-YB-Qc7" kind="show" id="P3B-cp-K4D"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tUU-zS-xlE">
+                                <rect key="frame" x="164" y="560" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="ONX-4h-cT4" kind="show" id="Mxe-Wr-Lta"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -769,12 +777,6 @@
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
                     </tabBarItem>
                     <navigationItem key="navigationItem" title="Log New Lift" id="Rsa-H8-pdw">
-                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="wcZ-A7-Yjy">
-                            <connections>
-                                <action selector="insertLift:" destination="BCP-5e-8Xe" id="Ro4-1f-Ajf"/>
-                                <segue destination="ONX-4h-cT4" kind="show" id="Vbq-Gg-pm9"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="wns-tt-zBo">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="vQb-lv-SYM">
                                 <rect key="frame" x="279" y="7" width="80" height="30"/>
@@ -909,14 +911,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HKQ-Qd-C7j">
-                                <rect key="frame" x="170" y="294" width="34" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Save"/>
-                                <connections>
-                                    <action selector="saveButton:" destination="ONX-4h-cT4" eventType="touchUpInside" id="nY3-vA-Cdr"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xj0-MI-pOH">
                                 <rect key="frame" x="16" y="135" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -945,13 +939,20 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xXy-3J-fOP">
+                                <rect key="frame" x="164" y="318" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="saveLift:" destination="ONX-4h-cT4" eventType="touchUpInside" id="VWU-9d-vn4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="dateInput" destination="1Ld-m9-QRa" id="IcM-KZ-gSp"/>
                         <outlet property="repsInput" destination="AaZ-7E-ydQ" id="lk1-7e-HGF"/>
-                        <outlet property="saveButton" destination="HKQ-Qd-C7j" id="UDc-xv-QOw"/>
                         <outlet property="typeInput" destination="U05-lZ-UFJ" id="NGc-t2-v4U"/>
                         <outlet property="weightInput" destination="2Cy-tI-dfU" id="8q7-L6-jSd"/>
                     </connections>

@@ -27,8 +27,9 @@ class InsertLiftViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-
-    @IBAction func saveButton(_ sender: UIButton) {
+    
+    
+    @IBAction func saveLift(_ sender: UIButton) {
         var liftHistory = user!.value(forKey: "previousLifts") as! [String]
         let newLift = weightInput.text! +  "," + repsInput.text! +  "," + typeInput.text! + "," + dateInput.text!
         var i = 0
@@ -45,9 +46,19 @@ class InsertLiftViewController: UIViewController {
             i += 1
         }
         
+        user!.setValue(liftHistory, forKey: "previousLifts")
         
+        do {
+            try keepContext!.save()
+        }
+        catch {
+            
+        }
+        
+
     }
     
+
     func compareDates(oldDate: String, newDate: String) -> Int {
         //returns -1 for new date is earlier date, 0 for same date, 1 for later date
         let oldDateComponents = oldDate.components(separatedBy: ".")
