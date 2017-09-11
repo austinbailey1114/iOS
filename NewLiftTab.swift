@@ -50,9 +50,10 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         repsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         typeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         liftPicker.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
-        //liftHistoryButton.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
-        //liftProgressButton.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
-
+        
+        weightInput.returnKeyType = UIReturnKeyType.done
+        typeInput.returnKeyType = UIReturnKeyType.done
+        repsInput.returnKeyType = UIReturnKeyType.done
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {

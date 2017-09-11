@@ -74,6 +74,12 @@ class ManualMealViewController: UIViewController, UITextFieldDelegate {
         self.fatInput.delegate = self
         self.proteinInput.delegate = self
         
+        calsInput.returnKeyType = UIReturnKeyType.done
+        nameInput.returnKeyType = UIReturnKeyType.done
+        carbsInput.returnKeyType = UIReturnKeyType.done
+        fatInput.returnKeyType = UIReturnKeyType.done
+        proteinInput.returnKeyType = UIReturnKeyType.done
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

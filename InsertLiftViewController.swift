@@ -57,6 +57,12 @@ class InsertLiftViewController: UIViewController, UIPickerViewDelegate, UIPicker
         self.typeInput.delegate = self
         self.dateInput.delegate = self
         self.repsInput.delegate = self
+        
+        weightInput.returnKeyType = UIReturnKeyType.done
+        typeInput.returnKeyType = UIReturnKeyType.done
+        dateInput.returnKeyType = UIReturnKeyType.done
+        repsInput.returnKeyType = UIReturnKeyType.done
+        
 
         // Do any additional setup after loading the view.
     }

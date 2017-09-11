@@ -59,6 +59,8 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
         todaysProtein.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         
         self.searchDatabase.delegate = self
+        
+        searchDatabase.returnKeyType = UIReturnKeyType.done
     }
 
     override func didReceiveMemoryWarning() {
