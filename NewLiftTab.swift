@@ -16,6 +16,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     @IBOutlet weak var weightInput: UITextField!
     @IBOutlet weak var repsInput: UITextField!
     @IBOutlet weak var typeInput: UITextField!
+    @IBOutlet weak var dateInput: UITextField!
     var username: String?
     var user: NSManagedObject?
     var keepContext: NSManagedObjectContext?
@@ -31,6 +32,21 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = UIDatePickerMode.date
+        datePicker.timeZone = NSTimeZone.local
+        dateInput.inputView = datePicker
+        
+        datePicker.addTarget(self, action: #selector(self.datePickerValueChanged(_:)), for: .valueChanged)
+        
+        let dateFormatter: DateFormatter = DateFormatter()
+        
+        // Set date format
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        
+        // Apply date format
+        dateInput.isUserInteractionEnabled = true
+        
         //load in the current user's data
         keepContext = TabController.currentContext
         user = TabController.currentUser
@@ -38,6 +54,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         self.weightInput.delegate = self
         self.repsInput.delegate = self
         self.typeInput.delegate = self
+        self.dateInput.delegate = self
         
         self.navigationItem.leftItemsSupplementBackButton = true
         
@@ -50,15 +67,15 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         repsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         typeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         liftPicker.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        dateInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         
         weightInput.returnKeyType = UIReturnKeyType.done
         typeInput.returnKeyType = UIReturnKeyType.done
         repsInput.returnKeyType = UIReturnKeyType.done
+        dateInput.returnKeyType = UIReturnKeyType.done
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {
-        //print(liftType!)
-        print("break0")
         if weightInput.text!.doubleValue == nil || repsInput.text!.doubleValue == nil {
             createAlert(title: "Invalid Input", message: "Please make sure that weight and reps boxes contain numbers, and type is not blank.")
             return
@@ -69,7 +86,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         formatter.dateFormat = "dd.MM.yyyy"
         let result = formatter.string(from: date)
         //pull users lift history and add the new lift
-        let liftHistory = user!.value(forKey: "previousLifts") as? [String]
+        var liftHistory = user!.value(forKey: "previousLifts") as? [String]
         if typeInput.text! != "" {
             liftType = typeInput.text!
         }
@@ -78,10 +95,37 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             return
         }
         let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + result
-        let newLiftHistory = [newLift] + liftHistory!
-        user!.setValue(newLiftHistory, forKey: "previousLifts")
+        
+        //insert the new lift into liftHistory
+        var inserted = false
+        if dateInput.text! != "Today" {
+            var i = 0
+            for lift in liftHistory! {
+                let components = lift.components(separatedBy: ",")
+                if compareDates(oldDate: components[3], newDate: dateInput.text!) == 0 {
+                    liftHistory!.insert(newLift, at: i)
+                    inserted = true
+                    break
+                }
+                else if compareDates(oldDate: components[3], newDate: dateInput.text!) == 1 {
+                    liftHistory!.insert(newLift, at: i)
+                    inserted = true
+                    break
+                }
+                i += 1
+            }
+            
+            if !inserted {
+                liftHistory!.append(newLift)
+            }
+        }
+        else {
+            liftHistory!.append(newLift)
+        }
+        
+        //set the new liftHistory
+        user!.setValue(liftHistory, forKey: "previousLifts")
         //add lift to allLifts if it does not exist in it
-        print("break3")
         var allLifts = user!.value(forKey: "allLifts") as? [String]
         if !(allLifts!.contains(typeInput.text!))  && typeInput.text! != "" {
             allLifts! = allLifts! + [typeInput.text!]
@@ -91,11 +135,13 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         weightInput.resignFirstResponder()
         repsInput.resignFirstResponder()
         typeInput.resignFirstResponder()
+        dateInput.resignFirstResponder()
 
         //reset text boxes
         weightInput.text! = ""
         repsInput.text! = ""
         typeInput.text! = ""
+        
         do {
             //the key to actually saving the data
             try keepContext!.save()
@@ -179,6 +225,48 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     override func viewWillAppear(_ animated: Bool) {
         liftPicker.reloadAllComponents()
     }
+    
+    func datePickerValueChanged(_ sender: UIDatePicker){
+        
+        // Create date formatter
+        let dateFormatter: DateFormatter = DateFormatter()
+        
+        // Set date format
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        
+        // Apply date format
+        let selectedDate: String = dateFormatter.string(from: sender.date)
+        dateInput.text! = selectedDate
+    }
+    
+    func compareDates(oldDate: String, newDate: String) -> Int {
+        //returns -1 for new date is earlier date, 0 for same date, 1 for later date
+        let oldDateComponents = oldDate.components(separatedBy: ".")
+        let newDateComponents = newDate.components(separatedBy: ".")
+        if oldDateComponents[2].integerValue! < newDateComponents[2].integerValue! {
+            return 1
+        }
+        else if oldDateComponents[2].integerValue! > newDateComponents[2].integerValue! {
+            return -1
+        }
+        if oldDateComponents[1].integerValue! < newDateComponents[1].integerValue! {
+            return 1
+        }
+        else if newDateComponents[1].integerValue! < oldDateComponents[1].integerValue! {
+            return -1
+        }
+        else {
+            if oldDateComponents[0].integerValue! < newDateComponents[0].integerValue! {
+                return 1
+            }
+            else if newDateComponents[0].integerValue! < oldDateComponents[0].integerValue! {
+                return -1
+            }
+            else { return 0 }
+        }
+    }
+
+
     
 
     /*

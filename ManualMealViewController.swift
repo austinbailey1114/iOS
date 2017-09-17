@@ -28,8 +28,19 @@ class ManualMealViewController: UIViewController, UITextFieldDelegate {
         calsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         fatInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         carbsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        
+        self.calsInput.delegate = self
+        self.nameInput.delegate = self
+        self.carbsInput.delegate = self
+        self.fatInput.delegate = self
+        self.proteinInput.delegate = self
+        
+        calsInput.returnKeyType = UIReturnKeyType.done
+        nameInput.returnKeyType = UIReturnKeyType.done
+        carbsInput.returnKeyType = UIReturnKeyType.done
+        fatInput.returnKeyType = UIReturnKeyType.done
+        proteinInput.returnKeyType = UIReturnKeyType.done
 
-        // Do any additional setup after loading the view.
     }
 
     @IBAction func saveMeal(_ sender: UIButton) {
@@ -68,17 +79,7 @@ class ManualMealViewController: UIViewController, UITextFieldDelegate {
         fatInput.resignFirstResponder()
         proteinInput.resignFirstResponder()
         
-        self.calsInput.delegate = self
-        self.nameInput.delegate = self
-        self.carbsInput.delegate = self
-        self.fatInput.delegate = self
-        self.proteinInput.delegate = self
         
-        calsInput.returnKeyType = UIReturnKeyType.done
-        nameInput.returnKeyType = UIReturnKeyType.done
-        carbsInput.returnKeyType = UIReturnKeyType.done
-        fatInput.returnKeyType = UIReturnKeyType.done
-        proteinInput.returnKeyType = UIReturnKeyType.done
         
     }
     override func didReceiveMemoryWarning() {
