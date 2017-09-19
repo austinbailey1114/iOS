@@ -100,7 +100,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         }
         
         //insert the new lift into liftHistory
-        if dateInput.text! != "Today" {
+        if dateInput.text! != "Today" && liftHistory!.count > 0{
             let lastComponents = liftHistory![0].components(separatedBy: ",")
             print(dateInput.text!)
             print(lastComponents[3])
