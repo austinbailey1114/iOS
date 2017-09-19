@@ -94,33 +94,27 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             createAlert(title: "Please Enter a Lift Type", message: "Please enter a lift type with either the picker wheel or the text box.")
             return
         }
+        
         let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + result
         
         //insert the new lift into liftHistory
-        var inserted = false
         if dateInput.text! != "Today" {
-            var i = 0
-            for lift in liftHistory! {
-                let components = lift.components(separatedBy: ",")
-                if compareDates(oldDate: components[3], newDate: dateInput.text!) == 0 {
-                    liftHistory!.insert(newLift, at: i)
-                    inserted = true
-                    break
-                }
-                else if compareDates(oldDate: components[3], newDate: dateInput.text!) == 1 {
-                    liftHistory!.insert(newLift, at: i)
-                    inserted = true
-                    break
-                }
-                i += 1
+            let lastComponents = liftHistory![0].components(separatedBy: ",")
+            print(dateInput.text!)
+            print(lastComponents[3])
+            if compareDates(oldDate: lastComponents[3], newDate: dateInput.text!) >= 0 {
+                let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + result
+                liftHistory! = [newLift] + liftHistory!
             }
-            
-            if !inserted {
-                liftHistory!.append(newLift)
+            else {
+                let index = binInsert(newDate: dateInput.text!, liftHistory: liftHistory!, start: 0, end: liftHistory!.count-1)
+                print(index)
+                let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + dateInput.text!
+                liftHistory!.insert(newLift, at: index)
             }
         }
         else {
-            liftHistory!.append(newLift)
+            liftHistory! = [newLift] + liftHistory!
         }
         
         //set the new liftHistory
@@ -152,6 +146,20 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         
         liftPicker.reloadAllComponents()
         
+    }
+    
+    func binInsert(newDate: String, liftHistory: [String], start: Int, end: Int) -> Int {
+        let mid = (start + end) / 2
+        let components = liftHistory[mid].components(separatedBy: ",")
+        if components[3] == newDate || end <= start{
+            return mid
+        }
+        else if compareDates(oldDate: components[3], newDate: newDate) == -1{
+            return binInsert(newDate: newDate, liftHistory: liftHistory, start: mid+1, end: end)
+        }
+        else {
+            return binInsert(newDate: newDate, liftHistory: liftHistory, start: start, end: mid)
+        }
     }
     
     
