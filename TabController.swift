@@ -34,16 +34,6 @@ extension UIView {
         }
     }
     
-    /*@IBInspectable
-     var borderWidth: CGFloat {
-     get {
-     return layer.borderWidth
-     }
-     set {
-     layer.borderWidth = newValue
-     }
-     }*/
-    
     @IBInspectable
     var borderColor: UIColor? {
         get {
@@ -54,19 +44,6 @@ extension UIView {
             layer.borderColor = newValue?.cgColor
         }
     }
-    
-    /*@IBInspectable
-     var shadowRadius: CGFloat {
-     get {
-     return layer.shadowRadius
-     }
-     set {
-     layer.shadowColor = UIColor.black.cgColor
-     layer.shadowOffset = CGSize(width: 0, height: 2)
-     layer.shadowOpacity = 0.4
-     layer.shadowRadius = shadowRadius
-     }
-     }*/
     
 }
 
@@ -249,6 +226,7 @@ public extension UIView {
 
 class TabController: UITabBarController {
     
+    //hold these variables to pass data between view controllers
     public static var username: String?
     public static var password: String?
     public static var currentUser: NSManagedObject?
@@ -258,7 +236,6 @@ class TabController: UITabBarController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        //self.tabBarController!.title! = "LiftApp"
         //Searching Core Data for user + password
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext

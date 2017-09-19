@@ -22,13 +22,15 @@ class ManualMealViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
+        //UI setup
         proteinInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         nameInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         calsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         fatInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         carbsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         
+        //delegates for keoboard purposes
         self.calsInput.delegate = self
         self.nameInput.delegate = self
         self.carbsInput.delegate = self
@@ -43,6 +45,7 @@ class ManualMealViewController: UIViewController, UITextFieldDelegate {
 
     }
 
+    //handle save button press
     @IBAction func saveMeal(_ sender: UIButton) {
         if calsInput.text!.doubleValue == nil || fatInput.text!.doubleValue == nil || carbsInput.text!.doubleValue == nil || proteinInput.text!.doubleValue == nil || nameInput.text! == "" {
             createAlert(title: "Invalid Input", message: "Please ensure that no field is blank, and that each field that requires a number contains a number.")
@@ -67,12 +70,14 @@ class ManualMealViewController: UIViewController, UITextFieldDelegate {
             
         }
         
+        //reset text boxes
         calsInput.text! = ""
         nameInput.text! = ""
         carbsInput.text! = ""
         fatInput.text! = ""
         proteinInput.text! = ""
         
+        //close keyboards
         carbsInput.resignFirstResponder()
         nameInput.resignFirstResponder()
         calsInput.resignFirstResponder()
@@ -93,7 +98,7 @@ class ManualMealViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-
+    //create alerts
     func createAlert (title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
@@ -102,6 +107,7 @@ class ManualMealViewController: UIViewController, UITextFieldDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
+    //close keyboard on done tap
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false

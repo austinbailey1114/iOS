@@ -30,21 +30,18 @@ class MealTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
-
+    //set number of sections
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        
         return 1
     }
 
+    //set number of rows per section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         let mealHistory = user!.value(forKey: "previousMeals") as? [String]
         return mealHistory!.count
     }
 
-    
+    //set cell at each index in table view
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MealTableViewCell", for: indexPath) as? MealTableViewCell else {
             fatalError("Fatal error")
@@ -65,6 +62,7 @@ class MealTableViewController: UITableViewController {
         return cell
     }
     
+    //handle cell deletion
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Delete")

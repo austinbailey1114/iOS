@@ -18,29 +18,24 @@ class LiftTableViewController: UITableViewController {
         super.viewDidLoad()
         user = TabController.currentUser
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - Table view data source
-
+    
+    //set number of sections in table view
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
+    //set number of rows per section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let liftHistory = user!.value(forKey: "previousLifts") as? [String]
         return liftHistory!.count
     }
     
+    //set the cell at each index
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //remember to change the identifier to the appropriate name
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "LiftTableViewCell", for: indexPath) as? LiftTableViewCell else {
@@ -60,6 +55,7 @@ class LiftTableViewController: UITableViewController {
         return cell
     }
     
+    //handle cell deletion
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Delete")

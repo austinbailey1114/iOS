@@ -50,6 +50,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         //load in the current user's data
         keepContext = TabController.currentContext
         user = TabController.currentUser
+        
         //set delegates for keyboard purposes
         self.weightInput.delegate = self
         self.repsInput.delegate = self
@@ -63,12 +64,14 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         allLifts[1] = "Add New"
         user!.setValue(allLifts, forKey: "allLifts")
         
+        //UI setup
         weightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         repsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         typeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         liftPicker.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         dateInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         
+        //add done button to keyboards
         weightInput.returnKeyType = UIReturnKeyType.done
         typeInput.returnKeyType = UIReturnKeyType.done
         repsInput.returnKeyType = UIReturnKeyType.done
@@ -85,6 +88,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         let result = formatter.string(from: date)
+        
         //pull users lift history and add the new lift
         var liftHistory = user!.value(forKey: "previousLifts") as? [String]
         if typeInput.text! != "" {
@@ -95,15 +99,13 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             return
         }
         
-        let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + result
-        
         //insert the new lift into liftHistory
         if dateInput.text! != "Today" {
             let lastComponents = liftHistory![0].components(separatedBy: ",")
             print(dateInput.text!)
             print(lastComponents[3])
             if compareDates(oldDate: lastComponents[3], newDate: dateInput.text!) >= 0 {
-                let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + result
+                let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + dateInput.text!
                 liftHistory! = [newLift] + liftHistory!
             }
             else {
@@ -114,6 +116,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             }
         }
         else {
+            let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + result
             liftHistory! = [newLift] + liftHistory!
         }
         
@@ -148,6 +151,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         
     }
     
+    //returns index where a lift should be inserted in liftHistory
     func binInsert(newDate: String, liftHistory: [String], start: Int, end: Int) -> Int {
         let mid = (start + end) / 2
         let components = liftHistory[mid].components(separatedBy: ",")
@@ -174,14 +178,17 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         return false
     }
     
+    //calculate one rep max of a lift
     func calculateMax (weight: Double, reps: Double) -> Int32 {
         return Int32(weight*(1+(reps/30)))
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    //create alerts
     func createAlert (title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
@@ -190,18 +197,12 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         self.present(alert, animated: true, completion: nil)
     }
     
-    //picker view
+    //set pickerview size
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    /*func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if allLifts.count > 0 {
-            return allLifts[row]
-        }
-        return noLifts[row]
-    }*/
-    
+    //make items in each picker view slot
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         let titleData = allLifts[row]
@@ -209,6 +210,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         return myTitle
     }
     
+    //set pickerView size
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         if allLifts.count > 0 {
@@ -217,6 +219,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         return noLifts.count
     }
     
+    //handle user interaction with picker view
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         if allLifts.count > 0 {
@@ -230,10 +233,12 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
 
     }
     
+    //reload view any time it is opened
     override func viewWillAppear(_ animated: Bool) {
         liftPicker.reloadAllComponents()
     }
     
+    //handle date picker value changes
     func datePickerValueChanged(_ sender: UIDatePicker){
         
         // Create date formatter
@@ -247,6 +252,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         dateInput.text! = selectedDate
     }
     
+    //compare dates for insertion purposes
     func compareDates(oldDate: String, newDate: String) -> Int {
         //returns -1 for new date is earlier date, 0 for same date, 1 for later date
         let oldDateComponents = oldDate.components(separatedBy: ".")
@@ -273,18 +279,5 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             else { return 0 }
         }
     }
-
-
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

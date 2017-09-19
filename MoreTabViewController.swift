@@ -62,6 +62,7 @@ class MoreTabViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //update users bodyweight when they hit save button
     @IBAction func updateWeightButton(_ sender: UIButton) {
         if newWeightInput.text! != "" && newWeightInput.text!.doubleValue != nil {
             //pull date
@@ -108,6 +109,7 @@ class MoreTabViewController: UIViewController {
     
     }
     
+    //create alerts
     func createAlert (title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
@@ -127,17 +129,15 @@ class MoreTabViewController: UIViewController {
         return true
     }
     
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
+    //build the chart to display bodyweight over time
     func setWeightChart(dataPoints: [String], values: [Double]) {
-        print("made it here")
         var lineChartEntry = [ChartDataEntry]()
+        //build array of data entries
         for i in 0..<dataPoints.count {
             let value = ChartDataEntry(x: Double(i), y: values[i])
             lineChartEntry.append(value)
         }
+        //formatting
         let lineChartData = LineChartDataSet(values: lineChartEntry, label: "BodyWeight")
         lineChartData.setColor(UIColor(red:0.96, green:0.47, blue:0.40, alpha:1.0))
         lineChartData.drawCirclesEnabled = false
@@ -146,7 +146,6 @@ class MoreTabViewController: UIViewController {
         data.addDataSet(lineChartData)
         //create proper x axis
         let xAxis = weightChartView.xAxis
-        print("herezero")
         xAxis.labelPosition = .bottom
         xAxis.drawLabelsEnabled = true
         xAxis.drawLimitLinesBehindDataEnabled = true
@@ -161,7 +160,6 @@ class MoreTabViewController: UIViewController {
         weightChartView.data = data
         weightChartView.chartDescription?.text! = ""
         weightChartView.data?.setDrawValues(false)
-        print("here1")
     }
 
 

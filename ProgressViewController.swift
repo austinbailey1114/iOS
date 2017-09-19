@@ -27,7 +27,8 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        //Build lifting graph
+        
+        //gather data for graphs to be built
         var xvalues = [String]()
         var yvalues = [Double]()
         user = TabController.currentUser
@@ -47,6 +48,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
     }
     
+    //use iOS Charts to build the char with the gathered data
     func setChart(dataPoints: [String], values: [Double]) {
         liftChartView.isHidden = false
         noDataLabel.isHidden = true
@@ -57,11 +59,9 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         //strings to track most recent date of each lift
         var currentDate = ""
         var currentIndex = 0
+        //add data entries to lifting graph
+        //only add the highest one rep max for that lift on that date
         for i in 0..<dataPoints.count {
-            //if date is == current date
-            //  if this.calculatemax > the other point that already exists
-            //      replace the point
-            //if its !=, increment the value before plotting
             let details = dataPoints[i].components(separatedBy: ",")
             if details[1] == user!.value(forKey: "lift1") as? String {
                 if details[0] == currentDate {
@@ -117,6 +117,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
 
     }
     
+    //calculate one rep max
     func calculateMax(weight: String, reps: String) -> Double {
         let weight = Double(weight)
         let reps = Double(reps)
@@ -128,6 +129,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         // Dispose of any resources that can be recreated.
     }
     
+    //create alerts
     func createAlert (title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
@@ -136,10 +138,12 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         self.present(alert, animated: true, completion: nil)
     }
     
+    //set number of components in picker view
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
+    //set titles for each picker view item
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         allLifts.remove(at: 1)
@@ -148,12 +152,14 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         return myTitle
     }
     
+    //set size of picker view
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         allLifts.remove(at: 1)
         return allLifts.count
     }
     
+    //handle user interaciton with picker view
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         allLifts.remove(at: 1)
@@ -178,7 +184,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
 
     }
 
-    
+    //reload all data on the view
     override func viewWillAppear(_ animated: Bool) {
         //Build lifting graph
         var xvalues = [String]()

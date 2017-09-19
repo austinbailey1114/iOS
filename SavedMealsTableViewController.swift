@@ -37,17 +37,17 @@ class SavedMealsTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
-
+    //set number of sections
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
+    //set number of rows in each section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return results.count
     }
 
-    
+    //set cell at each index
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SavedMealTableViewCell", for: indexPath) as? SavedMealTableViewCell else {
             fatalError("fatal error")
@@ -62,6 +62,7 @@ class SavedMealsTableViewController: UITableViewController {
         return cell
     }
     
+    //handle user tap on a cell
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let date = Date()
         let formatter = DateFormatter()
@@ -75,6 +76,7 @@ class SavedMealsTableViewController: UITableViewController {
         let url3 = "https://api.nutritionix.com/v1_1/item?id="
         let url4 = "&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
         
+        //make REST call to Nutritionix API and save the data in the users meal history
         var isFinished: Bool = false
         let urlString = URL(string: url3 + cell.idLabel.text! + url4)
         var newMeal = ""
@@ -129,6 +131,7 @@ class SavedMealsTableViewController: UITableViewController {
         return
     }
     
+    //create alerts
     func createAlert (title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
@@ -137,6 +140,7 @@ class SavedMealsTableViewController: UITableViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    //make REST call to nutritionix API and return array of the results, which will be diplayed in each cell
     func getResults() -> [String] {
         
         var isFinished: Bool = false

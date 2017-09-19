@@ -50,11 +50,14 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
                 break
             }
         }
+        
+        //diplay users calories for the day
         todaysCals.text! = "Today's calories: " + String(Cals) + "cals"
         todaysFat.text! = "Today's fat: " + String(Fat) + "g"
         todaysCarbs.text! = "Today's carbs: " + String(Carbs) + "g"
         todaysProtein.text! = "Today's protein: " + String(Protein) + "g"
         
+        //UI setup
         searchDatabase.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         todaysProtein.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         
@@ -78,10 +81,13 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
         searchDatabase.resignFirstResponder()
         return true
     }
+    
+    //remove spaces for using database
     @IBAction func searchDatabaseButton(_ sender: UIButton) {
         SavedMealsTableViewController.searchText = searchDatabase.text!.replacingOccurrences(of: " ", with: "_")
     }
     
+    //create alerts
     func createAlert (title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
@@ -90,6 +96,7 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
+    //set the labels to display what the user has input for nutrition today
     func loadLabels() {
         keepContext = TabController.currentContext
         user = TabController.currentUser
@@ -123,6 +130,7 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
         todaysProtein.text! = "Today's protein: " + String(Protein) + "g"
     }
     
+    //set up view again whenever it is called
     override func viewWillAppear(_ animated: Bool) {
         self.loadLabels()
     }
