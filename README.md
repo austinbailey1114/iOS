@@ -11,12 +11,12 @@ The weight tab uses [iOS Charts] (https://github.com/danielgindi/Charts) to grap
 ## In Development ##
 The app is now on TestFlight, before I put it on the App Store.
 ## Some Pictures ##
-![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/image1.PNG)
+![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/1image.PNG)
 
-![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/image2.PNG)
+![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/2image.PNG)
 
-![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/image3.PNG)
+![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/3image.PNG)
 
-![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/image$.PNG)
+![alt-text](https://github.com/austinbailey1114/iOS/blob/master/Screenshots/4image.PNG)
 
 
