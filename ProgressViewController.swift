@@ -160,6 +160,8 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }*/
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        allLifts.remove(at: 1)
         let label = (view as? UILabel) ?? UILabel()
         
         label.textColor = .black
