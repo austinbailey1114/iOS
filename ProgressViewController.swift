@@ -48,7 +48,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
     }
     
-    //use iOS Charts to build the char with the gathered data
+    //use iOS Charts to build the chart with the gathered data
     func setChart(dataPoints: [String], values: [Double]) {
         liftChartView.isHidden = false
         noDataLabel.isHidden = true
