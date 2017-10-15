@@ -21,6 +21,8 @@ class NewTypeViewController: UIViewController {
         user = TabController.currentUser
         context = TabController.currentContext
         
+        newTypeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        
         
 
         // Do any additional setup after loading the view.
@@ -42,6 +44,7 @@ class NewTypeViewController: UIViewController {
         catch {
             
         }
+        newTypeInput.text! = ""
         
     }
     
