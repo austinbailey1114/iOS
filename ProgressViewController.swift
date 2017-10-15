@@ -110,6 +110,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         liftChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dates)
         liftChartView.xAxis.granularity = 1
         liftChartView.xAxis.labelCount = 5
+        liftChartView.animate(yAxisDuration: 1.3, easingOption: .easeOutQuart)
         liftline.drawFilledEnabled = true
         liftline.fill = Fill.fillWithColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:0.6))
         liftline.mode = .cubicBezier

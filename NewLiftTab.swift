@@ -27,12 +27,21 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     
     @IBOutlet weak var typeLabel: UILabel!
 
-    @IBOutlet weak var liftPicker: UIPickerView!
+    //@IBOutlet weak var liftPicker: UIPickerView!
+    
     @IBOutlet var mainView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let liftPicker = UIPickerView()
+        liftPicker.dataSource = self
+        liftPicker.delegate = self
+        typeInput.inputView = liftPicker
+        
+        typeInput.text! = "No Type Selected"
+        
         let datePicker = UIDatePicker()
+        
         datePicker.datePickerMode = UIDatePickerMode.date
         datePicker.timeZone = NSTimeZone.local
         dateInput.inputView = datePicker
@@ -68,7 +77,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         weightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         repsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         typeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
-        liftPicker.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        //liftPicker.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         dateInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         
         //add done button to keyboards
@@ -76,6 +85,11 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         typeInput.returnKeyType = UIReturnKeyType.done
         repsInput.returnKeyType = UIReturnKeyType.done
         dateInput.returnKeyType = UIReturnKeyType.done
+        
+        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        for lift in allLifts {
+            print(lift)
+        }
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {
@@ -151,7 +165,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             
         }
         
-        liftPicker.reloadAllComponents()
+        //liftPicker!.reloadAllComponents()
         
     }
     
@@ -206,20 +220,16 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     }
     
     //make items in each picker view slot
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
-        let titleData = allLifts[row]
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.black])
-        return myTitle
+        return allLifts[row]
     }
     
     //set pickerView size
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
-        if allLifts.count > 0 {
-            return allLifts.count
-        }
-        return noLifts.count
+        return allLifts.count
     }
     
     //handle user interaction with picker view
@@ -230,15 +240,13 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             typeInput.text! = allLifts[row]
         }
         if allLifts[row] == "Add New" {
-            typeInput.text! = ""
-            typeInput.becomeFirstResponder()
+            
         }
 
     }
     
     //reload view any time it is opened
     override func viewWillAppear(_ animated: Bool) {
-        liftPicker.reloadAllComponents()
     }
     
     //handle date picker value changes

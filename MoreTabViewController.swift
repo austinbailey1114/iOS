@@ -157,6 +157,7 @@ class MoreTabViewController: UIViewController {
         xAxis.granularity = 1
         lineChartData.drawFilledEnabled = true
         lineChartData.fill = Fill.fillWithColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:0.6))
+        weightChartView.animate(yAxisDuration: 1.3, easingOption: .easeOutQuart)
         weightChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dataPoints)
         weightChartView.xAxis.granularity = 1
         weightChartView.xAxis.labelCount = 5
