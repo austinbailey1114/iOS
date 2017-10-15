@@ -89,9 +89,9 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         }
         //add data to the graph
         let liftline = LineChartDataSet(values: liftChartEntry, label: user!.value(forKey: "lift1") as? String)
-        liftline.setColor(UIColor(red:0.96, green:0.47, blue:0.40, alpha:1.0))
+        liftline.setColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:1.0))
         liftline.drawCircleHoleEnabled = false
-        liftline.setCircleColor(UIColor(red:0.96, green:0.47, blue:0.40, alpha:1.0))
+        liftline.setCircleColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:1.0))
         if liftline.entryCount != 1 {
             liftline.drawCirclesEnabled = false
         }
@@ -110,6 +110,12 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         liftChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dates)
         liftChartView.xAxis.granularity = 1
         liftChartView.xAxis.labelCount = 5
+        liftline.drawFilledEnabled = true
+        liftline.fill = Fill.fillWithColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:0.6))
+        liftline.mode = .cubicBezier
+        liftline.cubicIntensity = 0.2
+        
+        
         //add data
         liftChartView.data = data
         liftChartView.chartDescription?.text = ""

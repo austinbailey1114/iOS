@@ -83,6 +83,10 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             createAlert(title: "Invalid Input", message: "Please make sure that weight and reps boxes contain numbers, and type is not blank.")
             return
         }
+        if typeInput.text!.contains(",") {
+            createAlert(title: "Invalid Input", message: "Please make sure that the type input does not contain any commas.")
+            return
+        }
         //pull date
         let date = Date()
         let formatter = DateFormatter()
@@ -165,7 +169,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             return binInsert(newDate: newDate, liftHistory: liftHistory, start: start, end: mid)
         }
     }
-    
     
     //close keyboard when user touches outside the keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -139,9 +139,11 @@ class MoreTabViewController: UIViewController {
         }
         //formatting
         let lineChartData = LineChartDataSet(values: lineChartEntry, label: "BodyWeight")
-        lineChartData.setColor(UIColor(red:0.96, green:0.47, blue:0.40, alpha:1.0))
+        lineChartData.setColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:1.0))
         lineChartData.drawCirclesEnabled = false
         lineChartData.lineWidth = 2
+        lineChartData.mode = .cubicBezier
+        lineChartData.cubicIntensity = 0.2
         let data = LineChartData()
         data.addDataSet(lineChartData)
         //create proper x axis
@@ -153,10 +155,11 @@ class MoreTabViewController: UIViewController {
         xAxis.drawLimitLinesBehindDataEnabled = true
         xAxis.granularityEnabled = true
         xAxis.granularity = 1
+        lineChartData.drawFilledEnabled = true
+        lineChartData.fill = Fill.fillWithColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:0.6))
         weightChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dataPoints)
         weightChartView.xAxis.granularity = 1
         weightChartView.xAxis.labelCount = 5
-        
         weightChartView.data = data
         weightChartView.chartDescription?.text! = ""
         weightChartView.data?.setDrawValues(false)
