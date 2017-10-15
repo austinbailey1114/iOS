@@ -151,12 +151,25 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     //set titles for each picker view item
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+    /*func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         allLifts.remove(at: 1)
         let titleData = allLifts[row]
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.black])
+        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 15.0, weight: UIFontWeightLight),NSForegroundColorAttributeName:UIColor.black])
         return myTitle
+    }*/
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let label = (view as? UILabel) ?? UILabel()
+        
+        label.textColor = .black
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 20.0, weight: UIFontWeightLight)
+        
+        // where data is an Array of String
+        label.text = allLifts[row]
+        
+        return label
     }
     
     //set size of picker view

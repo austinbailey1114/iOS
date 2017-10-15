@@ -26,6 +26,8 @@ class MoreTabViewController: UIViewController {
         super.viewDidLoad()
         self.navigationItem.hidesBackButton = true
         
+        //UILabel.appearance().font = UIFont(name: "System-Light", size: 17)
+        
         user = TabController.currentUser
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         

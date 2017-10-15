@@ -223,6 +223,10 @@ public extension UIView {
     
 }
 
+extension UILabel {
+    
+}
+
 
 class TabController: UITabBarController {
     
@@ -235,6 +239,7 @@ class TabController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        //UILabel.appearance().font = UIFont(name: "System Light", size: 17)
         
         //Searching Core Data for user + password
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
