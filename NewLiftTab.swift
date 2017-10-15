@@ -27,12 +27,12 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     
     @IBOutlet weak var typeLabel: UILabel!
 
-    //@IBOutlet weak var liftPicker: UIPickerView!
-    
     @IBOutlet var mainView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //set liftPicker as inputview to typeInput
         let liftPicker = UIPickerView()
         liftPicker.dataSource = self
         liftPicker.delegate = self
@@ -45,6 +45,16 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         datePicker.datePickerMode = UIDatePickerMode.date
         datePicker.timeZone = NSTimeZone.local
         dateInput.inputView = datePicker
+        
+        //set accessoryview to UIToolBar
+        
+        let toolBar = UIToolbar()
+        let addNewButton = UIBarButtonItem(title: "Add New", style: .done, target: self, action: #selector(NewLiftTab.addNew))
+        addNewButton.tintColor = UIColor(red:0.91, green:0.30, blue:0.24, alpha:1.0)
+        toolBar.setItems([addNewButton], animated: true)
+        toolBar.isUserInteractionEnabled = true
+        toolBar.sizeToFit()
+        typeInput.inputAccessoryView = toolBar
         
         datePicker.addTarget(self, action: #selector(self.datePickerValueChanged(_:)), for: .valueChanged)
         
@@ -239,10 +249,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             liftType = allLifts[row]
             typeInput.text! = allLifts[row]
         }
-        if allLifts[row] == "Add New" {
-            
-        }
-
     }
     
     //reload view any time it is opened
@@ -290,5 +296,10 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             else { return 0 }
         }
     }
+    
+    func addNew() {
+        performSegue(withIdentifier: "addNewType", sender: nil)
+    }
+    
 
 }
