@@ -18,12 +18,13 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     @IBOutlet weak var typeInput: UITextField!
     @IBOutlet weak var dateInput: UITextField!
     var username: String?
-    var user: NSManagedObject?
-    var keepContext: NSManagedObjectContext?
+    var user: Int32?
     
     var allLifts = [String]()
     var liftType = ""
     var noLifts = ["No Lifts Available"]
+    
+    var responseString: String?
     
     @IBOutlet weak var typeLabel: UILabel!
 
@@ -32,7 +33,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       /* //set liftPicker as inputview to typeInput
+       //set liftPicker as inputview to typeInput
         let liftPicker = UIPickerView()
         liftPicker.dataSource = self
         liftPicker.delegate = self
@@ -66,10 +67,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         // Apply date format
         dateInput.isUserInteractionEnabled = true
         
-        //load in the current user's data
-        keepContext = nil
-        user = nil
-        
         //set delegates for keyboard purposes
         self.weightInput.delegate = self
         self.repsInput.delegate = self
@@ -79,9 +76,37 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         self.navigationItem.leftItemsSupplementBackButton = true
         
         //get data for picker wheel
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
-        allLifts[1] = "Add New"
-        user!.setValue(allLifts, forKey: "allLifts")
+        user = TabController.currentUser
+        var notFinished = false
+        let url = URL(string: "http://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(user!))!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error")
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+            }
+            
+            self.responseString = String(data: data, encoding: .utf8)
+            notFinished = true
+        }
+        task.resume()
+        
+        while !notFinished {
+            
+        }
+        
+        let jsonData = responseString!.data(using: .utf8)
+        let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+        
+        for item in dictionary! {
+            allLifts.append(item["name"] as! String)
+        }
         
         //UI setup
         weightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
@@ -96,10 +121,9 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         repsInput.returnKeyType = UIReturnKeyType.done
         dateInput.returnKeyType = UIReturnKeyType.done
         
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
         for lift in allLifts {
             print(lift)
-        } */
+        }
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {
@@ -111,71 +135,47 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             createAlert(title: "Invalid Input", message: "Please make sure that the type input does not contain any commas.")
             return
         }
-        //pull date
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy"
-        let result = formatter.string(from: date)
+        let weight = weightInput.text!
+        let reps = repsInput.text!
+        let type = typeInput.text!.replacingOccurrences(of: "_", with: " ")
         
-        //pull users lift history and add the new lift
-        var liftHistory = user!.value(forKey: "previousLifts") as? [String]
-        if typeInput.text! != "" {
-            liftType = typeInput.text!
-        }
-        if liftType == "No Type Selected" {
-            createAlert(title: "Please Enter a Lift Type", message: "Please enter a lift type with either the picker wheel or the text box.")
-            return
-        }
+        var notFinished = false
+        let url = URL(string: "http://www.austinmbailey.com/projects/liftappsite/api/insertLift.php")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        let postString = "id=" + String(user!) + "&weight=" + weight + "&reps=" + reps + "&type=" + type + "&date="
+        request.httpBody = postString.data(using: .utf8)
         
-        //insert the new lift into liftHistory
-        if dateInput.text! != "Today" && liftHistory!.count > 0{
-            let lastComponents = liftHistory![0].components(separatedBy: ",")
-            print(dateInput.text!)
-            print(lastComponents[3])
-            if compareDates(oldDate: lastComponents[3], newDate: dateInput.text!) >= 0 {
-                let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + dateInput.text!
-                liftHistory! = [newLift] + liftHistory!
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error")
+                return
             }
-            else {
-                let index = binInsert(newDate: dateInput.text!, liftHistory: liftHistory!, start: 0, end: liftHistory!.count-1)
-                print(index)
-                let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + dateInput.text!
-                liftHistory!.insert(newLift, at: index)
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response")
             }
-        }
-        else {
-            let newLift = weightInput.text! + "," + repsInput.text! + "," + liftType + "," + result
-            liftHistory! = [newLift] + liftHistory!
+            
+            self.responseString = String(data: data, encoding: .utf8)
+            print(self.responseString!)
+            notFinished = true
         }
         
-        //set the new liftHistory
-        user!.setValue(liftHistory, forKey: "previousLifts")
-        //add lift to allLifts if it does not exist in it
-        var allLifts = user!.value(forKey: "allLifts") as? [String]
-        if !(allLifts!.contains(typeInput.text!))  && typeInput.text! != "" {
-            allLifts! = allLifts! + [typeInput.text!]
-            user!.setValue(allLifts!, forKey: "allLifts")
-        }
-        //close keyboard
-        weightInput.resignFirstResponder()
-        repsInput.resignFirstResponder()
-        typeInput.resignFirstResponder()
-        dateInput.resignFirstResponder()
-
-        //reset text boxes
-        weightInput.text! = ""
-        repsInput.text! = ""
-        typeInput.text! = ""
         
-        do {
-            //the key to actually saving the data
-            try keepContext!.save()
-        }
-        catch {
+        task.resume()
+        
+        while !notFinished {
             
         }
         
-        //liftPicker!.reloadAllComponents()
+        self.weightInput.resignFirstResponder()
+        self.repsInput.resignFirstResponder()
+        self.typeInput.resignFirstResponder()
+        self.dateInput.resignFirstResponder()
+        self.weightInput.text! = ""
+        self.repsInput.text! = ""
+        self.dateInput.text = ""
         
     }
     
@@ -232,19 +232,16 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     //make items in each picker view slot
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
         return allLifts[row]
     }
     
     //set pickerView size
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
         return allLifts.count
     }
     
     //handle user interaction with picker view
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
         if allLifts.count > 0 {
             liftType = allLifts[row]
             typeInput.text! = allLifts[row]
