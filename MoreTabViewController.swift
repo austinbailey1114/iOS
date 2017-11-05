@@ -34,7 +34,10 @@ class MoreTabViewController: UIViewController {
         
         user = TabController.currentUser
         
-        let url = URL(string: "http://www.austinmbailey.com/projects/liftappsite/api/bodyweight.php?id" + String(TabController.currentUser!))!
+        print(user!)
+        
+        var notFinished = false
+        let url = URL(string: "http://www.austinmbailey.com/projects/liftappsite/api/bodyweight.php?id=" + String(user!))!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
@@ -50,10 +53,31 @@ class MoreTabViewController: UIViewController {
             }
             
             self.responseString = String(data: data, encoding: .utf8)
+            notFinished = true
         }
         task.resume()
         
-        print(convertToDictionary(text: responseString!))
+        while !notFinished {
+            
+        }
+        
+        let jsonData = responseString!.data(using: .utf8)
+        let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+        
+        for item in dictionary! {
+            print(item["weight"])
+        }
+        
+        var dates = [String]()
+        var bodyweight = [Double]()
+        
+        for item in dictionary! {
+            bodyweight.append(item["weight"]! as! Double)
+            let date = item["date"] as! String
+            let dateData = date.components(separatedBy: "-")
+            let separateTime = dateData[2].components(separatedBy: " ")[0]
+            dates.append(dateData[1] + "/" + separateTime)
+        }
         
         //build bodyweight graph
         /*
@@ -67,7 +91,7 @@ class MoreTabViewController: UIViewController {
             let dateData = details[1].components(separatedBy: ".")
             let date = dateData[1] + "/" + dateData[0]
             dates.append(date)
-        }
+        }*/
  
         newWeightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         titleLabel2.addBorder(side: .bottom, thickness: 1.1, color: UIColor.lightGray)
@@ -77,7 +101,6 @@ class MoreTabViewController: UIViewController {
             setWeightChart(dataPoints: dates, values: bodyweight)
         }
         
-        */
 
 
         

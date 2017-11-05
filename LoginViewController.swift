@@ -21,6 +21,7 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func login(_ sender: UIButton) {
+        var notFinished = false
         let url = URL(string: "http://www.austinmbailey.com/projects/liftappsite/api/checkLogin.php")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -41,12 +42,18 @@ class LoginViewController: UIViewController {
             }
             
             self.responseString = String(data: data, encoding: .utf8)
+            notFinished = true
         }
         task.resume()
         
+        while !notFinished {
+            
+        }
+        
+        print(responseString!)
 
-        let userInfo = self.convertToDictionary(text: responseString!)!
-        TabController.currentUser! = userInfo["id"] as! Int32
+        let userInfo = self.convertToDictionary(text: self.responseString!)!
+        TabController.currentUser = userInfo["id"] as! Int32
         performSegue(withIdentifier: "loginSegue", sender: nil)
     }
     

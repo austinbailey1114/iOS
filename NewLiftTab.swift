@@ -32,7 +32,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //set liftPicker as inputview to typeInput
+       /* //set liftPicker as inputview to typeInput
         let liftPicker = UIPickerView()
         liftPicker.dataSource = self
         liftPicker.delegate = self
@@ -99,7 +99,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         allLifts = (user!.value(forKey: "allLifts") as? [String])!
         for lift in allLifts {
             print(lift)
-        }
+        } */
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {

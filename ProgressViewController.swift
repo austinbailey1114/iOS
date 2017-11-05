@@ -222,7 +222,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             xvalues.append(dateData[1] + "/" + dateData[0] + "," + details[2] + "," + String(calculateMax(weight: details[0], reps: details[1])))
         }
         
-        setChart(dataPoints: xvalues, values: yvalues)*/xc
+        setChart(dataPoints: xvalues, values: yvalues)*/
         
     }
     
