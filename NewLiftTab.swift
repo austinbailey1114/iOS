@@ -67,8 +67,8 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         dateInput.isUserInteractionEnabled = true
         
         //load in the current user's data
-        keepContext = TabController.currentContext
-        user = TabController.currentUser
+        keepContext = nil
+        user = nil
         
         //set delegates for keyboard purposes
         self.weightInput.delegate = self
@@ -256,7 +256,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     }
     
     //handle date picker value changes
-    func datePickerValueChanged(_ sender: UIDatePicker){
+    @objc func datePickerValueChanged(_ sender: UIDatePicker){
         
         // Create date formatter
         let dateFormatter: DateFormatter = DateFormatter()
@@ -297,7 +297,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         }
     }
     
-    func addNew() {
+    @objc func addNew() {
         performSegue(withIdentifier: "addNewType", sender: nil)
     }
     

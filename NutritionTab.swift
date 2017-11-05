@@ -24,7 +24,7 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        keepContext = TabController.currentContext
+        /*keepContext = TabController.currentContext
         user = TabController.currentUser
         //pull date
         let date = Date()
@@ -63,7 +63,7 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
         
         self.searchDatabase.delegate = self
         
-        searchDatabase.returnKeyType = UIReturnKeyType.done
+        searchDatabase.returnKeyType = UIReturnKeyType.done*/
     }
 
     override func didReceiveMemoryWarning() {
@@ -98,7 +98,7 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
     
     //set the labels to display what the user has input for nutrition today
     func loadLabels() {
-        keepContext = TabController.currentContext
+        /*keepContext = TabController.currentContext
         user = TabController.currentUser
         //pull date
         let date = Date()
@@ -128,6 +128,7 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
         todaysFat.text! = "Today's fat: " + String(Fat) + "g"
         todaysCarbs.text! = "Today's carbs: " + String(Carbs) + "g"
         todaysProtein.text! = "Today's protein: " + String(Protein) + "g"
+        */
     }
     
     //set up view again whenever it is called

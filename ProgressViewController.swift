@@ -27,7 +27,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        /*
         //gather data for graphs to be built
         var xvalues = [String]()
         var yvalues = [Double]()
@@ -45,7 +45,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         titleLabel.addBorder(side: .bottom, thickness: 1.1, color: UIColor.lightGray)
         allLifts = user!.value(forKey: "allLifts") as! [String]
         graphBackground.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
-        
+        */
     }
     
     //use iOS Charts to build the chart with the gathered data
@@ -166,7 +166,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         label.textColor = .black
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 20.0, weight: UIFontWeightLight)
+        label.font = UIFont.systemFont(ofSize: 20.0, weight: UIFont.Weight.light)
         
         // where data is an Array of String
         label.text = allLifts[row]
@@ -183,7 +183,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     //handle user interaciton with picker view
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        /*allLifts = (user!.value(forKey: "allLifts") as? [String])!
         allLifts.remove(at: 1)
         user!.setValue(allLifts[row], forKey: "lift1")
         
@@ -203,13 +203,14 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         setChart(dataPoints: xvalues, values: yvalues)
         
         allLifts = user!.value(forKey: "allLifts") as! [String]
+ */
 
     }
 
     //reload all data on the view
     override func viewWillAppear(_ animated: Bool) {
         //Build lifting graph
-        var xvalues = [String]()
+        /*var xvalues = [String]()
         var yvalues = [Double]()
         user = TabController.currentUser
         let templiftHistory = user!.value(forKey: "previousLifts") as? [String]
@@ -221,7 +222,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             xvalues.append(dateData[1] + "/" + dateData[0] + "," + details[2] + "," + String(calculateMax(weight: details[0], reps: details[1])))
         }
         
-        setChart(dataPoints: xvalues, values: yvalues)
+        setChart(dataPoints: xvalues, values: yvalues)*/xc
         
     }
     

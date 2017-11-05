@@ -19,8 +19,8 @@ class SavedMealsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        user = TabController.currentUser
-        keepContext = TabController.currentContext
+       /* user = TabController.currentUser
+        keepContext = TabController.currentContext*/
         
         results = getResults()
         tableView.delegate = self

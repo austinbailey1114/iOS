@@ -16,10 +16,12 @@ class MoreTabViewController: UIViewController {
     
     @IBOutlet weak var weightChartView: LineChartView!
     
+    var responseString: String?
+    
     @IBOutlet weak var titleLabel2: UILabel!
     var allLifts = [String]()
     
-    var user: NSManagedObject?
+    var user: Int32?
     var keepContext: NSManagedObjectContext?
     
     override func viewDidLoad() {
@@ -28,11 +30,33 @@ class MoreTabViewController: UIViewController {
         
         //UILabel.appearance().font = UIFont(name: "System-Light", size: 17)
         
+        
+        
         user = TabController.currentUser
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
+        
+        let url = URL(string: "http://www.austinmbailey.com/projects/liftappsite/api/bodyweight.php?id" + String(TabController.currentUser!))!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error")
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response")
+            }
+            
+            self.responseString = String(data: data, encoding: .utf8)
+        }
+        task.resume()
+        
+        print(convertToDictionary(text: responseString!))
         
         //build bodyweight graph
-        print("here0")
+        /*
         var dates = [String]()
         var bodyweight = [Double]()
         let tempweightHistory = user!.value(forKey: "previousWeights") as? [String]
@@ -44,7 +68,7 @@ class MoreTabViewController: UIViewController {
             let date = dateData[1] + "/" + dateData[0]
             dates.append(date)
         }
-        
+ 
         newWeightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         titleLabel2.addBorder(side: .bottom, thickness: 1.1, color: UIColor.lightGray)
         
@@ -53,7 +77,7 @@ class MoreTabViewController: UIViewController {
             setWeightChart(dataPoints: dates, values: bodyweight)
         }
         
-    
+        */
 
 
         
@@ -63,10 +87,21 @@ class MoreTabViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
+    }
     
     //update users bodyweight when they hit save button
     @IBAction func updateWeightButton(_ sender: UIButton) {
-        if newWeightInput.text! != "" && newWeightInput.text!.doubleValue != nil {
+        /*if newWeightInput.text! != "" && newWeightInput.text!.doubleValue != nil {
             //pull date
             let date = Date()
             let formatter = DateFormatter()
@@ -108,7 +143,7 @@ class MoreTabViewController: UIViewController {
             setWeightChart(dataPoints: dates, values: bodyweight)
         }
 
-    
+    */
     }
     
     //create alerts

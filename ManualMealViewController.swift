@@ -47,7 +47,7 @@ class ManualMealViewController: UIViewController, UITextFieldDelegate {
 
     //handle save button press
     @IBAction func saveMeal(_ sender: UIButton) {
-        if calsInput.text!.doubleValue == nil || fatInput.text!.doubleValue == nil || carbsInput.text!.doubleValue == nil || proteinInput.text!.doubleValue == nil || nameInput.text! == "" {
+        /*if calsInput.text!.doubleValue == nil || fatInput.text!.doubleValue == nil || carbsInput.text!.doubleValue == nil || proteinInput.text!.doubleValue == nil || nameInput.text! == "" {
             createAlert(title: "Invalid Input", message: "Please ensure that no field is blank, and that each field that requires a number contains a number.")
             return
         }
@@ -84,7 +84,7 @@ class ManualMealViewController: UIViewController, UITextFieldDelegate {
         fatInput.resignFirstResponder()
         proteinInput.resignFirstResponder()
         
-        
+        */
         
     }
     override func didReceiveMemoryWarning() {

@@ -11,15 +11,11 @@ import CoreData
 
 class NewTypeViewController: UIViewController {
     
-    var user: NSManagedObject?
-    var context: NSManagedObjectContext?
-    
     @IBOutlet weak var newTypeInput: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        user = TabController.currentUser
-        context = TabController.currentContext
+        
         
         newTypeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         
@@ -34,17 +30,7 @@ class NewTypeViewController: UIViewController {
     }
     
     @IBAction func addType(_ sender: UIButton) {
-        let type = newTypeInput.text!
-        var allLifts = user!.value(forKey: "allLifts") as! [String]
-        allLifts = allLifts + [type]
-        user!.setValue(allLifts, forKey: "allLifts")
-        do {
-            try context!.save()
-        }
-        catch {
-            
-        }
-        newTypeInput.text! = ""
+        
         
     }
     

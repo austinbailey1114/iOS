@@ -16,7 +16,7 @@ class LiftTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        user = TabController.currentUser
+        //user = TabController.currentUser
         
     }
 
@@ -57,7 +57,7 @@ class LiftTableViewController: UITableViewController {
     
     //handle cell deletion
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+        /*if editingStyle == .delete {
             print("Delete")
             
             keepContext = TabController.currentContext
@@ -73,7 +73,7 @@ class LiftTableViewController: UITableViewController {
                 
             }
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
-        }
+        }*/
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
