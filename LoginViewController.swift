@@ -22,7 +22,7 @@ class LoginViewController: UIViewController {
 
     @IBAction func login(_ sender: UIButton) {
         var notFinished = false
-        let url = URL(string: "http://www.austinmbailey.com/projects/liftappsite/api/checkLogin.php")!
+        let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/checkLogin.php")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         let username = usernameInput.text!
@@ -50,7 +50,7 @@ class LoginViewController: UIViewController {
             
         }
         
-        print(responseString!)
+        
 
         let userInfo = self.convertToDictionary(text: self.responseString!)!
         TabController.currentUser = userInfo["id"] as! Int32

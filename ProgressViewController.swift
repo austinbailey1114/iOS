@@ -12,7 +12,7 @@ import CoreData
 
 class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    var user: NSManagedObject?
+    var user: Int32?
     var allLifts = [String]()
 
     @IBOutlet weak var liftChartView: LineChartView!
@@ -24,63 +24,132 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var graphBackground: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var noDataLabel: UILabel!
+    
+    var responseString: String?
+    var displayingType: String?
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        /*
-        //gather data for graphs to be built
+        
+        //GET data for graphs
         var xvalues = [String]()
         var yvalues = [Double]()
+        var types = [String]()
+        
         user = TabController.currentUser
-        let templiftHistory = user!.value(forKey: "previousLifts") as? [String]
-        let liftHistory = templiftHistory!.reversed()
-        for lift in liftHistory {
-            var details = lift.components(separatedBy: ",")
-            yvalues.append(calculateMax(weight: details[0], reps: details[1]))
-            let dateData = details[3].components(separatedBy: ".")
-            xvalues.append(dateData[1] + "/" + dateData[0] + "," + details[2] + "," + String(calculateMax(weight: details[0], reps: details[1])))
+        var notFinished = false
+        var url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lift.php?id=" + String(user!))!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        var task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error")
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+            }
+            
+            self.responseString = String(data: data, encoding: .utf8)
+            notFinished = true
+        }
+        task.resume()
+        
+        while !notFinished {
+            
         }
         
-        setChart(dataPoints: xvalues, values: yvalues)
-        titleLabel.addBorder(side: .bottom, thickness: 1.1, color: UIColor.lightGray)
-        allLifts = user!.value(forKey: "allLifts") as! [String]
-        graphBackground.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
-        */
+        var jsonData = responseString!.data(using: .utf8)
+        var dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+        
+        for item in dictionary! {
+            yvalues.append(calculateMax(weight: item["weight"] as! Double, reps: item["reps"] as! Double))
+            let date = item["date"] as! String
+            let dateData = date.components(separatedBy: "-")
+            let separateTime = dateData[2].components(separatedBy: " ")[0]
+            xvalues.append(dateData[1] + "/" + separateTime)
+            types.append(item["type"] as! String)
+        }
+        
+        //GET lifttypes for picker view
+        user = TabController.currentUser
+        notFinished = false
+        url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(user!))!
+        request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error")
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+            }
+            
+            self.responseString = String(data: data, encoding: .utf8)
+            notFinished = true
+        }
+        task.resume()
+        
+        while !notFinished {
+            
+        }
+        
+        jsonData = responseString!.data(using: .utf8)
+        dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+        
+        for item in dictionary! {
+            allLifts.append(String(describing: item["name"]!))
+        }
+        
+        setChart(dates: xvalues, values: yvalues, types: types)
+        
+        
     }
     
     //use iOS Charts to build the chart with the gathered data
-    func setChart(dataPoints: [String], values: [Double]) {
+    func setChart(dates: [String], values: [Double], types: [String]) {
+        displayingType = "Bench_press"
         liftChartView.isHidden = false
         noDataLabel.isHidden = true
         //create data entries for each lift
         var liftChartEntry = [ChartDataEntry]()
-        var dates = [String]()
-        dates.append("")
-        //strings to track most recent date of each lift
-        var currentDate = ""
+        var xaxis = [String]()
         var currentIndex = 0
-        //add data entries to lifting graph
-        //only add the highest one rep max for that lift on that date
-        for i in 0..<dataPoints.count {
-            let details = dataPoints[i].components(separatedBy: ",")
-            if details[1] == user!.value(forKey: "lift1") as? String {
-                if details[0] == currentDate {
-                    if liftChartEntry.last!.y < Double(details[2])! {
-                        liftChartEntry.removeLast()
-                        let value = ChartDataEntry(x: Double(currentIndex), y: Double(details[2])!)
+        //loop through each item
+        for i in 0..<dates.count {
+            //if it is of the correct type
+            if types[i] == displayingType! {
+                //if the array is not empty
+                if xaxis.count > 0 {
+                    //if the current item has the same date and a greater value than the last added element
+                    if dates[i] == xaxis[xaxis.count-1] {
+                        if liftChartEntry.last!.y < values[i] {
+                            print("removed")
+                            liftChartEntry.removeLast()
+                            let value = ChartDataEntry(x: Double(currentIndex-1), y: values[i])
+                            liftChartEntry.append(value)
+                        }
+                    }
+                    else {
+                        let value = ChartDataEntry(x: Double(currentIndex), y: values[i])
                         liftChartEntry.append(value)
+                        xaxis.append(dates[i])
+                        currentIndex += 1
                     }
                 }
                 else {
-                    currentIndex += 1
-                    let value = ChartDataEntry(x: Double(currentIndex), y: Double(details[2])!)
+                    let value = ChartDataEntry(x: Double(currentIndex), y: values[i])
                     liftChartEntry.append(value)
-                    currentDate = details[0]
-                    dates.append(details[0])
+                    xaxis.append(dates[i])
+                    currentIndex += 1
                 }
-
             }
         }
+        print(xaxis)
         if liftChartEntry.count == 0 {
             noDataLabel.isHidden = false
             liftChartView.isHidden = true
@@ -88,7 +157,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             return
         }
         //add data to the graph
-        let liftline = LineChartDataSet(values: liftChartEntry, label: user!.value(forKey: "lift1") as? String)
+        let liftline = LineChartDataSet(values: liftChartEntry, label: displayingType! as? String)
         liftline.setColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:1.0))
         liftline.drawCircleHoleEnabled = false
         liftline.setCircleColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:1.0))
@@ -107,7 +176,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         xAxis.drawLimitLinesBehindDataEnabled = true
         xAxis.granularityEnabled = true
         xAxis.granularity = 1
-        liftChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:dates)
+        liftChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values:xaxis)
         liftChartView.xAxis.granularity = 1
         liftChartView.xAxis.labelCount = 5
         liftChartView.animate(yAxisDuration: 1.3, easingOption: .easeOutQuart)
@@ -125,10 +194,10 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     //calculate one rep max
-    func calculateMax(weight: String, reps: String) -> Double {
+    func calculateMax(weight: Double, reps: Double) -> Double {
         let weight = Double(weight)
         let reps = Double(reps)
-        return (weight!*(1+(reps!/30)))
+        return (weight*(1+(reps/30)))
     }
 
     override func didReceiveMemoryWarning() {
@@ -150,18 +219,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         return 1
     }
     
-    //set titles for each picker view item
-    /*func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
-        allLifts.remove(at: 1)
-        let titleData = allLifts[row]
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 15.0, weight: UIFontWeightLight),NSForegroundColorAttributeName:UIColor.black])
-        return myTitle
-    }*/
-    
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
-        allLifts.remove(at: 1)
         let label = (view as? UILabel) ?? UILabel()
         
         label.textColor = .black
@@ -176,35 +234,12 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     //set size of picker view
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        allLifts = (user!.value(forKey: "allLifts") as? [String])!
-        allLifts.remove(at: 1)
         return allLifts.count
     }
     
     //handle user interaciton with picker view
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        /*allLifts = (user!.value(forKey: "allLifts") as? [String])!
-        allLifts.remove(at: 1)
-        user!.setValue(allLifts[row], forKey: "lift1")
-        
-        //Build lifting graph
-        var xvalues = [String]()
-        var yvalues = [Double]()
-        user = TabController.currentUser
-        let templiftHistory = user!.value(forKey: "previousLifts") as? [String]
-        let liftHistory = templiftHistory!.reversed()
-        for lift in liftHistory {
-            var details = lift.components(separatedBy: ",")
-            yvalues.append(calculateMax(weight: details[0], reps: details[1]))
-            let dateData = details[3].components(separatedBy: ".")
-            xvalues.append(dateData[1] + "/" + dateData[0] + "," + details[2] + "," + String(calculateMax(weight: details[0], reps: details[1])))
-        }
-        
-        setChart(dataPoints: xvalues, values: yvalues)
-        
-        allLifts = user!.value(forKey: "allLifts") as! [String]
- */
-
+        displayingType! = allLifts[row]
     }
 
     //reload all data on the view

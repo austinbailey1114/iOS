@@ -78,7 +78,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         //get data for picker wheel
         user = TabController.currentUser
         var notFinished = false
-        let url = URL(string: "http://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(user!))!
+        let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(user!))!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
@@ -140,7 +140,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         let type = typeInput.text!.replacingOccurrences(of: "_", with: " ")
         
         var notFinished = false
-        let url = URL(string: "http://www.austinmbailey.com/projects/liftappsite/api/insertLift.php")!
+        let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/insertLift.php")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         let postString = "id=" + String(user!) + "&weight=" + weight + "&reps=" + reps + "&type=" + type + "&date="

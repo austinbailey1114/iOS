@@ -50,7 +50,7 @@ class MoreTabViewController: UIViewController {
         if newWeightInput.text! != "" && newWeightInput.text!.doubleValue != nil {
             user = TabController.currentUser
             var notFinished = false
-            let url = URL(string: "http://www.austinmbailey.com/projects/liftappsite/api/insertBodyweight.php")!
+            let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/insertBodyweight.php")!
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             let weight = newWeightInput.text!
@@ -157,7 +157,7 @@ class MoreTabViewController: UIViewController {
         print(user!)
         
         var notFinished = false
-        let url = URL(string: "http://www.austinmbailey.com/projects/liftappsite/api/bodyweight.php?id=" + String(user!))!
+        let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/bodyweight.php?id=" + String(user!))!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
@@ -183,10 +183,6 @@ class MoreTabViewController: UIViewController {
         
         let jsonData = responseString!.data(using: .utf8)
         let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
-        
-        for item in dictionary! {
-            print(item["weight"])
-        }
         
         var dates = [String]()
         var bodyweight = [Double]()
