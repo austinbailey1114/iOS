@@ -25,16 +25,20 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var noDataLabel: UILabel!
     
+    var xvalues: [String]?
+    var yvalues: [Double]?
+    var types: [String]?
+    
     var responseString: String?
     var displayingType: String?
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //GET data for graphs
-        var xvalues = [String]()
-        var yvalues = [Double]()
-        var types = [String]()
+        xvalues = []
+        yvalues = []
+        types = []
         
+        //GET data for graphs
         user = TabController.currentUser
         var notFinished = false
         var url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lift.php?id=" + String(user!))!
@@ -64,12 +68,12 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         var dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
         
         for item in dictionary! {
-            yvalues.append(calculateMax(weight: item["weight"] as! Double, reps: item["reps"] as! Double))
+            yvalues!.append(calculateMax(weight: item["weight"] as! Double, reps: item["reps"] as! Double))
             let date = item["date"] as! String
             let dateData = date.components(separatedBy: "-")
             let separateTime = dateData[2].components(separatedBy: " ")[0]
-            xvalues.append(dateData[1] + "/" + separateTime)
-            types.append(item["type"] as! String)
+            xvalues!.append(dateData[1] + "/" + separateTime)
+            types!.append(item["type"] as! String)
         }
         
         //GET lifttypes for picker view
@@ -105,14 +109,19 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             allLifts.append(String(describing: item["name"]!))
         }
         
-        setChart(dates: xvalues, values: yvalues, types: types)
+        setChart(dates: xvalues!, values: yvalues!, types: types!)
         
         
     }
     
     //use iOS Charts to build the chart with the gathered data
     func setChart(dates: [String], values: [Double], types: [String]) {
-        displayingType = "Bench_press"
+        if dates.count == 0  || displayingType == nil {
+            noDataLabel.isHidden = false
+            liftChartView.isHidden = true
+            view.bringSubview(toFront: noDataLabel)
+            return
+        }
         liftChartView.isHidden = false
         noDataLabel.isHidden = true
         //create data entries for each lift
@@ -125,10 +134,10 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             if types[i] == displayingType! {
                 //if the array is not empty
                 if xaxis.count > 0 {
-                    //if the current item has the same date and a greater value than the last added element
+                    //if the current item has the same date
                     if dates[i] == xaxis[xaxis.count-1] {
+                        //if the previous item in the graph is smaller than the current element, replace it
                         if liftChartEntry.last!.y < values[i] {
-                            print("removed")
                             liftChartEntry.removeLast()
                             let value = ChartDataEntry(x: Double(currentIndex-1), y: values[i])
                             liftChartEntry.append(value)
@@ -148,13 +157,6 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
                     currentIndex += 1
                 }
             }
-        }
-        print(xaxis)
-        if liftChartEntry.count == 0 {
-            noDataLabel.isHidden = false
-            liftChartView.isHidden = true
-            view.bringSubview(toFront: noDataLabel)
-            return
         }
         //add data to the graph
         let liftline = LineChartDataSet(values: liftChartEntry, label: displayingType! as? String)
@@ -239,7 +241,8 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     //handle user interaciton with picker view
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        displayingType! = allLifts[row]
+        displayingType = allLifts[row]
+        setChart(dates: xvalues!, values: yvalues!, types: types!)
     }
 
     //reload all data on the view
