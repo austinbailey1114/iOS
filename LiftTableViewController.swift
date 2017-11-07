@@ -11,17 +11,49 @@ import CoreData
 
 class LiftTableViewController: UITableViewController {
 
-    var user: NSManagedObject?
-    var keepContext: NSManagedObjectContext?
-    
+    var user: Int32?
+    var liftHistory: [Dictionary<String, Any>]?
+    var responseString: String?
     override func viewDidLoad() {
         super.viewDidLoad()
-        //user = TabController.currentUser
+        
+        //GET data for graphs
+        user = TabController.currentUser
+        //hit URL for lifts
+        var notFinished = false
+        let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lift.php?id=" + String(user!))!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error")
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+            }
+            
+            self.responseString = String(data: data, encoding: .utf8)
+            notFinished = true
+        }
+        task.resume()
+        
+        while !notFinished {
+            
+        }
+        
+        //build dictionary of lift data
+        let jsonData = responseString!.data(using: .utf8)
+        let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+        liftHistory = dictionary
         
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        
     }
     
     //set number of sections in table view
@@ -31,7 +63,6 @@ class LiftTableViewController: UITableViewController {
 
     //set number of rows per section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let liftHistory = user!.value(forKey: "previousLifts") as? [String]
         return liftHistory!.count
     }
     
@@ -41,16 +72,11 @@ class LiftTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "LiftTableViewCell", for: indexPath) as? LiftTableViewCell else {
             fatalError("Fatal error")
         }
-        let liftHistory = user!.value(forKey: "previousLifts") as? [String]
-        
-        let name = liftHistory![indexPath.row]
-        let details = name.components(separatedBy: ",")
-        //weight,reps,name,date
-        let dateComponents = details[3].components(separatedBy: ".")
-        cell.displayDateLabel.text = dateComponents[1]+"/"+dateComponents[0]
-        cell.UserNameLabel.text = details[2]
-        cell.displayWeightLabel.text = "Weight: " + details[0]
-        cell.displayRepsLabel.text = "Reps: " + details[1]
+        let data = liftHistory![indexPath.row]
+        cell.displayDateLabel.text = data["date"] as? String
+        cell.UserNameLabel.text = data["type"] as? String
+        cell.displayWeightLabel.text = "Weight: " + String(describing: data["weight"]!)
+        cell.displayRepsLabel.text = "Reps: " + String(describing: data["reps"]!)
         
         return cell
     }
