@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SavedMealTableViewCell: UITableViewCell {
+class SearchFoodTableViewCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var idLabel: UILabel!

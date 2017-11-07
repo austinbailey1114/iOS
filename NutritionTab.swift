@@ -84,7 +84,7 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
     
     //remove spaces for using database
     @IBAction func searchDatabaseButton(_ sender: UIButton) {
-        SavedMealsTableViewController.searchText = searchDatabase.text!.replacingOccurrences(of: " ", with: "_")
+        SearchFoodTableView.searchText = searchDatabase.text!.replacingOccurrences(of: " ", with: "_")
     }
     
     //create alerts

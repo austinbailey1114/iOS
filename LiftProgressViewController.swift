@@ -10,7 +10,7 @@ import UIKit
 import Charts
 import CoreData
 
-class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var user: Int32?
     var allLifts = [String]()
@@ -25,6 +25,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var noDataLabel: UILabel!
     
+    //create global variables for graph data
     var xvalues: [String]?
     var yvalues: [Double]?
     var types: [String]?
@@ -40,6 +41,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         //GET data for graphs
         user = TabController.currentUser
+        //hit URL for lifts
         var notFinished = false
         var url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lift.php?id=" + String(user!))!
         var request = URLRequest(url: url)
@@ -64,6 +66,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             
         }
         
+        //build dictionary of lift data
         var jsonData = responseString!.data(using: .utf8)
         var dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
         
@@ -79,6 +82,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         //GET lifttypes for picker view
         user = TabController.currentUser
         notFinished = false
+        //hit URL for lifttypes
         url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(user!))!
         request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -102,6 +106,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             
         }
         
+        //build dictionary of users lifttypes
         jsonData = responseString!.data(using: .utf8)
         dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
         
@@ -166,6 +171,7 @@ class ProgressViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         if liftline.entryCount != 1 {
             liftline.drawCirclesEnabled = false
         }
+        //set a bunch of visual options
         liftline.lineWidth = 2
         let data = LineChartData()
         data.addDataSet(liftline)

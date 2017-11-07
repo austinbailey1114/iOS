@@ -301,13 +301,13 @@
         <!--Search Results-->
         <scene sceneID="cbz-Gc-AUB">
             <objects>
-                <tableViewController title="Search Results" id="9ow-Fg-cb4" customClass="SavedMealsTableViewController" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Search Results" id="9ow-Fg-cb4" customClass="SearchFoodTableView" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="99" sectionHeaderHeight="28" sectionFooterHeight="28" id="hSo-dp-kjM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SavedMealTableViewCell" rowHeight="99" id="8kh-is-8Lp" customClass="SavedMealTableViewCell" customModule="LiftApp" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SavedMealTableViewCell" rowHeight="99" id="8kh-is-8Lp" customClass="SearchFoodTableViewCell" customModule="LiftApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="99"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8kh-is-8Lp" id="Zoy-jF-aCP">
@@ -448,7 +448,7 @@
         <!--Progress-->
         <scene sceneID="Ner-CR-jXE">
             <objects>
-                <viewController title="Progress" id="TNz-YB-Qc7" customClass="ProgressViewController" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Progress" id="TNz-YB-Qc7" customClass="LiftProgressViewController" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fD6-gM-1ax"/>
                         <viewControllerLayoutGuide type="bottom" id="ySt-Qb-6ZU"/>
@@ -567,7 +567,7 @@
         <!--Weight Tracking-->
         <scene sceneID="KSC-qQ-Tc4">
             <objects>
-                <viewController id="ykd-rs-WJV" customClass="MoreTabViewController" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ykd-rs-WJV" customClass="WeightViewController" customModule="LiftApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pgN-GF-a40"/>
                         <viewControllerLayoutGuide type="bottom" id="M5c-8p-1lY"/>

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SavedMealsTableViewController: UITableViewController {
+class SearchFoodTableView: UITableViewController {
     
     var keepContext : NSManagedObjectContext?
     var user: NSManagedObject?
@@ -49,7 +49,7 @@ class SavedMealsTableViewController: UITableViewController {
 
     //set cell at each index
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SavedMealTableViewCell", for: indexPath) as? SavedMealTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchFoodTableViewCell", for: indexPath) as? SearchFoodTableViewCell else {
             fatalError("fatal error")
         }
         
@@ -69,7 +69,7 @@ class SavedMealsTableViewController: UITableViewController {
         formatter.dateFormat = "dd.MM.yyyy"
         let result = formatter.string(from: date)
         let indexpath = tableView.indexPathForSelectedRow
-        let cell = tableView.cellForRow(at: indexpath!) as! SavedMealTableViewCell
+        let cell = tableView.cellForRow(at: indexpath!) as! SearchFoodTableViewCell
         //let url1 = "https://api.nutritionix.com/v1_1/search/"
         //let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=0af8b9cd&appKey=07ed209f3e49ec4e97c57be6e6fdaf00"
         
@@ -148,7 +148,7 @@ class SavedMealsTableViewController: UITableViewController {
         let url1 = "https://api.nutritionix.com/v1_1/search/"
         let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=592ced70&appKey=4dcb7f7bd109b3975dd3bad0020b6f2a"
         
-        let urlString = URL(string: url1 + SavedMealsTableViewController.searchText! + url2)
+        let urlString = URL(string: url1 + SearchFoodTableView.searchText! + url2)
         var searchResults = [String]()
         
         let task = URLSession.shared.dataTask(with: urlString!) { (data, response, error) in

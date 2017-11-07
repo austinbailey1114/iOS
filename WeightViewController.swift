@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import Charts
 
-class MoreTabViewController: UIViewController {
+class WeightViewController: UIViewController {
 
     @IBOutlet weak var newWeightInput: UITextField!
     
@@ -50,6 +50,7 @@ class MoreTabViewController: UIViewController {
         if newWeightInput.text! != "" && newWeightInput.text!.doubleValue != nil {
             user = TabController.currentUser
             var notFinished = false
+            //hit URL with POST data of new bodyweight
             let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/insertBodyweight.php")!
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
@@ -157,6 +158,7 @@ class MoreTabViewController: UIViewController {
         print(user!)
         
         var notFinished = false
+        //hit URL
         let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/bodyweight.php?id=" + String(user!))!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -180,13 +182,14 @@ class MoreTabViewController: UIViewController {
         while !notFinished {
             
         }
-        
+        //build dictionary
         let jsonData = responseString!.data(using: .utf8)
         let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
         
         var dates = [String]()
         var bodyweight = [Double]()
         
+        //build arrays for setWeightChart()
         for item in dictionary! {
             bodyweight.append(item["weight"]! as! Double)
             let date = item["date"] as! String
