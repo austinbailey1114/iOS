@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class LoginViewController: UIViewController {
 
@@ -17,7 +18,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
     }
 
@@ -57,6 +57,15 @@ class LoginViewController: UIViewController {
         
         if let userInfo = self.convertToDictionary(text: self.responseString!) {
             TabController.currentUser = userInfo["id"] as! Int32
+            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            let newUser = NSEntityDescription.insertNewObject(forEntityName: "UserData", into: context)
+            newUser.setValue(TabController.currentUser, forKey: "id")
+            
+            do {
+                try context.save()
+            } catch {
+                
+            }
             performSegue(withIdentifier: "loginSegue", sender: nil)
         }
         else {
@@ -79,6 +88,22 @@ class LoginViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "UserData")
+        fetchRequest.returnsObjectsAsFaults = false
+        do {
+            let result = try context.fetch(fetchRequest) as! [NSManagedObject]
+            if result.count > 0 {
+                print("came true")
+                TabController.currentUser = result[0].value(forKey: "id") as! Int32
+                performSegue(withIdentifier: "loginSegue", sender: nil)
+            }
+        } catch {
+            //coredata fetch failed
+        }
     }
     
 
