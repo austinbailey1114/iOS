@@ -131,10 +131,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             createAlert(title: "Invalid Input", message: "Please make sure that weight and reps boxes contain numbers, and type is not blank.")
             return
         }
-        if typeInput.text!.contains(",") {
-            createAlert(title: "Invalid Input", message: "Please make sure that the type input does not contain any commas.")
-            return
-        }
         let weight = weightInput.text!
         let reps = repsInput.text!
         let type = typeInput.text!.replacingOccurrences(of: "_", with: " ")
@@ -161,7 +157,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
             print(self.responseString!)
             notFinished = true
         }
-        
         
         task.resume()
         

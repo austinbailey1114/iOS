@@ -19,8 +19,10 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        usernameInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        passwordInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
     }
-
+    
     @IBAction func login(_ sender: UIButton) {
         var notFinished = false
         let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/checkLogin.php")!
@@ -53,7 +55,6 @@ class LoginViewController: UIViewController {
         while !notFinished {
             
         }
-        
         
         if let userInfo = self.convertToDictionary(text: self.responseString!) {
             TabController.currentUser = userInfo["id"] as! Int32
