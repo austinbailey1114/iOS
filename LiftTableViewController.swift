@@ -85,7 +85,6 @@ class LiftTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let id = liftHistory![indexPath.row]["id"] as! Int32
-            var notFinished = false
             let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/deleteLift.php?id=" + String(id))!
             var request = URLRequest(url: url)
             request.httpMethod = "GET"
@@ -101,7 +100,6 @@ class LiftTableViewController: UITableViewController {
                 }
                 
                 self.responseString = String(data: data, encoding: .utf8)
-                notFinished = true
             }
             task.resume()
             

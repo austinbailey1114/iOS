@@ -10,6 +10,7 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var usernameInput: UITextField!
     @IBOutlet weak var passwordInput: UITextField!
     var responseString: String?
@@ -33,12 +34,15 @@ class LoginViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {                                                 // check for fundamental networking error
                 print("error")
+                self.titleLabel.text! = "Login failed"
                 return
             }
             
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
                 print("response")
+                self.titleLabel.text! = "Login failed"
+                return
             }
             
             self.responseString = String(data: data, encoding: .utf8)
@@ -51,11 +55,15 @@ class LoginViewController: UIViewController {
         }
         
         
-
-        let userInfo = self.convertToDictionary(text: self.responseString!)!
-        TabController.currentUser = userInfo["id"] as! Int32
-        performSegue(withIdentifier: "loginSegue", sender: nil)
+        if let userInfo = self.convertToDictionary(text: self.responseString!) {
+            TabController.currentUser = userInfo["id"] as! Int32
+            performSegue(withIdentifier: "loginSegue", sender: nil)
+        }
+        else {
+            self.titleLabel.text! = "Login Failed"
+        }
     }
+    
     
     func convertToDictionary(text: String) -> [String: Any]? {
         if let data = text.data(using: .utf8) {
