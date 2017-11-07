@@ -83,23 +83,31 @@ class LiftTableViewController: UITableViewController {
     
     //handle cell deletion
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        /*if editingStyle == .delete {
-            print("Delete")
+        if editingStyle == .delete {
+            let id = liftHistory![indexPath.row]["id"] as! Int32
+            var notFinished = false
+            let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/deleteLift.php?id=" + String(id))!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
             
-            keepContext = TabController.currentContext
-            
-            var liftHistory = user!.value(forKey: "previousLifts") as? [String]
-            liftHistory!.remove(at: indexPath.row)
-            user!.setValue(liftHistory!, forKey: "previousLifts")
-            
-            do {
-                try keepContext!.save()
-            }
-            catch {
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
                 
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
             }
+            task.resume()
+            
+            liftHistory!.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
-        }*/
+        }
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
