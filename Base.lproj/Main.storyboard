@@ -564,11 +564,11 @@
             </objects>
             <point key="canvasLocation" x="1489" y="-1021"/>
         </scene>
-        <!--Item-->
+        <!--Navigation Controller-->
         <scene sceneID="n6H-O0-SCH">
             <objects>
                 <navigationController id="2l3-ug-WL2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="XiC-sx-mCp"/>
+                    <tabBarItem key="tabBarItem" systemItem="more" id="XiC-sx-mCp"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qly-6L-EBH">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -594,7 +594,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="70d-iC-2Nb">
-                                <rect key="frame" x="101" y="269" width="172" height="98"/>
+                                <rect key="frame" x="101" y="72" width="172" height="98"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Log Out">
                                     <color key="titleColor" red="0.90588235289999997" green="0.29803921570000003" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1016,21 +1016,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kri-DI-6Uk">
-                                <rect key="frame" x="16" y="147" width="343" height="50"/>
+                                <rect key="frame" x="16" y="66" width="343" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UUa-HL-xab">
-                                <rect key="frame" x="16" y="205" width="343" height="50"/>
+                                <rect key="frame" x="16" y="124" width="343" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bat-GJ-Rwm">
-                                <rect key="frame" x="141" y="278" width="92" height="30"/>
+                                <rect key="frame" x="141" y="197" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Login">
@@ -1041,20 +1041,12 @@
                                     <action selector="login:" destination="7dr-jY-q1l" eventType="touchUpInside" id="ql3-5N-2bb"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Login to LiftApp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GpH-dY-XqI">
-                                <rect key="frame" x="73" y="72" width="228" height="55"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="FQW-kq-Cxs"/>
                     <connections>
                         <outlet property="passwordInput" destination="UUa-HL-xab" id="Iyo-Rd-dWL"/>
-                        <outlet property="titleLabel" destination="GpH-dY-XqI" id="GON-C0-9rh"/>
                         <outlet property="usernameInput" destination="kri-DI-6Uk" id="3di-Yj-Ofl"/>
                         <segue destination="uJC-bz-Wlc" kind="show" identifier="loginSegue" id="VIg-EJ-krW"/>
                     </connections>
