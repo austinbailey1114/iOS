@@ -139,7 +139,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/insertLift.php")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        let postString = "id=" + String(user!) + "&weight=" + weight + "&reps=" + reps + "&type=" + type + "&date="
+        let postString = "id=" + String(user!) + "&weight=" + weight + "&reps=" + reps + "&type=" + type.replacingOccurrences(of: " ", with: "_") + "&date="
         request.httpBody = postString.data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -227,7 +227,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     //make items in each picker view slot
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return allLifts[row]
+        return allLifts[row].replacingOccurrences(of: "_", with: " ")
     }
     
     //set pickerView size
@@ -239,7 +239,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if allLifts.count > 0 {
             liftType = allLifts[row]
-            typeInput.text! = allLifts[row]
+            typeInput.text! = allLifts[row].replacingOccurrences(of: "_", with: " ")
         }
     }
     

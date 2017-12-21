@@ -235,7 +235,7 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
         label.font = UIFont.systemFont(ofSize: 20.0, weight: UIFont.Weight.light)
         
         // where data is an Array of String
-        label.text = allLifts[row]
+        label.text = allLifts[row].replacingOccurrences(of: "_", with: " ")
         
         return label
     }
@@ -247,7 +247,7 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
     
     //handle user interaciton with picker view
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        displayingType = allLifts[row]
+        displayingType = allLifts[row].replacingOccurrences(of: " ", with: "_")
         setChart(dates: xvalues!, values: yvalues!, types: types!)
     }
 
