@@ -809,6 +809,10 @@
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pgO-kl-e5D">
+                                <rect key="frame" x="177" y="72" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -845,6 +849,7 @@
                         <outlet property="liftProgressButton" destination="rye-Vj-tlG" id="Z2g-oy-Nts"/>
                         <outlet property="mainView" destination="2zj-4C-89t" id="mib-fp-pfc"/>
                         <outlet property="repsInput" destination="IIh-jJ-s4x" id="KSl-ef-Du1"/>
+                        <outlet property="saveActivity" destination="pgO-kl-e5D" id="ly9-p7-rcY"/>
                         <outlet property="typeInput" destination="h1j-Hw-OBa" id="VCB-0K-XzH"/>
                         <outlet property="typeLabel" destination="TN2-L8-pCS" id="ni0-uI-ERv"/>
                         <outlet property="weightInput" destination="D6v-1g-vXi" id="nLg-s2-0Ld"/>
@@ -1041,11 +1046,16 @@
                                     <action selector="login:" destination="7dr-jY-q1l" eventType="touchUpInside" id="ql3-5N-2bb"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="KrM-mG-hXQ">
+                                <rect key="frame" x="177" y="247" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="FQW-kq-Cxs"/>
                     <connections>
+                        <outlet property="loginActivity" destination="KrM-mG-hXQ" id="q3N-sm-WTB"/>
                         <outlet property="passwordInput" destination="UUa-HL-xab" id="Iyo-Rd-dWL"/>
                         <outlet property="usernameInput" destination="kri-DI-6Uk" id="3di-Yj-Ofl"/>
                         <segue destination="uJC-bz-Wlc" kind="show" identifier="loginSegue" id="VIg-EJ-krW"/>

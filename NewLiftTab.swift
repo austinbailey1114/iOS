@@ -17,6 +17,7 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     @IBOutlet weak var repsInput: UITextField!
     @IBOutlet weak var typeInput: UITextField!
     @IBOutlet weak var dateInput: UITextField!
+    @IBOutlet weak var saveActivity: UIActivityIndicatorView!
     var username: String?
     var user: Int32?
     
@@ -124,53 +125,67 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         for lift in allLifts {
             print(lift)
         }
+        
+        saveActivity.hidesWhenStopped = true
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {
-        if weightInput.text!.doubleValue == nil || repsInput.text!.doubleValue == nil {
-            createAlert(title: "Invalid Input", message: "Please make sure that weight and reps boxes contain numbers, and type is not blank.")
-            return
-        }
-        let weight = weightInput.text!
-        let reps = repsInput.text!
-        let type = typeInput.text!.replacingOccurrences(of: "_", with: " ")
+        saveActivity.startAnimating()
         
-        var notFinished = false
-        let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/insertLift.php")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        let postString = "id=" + String(user!) + "&weight=" + weight + "&reps=" + reps + "&type=" + type.replacingOccurrences(of: " ", with: "_") + "&date="
-        request.httpBody = postString.data(using: .utf8)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error")
+        DispatchQueue.global().async() {
+            
+            
+            // Do heavy work here
+            
+            if self.weightInput.text!.doubleValue == nil || self.repsInput.text!.doubleValue == nil {
+                self.createAlert(title: "Invalid Input", message: "Please make sure that weight and reps boxes contain numbers, and type is not blank.")
                 return
             }
+            let weight = self.weightInput.text!
+            let reps = self.repsInput.text!
+            let type = self.typeInput.text!.replacingOccurrences(of: "_", with: " ")
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response")
+            var notFinished = false
+            let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/insertLift.php")!
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            let postString = "id=" + String(self.user!) + "&weight=" + weight + "&reps=" + reps + "&type=" + type.replacingOccurrences(of: " ", with: "_") + "&date="
+            request.httpBody = postString.data(using: .utf8)
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                    print("response")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                print(self.responseString!)
+                notFinished = true
             }
             
-            self.responseString = String(data: data, encoding: .utf8)
-            print(self.responseString!)
-            notFinished = true
-        }
-        
-        task.resume()
-        
-        while !notFinished {
+            task.resume()
+            
+            while !notFinished {
+                
+            }
+            
+            DispatchQueue.main.sync {
+                 self.saveActivity.stopAnimating()
+                 self.weightInput.resignFirstResponder()
+                 self.repsInput.resignFirstResponder()
+                 self.typeInput.resignFirstResponder()
+                 self.dateInput.resignFirstResponder()
+                 self.weightInput.text! = ""
+                 self.repsInput.text! = ""
+                 self.dateInput.text = ""
+            }
             
         }
-        
-        self.weightInput.resignFirstResponder()
-        self.repsInput.resignFirstResponder()
-        self.typeInput.resignFirstResponder()
-        self.dateInput.resignFirstResponder()
-        self.weightInput.text! = ""
-        self.repsInput.text! = ""
-        self.dateInput.text = ""
         
     }
     

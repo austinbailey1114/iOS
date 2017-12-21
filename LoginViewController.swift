@@ -14,6 +14,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var usernameInput: UITextField!
     @IBOutlet weak var passwordInput: UITextField!
+    @IBOutlet weak var loginActivity: UIActivityIndicatorView!
     var responseString: String?
     
     override func viewDidLoad() {
@@ -21,9 +22,11 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
         usernameInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         passwordInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        loginActivity.hidesWhenStopped = true
     }
     
     @IBAction func login(_ sender: UIButton) {
+        loginActivity.startAnimating()
         var notFinished = false
         let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/checkLogin.php")!
         var request = URLRequest(url: url)
@@ -67,9 +70,11 @@ class LoginViewController: UIViewController {
             } catch {
                 
             }
+            loginActivity.stopAnimating()
             performSegue(withIdentifier: "loginSegue", sender: nil)
         }
         else {
+            loginActivity.stopAnimating()
             self.titleLabel.text! = "Login Failed"
         }
     }
