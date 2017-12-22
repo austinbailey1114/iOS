@@ -34,61 +34,7 @@ class WeightViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.loadActivity.startAnimating()
-        
-        DispatchQueue.global().async {
-            self.user = TabController.currentUser
-            
-            var notFinished = false
-            //hit URL
-            let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/bodyweight.php?id=" + String(self.user!))!
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                    print("error")
-                    return
-                }
-                
-                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                    print("response")
-                }
-                
-                self.responseString = String(data: data, encoding: .utf8)
-                notFinished = true
-            }
-            task.resume()
-            
-            while !notFinished {
-                
-            }
-            //build dictionary
-            let jsonData = self.responseString!.data(using: .utf8)
-            let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
-            
-            
-            DispatchQueue.main.sync {
-                var dates = [String]()
-                var bodyweight = [Double]()
-                
-                //build arrays for setWeightChart()
-                for item in dictionary! {
-                    bodyweight.append(item["weight"]! as! Double)
-                    let date = item["date"] as! String
-                    let dateData = date.components(separatedBy: "-")
-                    let separateTime = dateData[2].components(separatedBy: " ")[0]
-                    dates.append(dateData[1] + "/" + separateTime)
-                }
-                
-                if bodyweight.count > 0 {
-                    self.setWeightChart(dataPoints: dates, values: bodyweight)
-                }
-                
-                self.loadActivity.stopAnimating()
-            }
-        }
+        loadChart()
     }
 
     override func didReceiveMemoryWarning() {
@@ -109,45 +55,55 @@ class WeightViewController: UIViewController {
     
     //update users bodyweight when they hit save button
     @IBAction func updateWeightButton(_ sender: UIButton) {
+        
+        loadActivity.startAnimating()
+        
+        let weight = self.newWeightInput.text!
+        
         if newWeightInput.text! != "" && newWeightInput.text!.doubleValue != nil {
-            user = TabController.currentUser
-            var notFinished = false
-            //hit URL with POST data of new bodyweight
-            let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/insertBodyweight.php")!
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            let weight = newWeightInput.text!
-            let postString = "weight=" + weight + "&id=" + String(user!)
-            request.httpBody = postString.data(using: .utf8)
+        
+            DispatchQueue.global().async {
+                
+                self.user = TabController.currentUser
+                var notFinished = false
+                //hit URL with POST data of new bodyweight
+                let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/insertBodyweight.php")!
+                var request = URLRequest(url: url)
+                request.httpMethod = "POST"
+                let postString = "weight=" + weight + "&id=" + String(self.user!)
+                request.httpBody = postString.data(using: .utf8)
             
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                    print("error")
-                    return
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                    guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                        print("error")
+                        return
+                    }
+                    
+                    if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                        print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                        print("response")
+                    }
+                    
+                    self.responseString = String(data: data, encoding: .utf8)
+                    notFinished = true
+                }
+                task.resume()
+            
+                while !notFinished {
+                    
                 }
                 
-                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                    print("response")
+                DispatchQueue.main.sync {
+                    self.loadChart()
                 }
                 
-                self.responseString = String(data: data, encoding: .utf8)
-                notFinished = true
-            }
-            task.resume()
-            
-            while !notFinished {
-                
             }
             
-            loadChart()
         }
+            
         else {
             createAlert(title: "Invalid Input", message: "Please make sure that your input for new body weight is a number value.")
         }
-        
-        //rebuild chart
-        
     
     }
     
@@ -209,54 +165,61 @@ class WeightViewController: UIViewController {
     }
     
     func loadChart() {
-        user = TabController.currentUser
+        self.loadActivity.startAnimating()
         
-        var notFinished = false
-        //hit URL
-        let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/bodyweight.php?id=" + String(user!))!
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error")
-                return
+        DispatchQueue.global().async {
+            self.user = TabController.currentUser
+            
+            var notFinished = false
+            //hit URL
+            let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/bodyweight.php?id=" + String(self.user!))!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                    print("response")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
             }
+            task.resume()
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response")
+            while !notFinished {
+                
             }
+            //build dictionary
+            let jsonData = self.responseString!.data(using: .utf8)
+            let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
             
-            self.responseString = String(data: data, encoding: .utf8)
-            notFinished = true
-        }
-        task.resume()
-        
-        while !notFinished {
             
+            DispatchQueue.main.sync {
+                var dates = [String]()
+                var bodyweight = [Double]()
+                
+                //build arrays for setWeightChart()
+                for item in dictionary! {
+                    bodyweight.append(item["weight"]! as! Double)
+                    let date = item["date"] as! String
+                    let dateData = date.components(separatedBy: "-")
+                    let separateTime = dateData[2].components(separatedBy: " ")[0]
+                    dates.append(dateData[1] + "/" + separateTime)
+                }
+                
+                if bodyweight.count > 0 {
+                    self.setWeightChart(dataPoints: dates, values: bodyweight)
+                }
+                
+                self.loadActivity.stopAnimating()
+            }
         }
-        //build dictionary
-        let jsonData = responseString!.data(using: .utf8)
-        let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
-        
-        var dates = [String]()
-        var bodyweight = [Double]()
-        
-        //build arrays for setWeightChart()
-        for item in dictionary! {
-            bodyweight.append(item["weight"]! as! Double)
-            let date = item["date"] as! String
-            let dateData = date.components(separatedBy: "-")
-            let separateTime = dateData[2].components(separatedBy: " ")[0]
-            dates.append(dateData[1] + "/" + separateTime)
-        }
-        
-        if bodyweight.count > 0 {
-            setWeightChart(dataPoints: dates, values: bodyweight)
-        }
-        
-
     }
 
 
