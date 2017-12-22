@@ -25,6 +25,7 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var noDataLabel: UILabel!
     
+    @IBOutlet weak var loadActivity: UIActivityIndicatorView!
     //create global variables for graph data
     var xvalues: [String]?
     var yvalues: [Double]?
@@ -35,88 +36,103 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        xvalues = []
-        yvalues = []
-        types = []
-        
-        //GET data for graphs
-        user = TabController.currentUser
-        //hit URL for lifts
-        var notFinished = false
-        var url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lift.php?id=" + String(user!))!
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        var task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error")
-                return
+        loadActivity.hidesWhenStopped = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.loadActivity.startAnimating()
+        DispatchQueue.global().async {
+            self.xvalues = []
+            self.yvalues = []
+            self.types = []
+            
+            //GET data for graphs
+            self.user = TabController.currentUser
+            //hit URL for lifts
+            var notFinished = false
+            var url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lift.php?id=" + String(self.user!))!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            var task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
+            }
+            task.resume()
+            
+            while !notFinished {
+                
             }
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+            //build dictionary of lift data
+            var jsonData = self.responseString!.data(using: .utf8)
+            var dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+            
+            for item in dictionary! {
+                self.yvalues!.append(self.calculateMax(weight: item["weight"] as! Double, reps: item["reps"] as! Double))
+                let date = item["date"] as! String
+                let dateData = date.components(separatedBy: "-")
+                let separateTime = dateData[2].components(separatedBy: " ")[0]
+                self.xvalues!.append(dateData[1] + "/" + separateTime)
+                self.types!.append(item["type"] as! String)
             }
             
-            self.responseString = String(data: data, encoding: .utf8)
-            notFinished = true
-        }
-        task.resume()
-        
-        while !notFinished {
+            //GET lifttypes for picker view
+            self.user = TabController.currentUser
+            notFinished = false
+            //hit URL for lifttypes
+            url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(self.user!))!
+            request = URLRequest(url: url)
+            request.httpMethod = "GET"
             
-        }
-        
-        //build dictionary of lift data
-        var jsonData = responseString!.data(using: .utf8)
-        var dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
-        
-        for item in dictionary! {
-            yvalues!.append(calculateMax(weight: item["weight"] as! Double, reps: item["reps"] as! Double))
-            let date = item["date"] as! String
-            let dateData = date.components(separatedBy: "-")
-            let separateTime = dateData[2].components(separatedBy: " ")[0]
-            xvalues!.append(dateData[1] + "/" + separateTime)
-            types!.append(item["type"] as! String)
-        }
-        
-        //GET lifttypes for picker view
-        user = TabController.currentUser
-        notFinished = false
-        //hit URL for lifttypes
-        url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(user!))!
-        request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error")
-                return
+            task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
+            }
+            task.resume()
+            
+            while !notFinished {
+                
             }
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+            DispatchQueue.main.sync {
+                
+                
+                //build dictionary of users lifttypes
+                jsonData = self.responseString!.data(using: .utf8)
+                dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+                
+                for item in dictionary! {
+                    self.allLifts.append(String(describing: item["name"]!))
+                }
+                
+                self.setChart(dates: self.xvalues!, values: self.yvalues!, types: self.types!)
+                
+                self.liftPicker.reloadAllComponents()
+                
+                self.loadActivity.stopAnimating()
             }
+                
+        }
             
-            self.responseString = String(data: data, encoding: .utf8)
-            notFinished = true
-        }
-        task.resume()
-        
-        while !notFinished {
-            
-        }
-        
-        //build dictionary of users lifttypes
-        jsonData = responseString!.data(using: .utf8)
-        dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
-        
-        for item in dictionary! {
-            allLifts.append(String(describing: item["name"]!))
-        }
-        
-        setChart(dates: xvalues!, values: yvalues!, types: types!)
-        
-        
     }
     
     //use iOS Charts to build the chart with the gathered data

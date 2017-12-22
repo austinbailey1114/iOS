@@ -17,11 +17,12 @@ class LiftTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //GET data for graphs
-        user = TabController.currentUser
-        //hit URL for lifts
         var notFinished = false
-        let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lift.php?id=" + String(user!))!
+        
+        //GET data for graphs
+        self.user = TabController.currentUser
+        //hit URL for lifts
+        let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lift.php?id=" + String(self.user!))!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
@@ -43,11 +44,18 @@ class LiftTableViewController: UITableViewController {
         while !notFinished {
             
         }
-        
+            
         //build dictionary of lift data
-        let jsonData = responseString!.data(using: .utf8)
+        let jsonData = self.responseString!.data(using: .utf8)
         let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
-        liftHistory = dictionary
+        self.liftHistory = dictionary
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         
     }
 
@@ -74,7 +82,8 @@ class LiftTableViewController: UITableViewController {
         }
         let data = liftHistory![indexPath.row]
         cell.displayDateLabel.text = data["date"] as? String
-        cell.UserNameLabel.text = data["type"] as? String
+        let name = data["type"] as? String
+        cell.UserNameLabel.text = name?.replacingOccurrences(of: "_", with: " ")
         cell.displayWeightLabel.text = "Weight: " + String(describing: data["weight"]!)
         cell.displayRepsLabel.text = "Reps: " + String(describing: data["reps"]!)
         

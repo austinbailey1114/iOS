@@ -468,7 +468,7 @@
                                 <rect key="frame" x="16" y="140" width="343" height="211"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Select a lift below to view graphs." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wpU-Kx-DZi">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wpU-Kx-DZi">
                                         <rect key="frame" x="59" y="95" width="256" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
@@ -518,6 +518,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dfR-XV-p1M">
+                                <rect key="frame" x="177" y="72" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -531,6 +535,7 @@
                         <outlet property="graphBackground" destination="lmb-ln-6f0" id="qKl-7g-Izp"/>
                         <outlet property="liftChartView" destination="7Kr-Kg-JcV" id="a8r-7Q-d7V"/>
                         <outlet property="liftPicker" destination="ma1-eJ-evA" id="Reu-2J-iVI"/>
+                        <outlet property="loadActivity" destination="dfR-XV-p1M" id="hE9-6c-VTP"/>
                         <outlet property="noDataLabel" destination="wpU-Kx-DZi" id="1Ka-jJ-Eat"/>
                         <outlet property="titleLabel" destination="Lca-tm-9I5" id="X4u-T6-ap6"/>
                         <outlet property="weightChartView" destination="AEh-rC-uoF" id="Dfk-VO-nG4"/>
@@ -903,7 +908,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3V-Js-dHE">
-                                            <rect key="frame" x="254" y="17" width="113" height="21"/>
+                                            <rect key="frame" x="228" y="16" width="113" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                             <nil key="textColor"/>

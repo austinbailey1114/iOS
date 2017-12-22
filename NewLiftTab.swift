@@ -92,6 +92,49 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         saveActivity.hidesWhenStopped = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        saveActivity.startAnimating()
+        
+        DispatchQueue.global().async {
+            //get data for picker wheel
+            self.user = TabController.currentUser
+            var notFinished = false
+            let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(self.user!))!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
+            }
+            task.resume()
+            
+            while !notFinished {
+                
+            }
+            
+            let jsonData = self.responseString!.data(using: .utf8)
+            let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+            
+            for item in dictionary! {
+                self.allLifts.append(item["name"] as! String)
+            }
+            DispatchQueue.main.sync {
+                self.saveActivity.stopAnimating()
+            }
+        }
+    }
+        
+    
     @IBAction func saveLiftButton(_ sender: UIButton) {
         saveActivity.startAnimating()
         
@@ -154,50 +197,8 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         }
         
     }
+        
     
-    override func viewDidAppear(_ animated: Bool) {
-        saveActivity.startAnimating()
-        
-        DispatchQueue.global().async {
-            //get data for picker wheel
-            self.user = TabController.currentUser
-            var notFinished = false
-            let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(self.user!))!
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                    print("error")
-                    return
-                }
-                
-                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                }
-                
-                self.responseString = String(data: data, encoding: .utf8)
-                notFinished = true
-            }
-            task.resume()
-            
-            while !notFinished {
-                
-            }
-            
-            let jsonData = self.responseString!.data(using: .utf8)
-            let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
-            
-            for item in dictionary! {
-                self.allLifts.append(item["name"] as! String)
-            }
-            DispatchQueue.main.sync {
-                self.saveActivity.stopAnimating()
-            }
-        }
-        
-        
-    }
     //close keyboard when user touches outside the keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
