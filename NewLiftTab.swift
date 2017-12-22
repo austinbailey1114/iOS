@@ -76,39 +76,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         
         self.navigationItem.leftItemsSupplementBackButton = true
         
-        //get data for picker wheel
-        user = TabController.currentUser
-        var notFinished = false
-        let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(user!))!
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error")
-                return
-            }
-            
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-            }
-            
-            self.responseString = String(data: data, encoding: .utf8)
-            notFinished = true
-        }
-        task.resume()
-        
-        while !notFinished {
-            
-        }
-        
-        let jsonData = responseString!.data(using: .utf8)
-        let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
-        
-        for item in dictionary! {
-            allLifts.append(item["name"] as! String)
-        }
-        
         //UI setup
         weightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         repsInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
@@ -122,22 +89,21 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         repsInput.returnKeyType = UIReturnKeyType.done
         dateInput.returnKeyType = UIReturnKeyType.done
         
-        for lift in allLifts {
-            print(lift)
-        }
-        
         saveActivity.hidesWhenStopped = true
     }
     
     @IBAction func saveLiftButton(_ sender: UIButton) {
         saveActivity.startAnimating()
         
+        let holdWeight = self.weightInput.text!.doubleValue
+        let holdReps = self.repsInput.text!.doubleValue
+        
         DispatchQueue.global().async() {
             
             
             // Do heavy work here
             
-            if self.weightInput.text!.doubleValue == nil || self.repsInput.text!.doubleValue == nil {
+            if holdWeight == nil || holdReps == nil {
                 self.createAlert(title: "Invalid Input", message: "Please make sure that weight and reps boxes contain numbers, and type is not blank.")
                 return
             }
@@ -189,21 +155,49 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         
     }
     
-    //returns index where a lift should be inserted in liftHistory
-    func binInsert(newDate: String, liftHistory: [String], start: Int, end: Int) -> Int {
-        let mid = (start + end) / 2
-        let components = liftHistory[mid].components(separatedBy: ",")
-        if components[3] == newDate || end <= start{
-            return mid
+    override func viewDidAppear(_ animated: Bool) {
+        saveActivity.startAnimating()
+        
+        DispatchQueue.global().async {
+            //get data for picker wheel
+            self.user = TabController.currentUser
+            var notFinished = false
+            let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lifttypes.php?id=" + String(self.user!))!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
+            }
+            task.resume()
+            
+            while !notFinished {
+                
+            }
+            
+            let jsonData = self.responseString!.data(using: .utf8)
+            let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+            
+            for item in dictionary! {
+                self.allLifts.append(item["name"] as! String)
+            }
+            DispatchQueue.main.sync {
+                self.saveActivity.stopAnimating()
+            }
         }
-        else if compareDates(oldDate: components[3], newDate: newDate) == -1{
-            return binInsert(newDate: newDate, liftHistory: liftHistory, start: mid+1, end: end)
-        }
-        else {
-            return binInsert(newDate: newDate, liftHistory: liftHistory, start: start, end: mid)
-        }
+        
+        
     }
-    
     //close keyboard when user touches outside the keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

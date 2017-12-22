@@ -97,19 +97,33 @@ class LoginViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        loginActivity.startAnimating()
+        
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "UserData")
-        fetchRequest.returnsObjectsAsFaults = false
-        do {
-            let result = try context.fetch(fetchRequest) as! [NSManagedObject]
-            if result.count > 0 {
-                print("came true")
-                TabController.currentUser = result[0].value(forKey: "id") as! Int32
-                performSegue(withIdentifier: "loginSegue", sender: nil)
+        
+        DispatchQueue.global().async() {
+            fetchRequest.returnsObjectsAsFaults = false
+            do {
+                let result = try context.fetch(fetchRequest) as! [NSManagedObject]
+                if result.count > 0 {
+                    print("came true")
+                    TabController.currentUser = result[0].value(forKey: "id") as! Int32
+                    self.performSegue(withIdentifier: "loginSegue", sender: nil)
+                }
+            } catch {
+                //coredata fetch failed
             }
-        } catch {
-            //coredata fetch failed
+            
+            DispatchQueue.main.sync {
+                self.loginActivity.stopAnimating()
+                
+            }
         }
+        
+        
+        
     }
     
 
