@@ -26,57 +26,69 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func login(_ sender: UIButton) {
+        
         loginActivity.startAnimating()
-        var notFinished = false
-        let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/checkLogin.php")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        let username = usernameInput.text!
-        let password = passwordInput.text!
-        let postString = "username=" + username + " &password=" + password
-        request.httpBody = postString.data(using: .utf8)
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error")
-                self.titleLabel.text! = "Login failed"
-                return
+        let username = self.usernameInput.text!
+        let password = self.passwordInput.text!
+        
+        DispatchQueue.global().async {
+            var notFinished = false
+            let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/checkLogin.php")!
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            let postString = "username=" + username + " &password=" + password
+            request.httpBody = postString.data(using: .utf8)
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    self.titleLabel.text! = "Login failed"
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                    print("response")
+                    self.titleLabel.text! = "Login failed"
+                    return
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
             }
+            task.resume()
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response")
-                self.titleLabel.text! = "Login failed"
-                return
-            }
-            
-            self.responseString = String(data: data, encoding: .utf8)
-            notFinished = true
-        }
-        task.resume()
-        
-        while !notFinished {
-            
-        }
-        
-        if let userInfo = self.convertToDictionary(text: self.responseString!) {
-            TabController.currentUser = userInfo["id"] as! Int32
-            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-            let newUser = NSEntityDescription.insertNewObject(forEntityName: "UserData", into: context)
-            newUser.setValue(TabController.currentUser, forKey: "id")
-            
-            do {
-                try context.save()
-            } catch {
+            while !notFinished {
                 
             }
-            loginActivity.stopAnimating()
-            performSegue(withIdentifier: "loginSegue", sender: nil)
+            
+            DispatchQueue.main.sync {
+                if let userInfo = self.convertToDictionary(text: self.responseString!) {
+                    TabController.currentUser = userInfo["id"] as! Int32
+                    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+                    let newUser = NSEntityDescription.insertNewObject(forEntityName: "UserData", into: context)
+                    newUser.setValue(TabController.currentUser, forKey: "id")
+                    
+                    do {
+                        try context.save()
+                    } catch {
+                        
+                    }
+                    self.loginActivity.stopAnimating()
+                    self.performSegue(withIdentifier: "loginSegue", sender: nil)
+                    
+                }
+                else {
+                    self.loginActivity.stopAnimating()
+                    self.titleLabel.text! = "Login Failed"
+                    
+                }
+            }
+            
+            
         }
-        else {
-            loginActivity.stopAnimating()
-            self.titleLabel.text! = "Login Failed"
-        }
+       
     }
     
     
@@ -103,38 +115,20 @@ class LoginViewController: UIViewController {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "UserData")
         
-        DispatchQueue.global().async() {
-            fetchRequest.returnsObjectsAsFaults = false
-            do {
-                let result = try context.fetch(fetchRequest) as! [NSManagedObject]
-                if result.count > 0 {
-                    print("came true")
-                    TabController.currentUser = result[0].value(forKey: "id") as! Int32
-                    self.performSegue(withIdentifier: "loginSegue", sender: nil)
-                }
-            } catch {
-                //coredata fetch failed
+        fetchRequest.returnsObjectsAsFaults = false
+        do {
+            let result = try context.fetch(fetchRequest) as! [NSManagedObject]
+            if result.count > 0 {
+                print("came true")
+                TabController.currentUser = result[0].value(forKey: "id") as! Int32
+                self.performSegue(withIdentifier: "loginSegue", sender: nil)
             }
-            
-            DispatchQueue.main.sync {
-                self.loginActivity.stopAnimating()
-                
-            }
+        } catch {
+            //coredata fetch failed
         }
         
-        
-        
+            self.loginActivity.stopAnimating()
+ 
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
