@@ -664,6 +664,10 @@
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="WQp-Tg-mDd">
+                                <rect key="frame" x="177" y="72" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <userDefinedRuntimeAttributes>
@@ -696,6 +700,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="liftPicker" destination="ma1-eJ-evA" id="NOU-pQ-qdc"/>
+                        <outlet property="loadActivity" destination="WQp-Tg-mDd" id="Se2-C6-re4"/>
                         <outlet property="newWeightInput" destination="e4R-Wm-4ro" id="QDo-nF-Sqi"/>
                         <outlet property="titleLabel2" destination="e0a-Mm-Cka" id="mnk-IB-T50"/>
                         <outlet property="weightChartView" destination="AEh-rC-uoF" id="M98-uz-llE"/>

@@ -16,6 +16,7 @@ class WeightViewController: UIViewController {
     
     @IBOutlet weak var weightChartView: LineChartView!
     
+    @IBOutlet weak var loadActivity: UIActivityIndicatorView!
     var responseString: String?
     
     @IBOutlet weak var titleLabel2: UILabel!
@@ -26,7 +27,68 @@ class WeightViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadChart()
+        
+        newWeightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        titleLabel2.addBorder(side: .bottom, thickness: 1.1, color: UIColor.lightGray)
+        loadActivity.hidesWhenStopped = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.loadActivity.startAnimating()
+        
+        DispatchQueue.global().async {
+            self.user = TabController.currentUser
+            
+            var notFinished = false
+            //hit URL
+            let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/bodyweight.php?id=" + String(self.user!))!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                    print("response")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
+            }
+            task.resume()
+            
+            while !notFinished {
+                
+            }
+            //build dictionary
+            let jsonData = self.responseString!.data(using: .utf8)
+            let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+            
+            
+            DispatchQueue.main.sync {
+                var dates = [String]()
+                var bodyweight = [Double]()
+                
+                //build arrays for setWeightChart()
+                for item in dictionary! {
+                    bodyweight.append(item["weight"]! as! Double)
+                    let date = item["date"] as! String
+                    let dateData = date.components(separatedBy: "-")
+                    let separateTime = dateData[2].components(separatedBy: " ")[0]
+                    dates.append(dateData[1] + "/" + separateTime)
+                }
+                
+                if bodyweight.count > 0 {
+                    self.setWeightChart(dataPoints: dates, values: bodyweight)
+                }
+                
+                self.loadActivity.stopAnimating()
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -147,15 +209,7 @@ class WeightViewController: UIViewController {
     }
     
     func loadChart() {
-        self.navigationItem.hidesBackButton = true
-        
-        //UILabel.appearance().font = UIFont(name: "System-Light", size: 17)
-        
-        
-        
         user = TabController.currentUser
-        
-        print(user!)
         
         var notFinished = false
         //hit URL
@@ -197,10 +251,6 @@ class WeightViewController: UIViewController {
             let separateTime = dateData[2].components(separatedBy: " ")[0]
             dates.append(dateData[1] + "/" + separateTime)
         }
-        
-        newWeightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
-        titleLabel2.addBorder(side: .bottom, thickness: 1.1, color: UIColor.lightGray)
-        
         
         if bodyweight.count > 0 {
             setWeightChart(dataPoints: dates, values: bodyweight)
