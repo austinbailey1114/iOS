@@ -141,6 +141,10 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         let holdWeight = self.weightInput.text!.doubleValue
         let holdReps = self.repsInput.text!.doubleValue
         
+        let weight = self.weightInput.text!
+        let reps = self.repsInput.text!
+        let type = self.typeInput.text!.replacingOccurrences(of: "_", with: " ")
+        
         DispatchQueue.global().async() {
             
             
@@ -150,9 +154,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
                 self.createAlert(title: "Invalid Input", message: "Please make sure that weight and reps boxes contain numbers, and type is not blank.")
                 return
             }
-            let weight = self.weightInput.text!
-            let reps = self.repsInput.text!
-            let type = self.typeInput.text!.replacingOccurrences(of: "_", with: " ")
             
             var notFinished = false
             let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/insertLift.php")!

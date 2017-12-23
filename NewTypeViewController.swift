@@ -52,7 +52,7 @@ class NewTypeViewController: UIViewController {
             let url = URL(string: "https://www.austinmbailey.com/projects/liftappsite/api/insertLifttype.php")!
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            let postString = "id=" + String(self.user!) + "&name=" + name.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+            let postString = "id=" + String(self.user!) + "&name=" + name.replacingOccurrences(of: " ", with: "_")
             request.httpBody = postString.data(using: .utf8)
             
             let task = URLSession.shared.dataTask(with: request) { data, response, error in

@@ -17,45 +17,54 @@ class LiftTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+            
+        
+        
+        
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        
         var notFinished = false
         
-        //GET data for graphs
-        self.user = TabController.currentUser
-        //hit URL for lifts
-        let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lift.php?id=" + String(self.user!))!
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error")
-                return
+        DispatchQueue.global().async {
+            //GET data for graphs
+            self.user = TabController.currentUser
+            //hit URL for lifts
+            let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/lift.php?id=" + String(self.user!))!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
+            }
+            task.resume()
+            
+            while !notFinished {
+                
             }
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+            DispatchQueue.main.sync {
+                //build dictionary of lift data
+                let jsonData = self.responseString!.data(using: .utf8)
+                let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+                self.liftHistory = dictionary
+                
+                self.tableView.reloadData()
+                
             }
-            
-            self.responseString = String(data: data, encoding: .utf8)
-            notFinished = true
         }
-        task.resume()
-        
-        while !notFinished {
-            
-        }
-            
-        //build dictionary of lift data
-        let jsonData = self.responseString!.data(using: .utf8)
-        let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
-        self.liftHistory = dictionary
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         
     }
 
@@ -71,7 +80,10 @@ class LiftTableViewController: UITableViewController {
 
     //set number of rows per section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return liftHistory!.count
+        if liftHistory != nil {
+            return liftHistory!.count
+        }
+        return 0
     }
     
     //set the cell at each index
