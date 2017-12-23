@@ -12,16 +12,55 @@ import CoreData
 class MealTableViewController: UITableViewController {
     
     var user: Int32?
-    var liftHistory: [Dictionary<String, Any>]?
+    var mealHistory: [Dictionary<String, Any>]?
+    var responseString: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         user = TabController.currentUser
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
+        DispatchQueue.global().async {
+            
+            //GET data for graphs
+            self.user = TabController.currentUser
+            //hit URL for lifts
+            var notFinished = false
+            let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/food.php?id=" + String(self.user!))!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
+            }
+            task.resume()
+            
+            while !notFinished {
+                
+            }
+            
+            DispatchQueue.main.sync {
+                
+                //build dictionary of lift data
+                let jsonData = self.responseString!.data(using: .utf8)
+                let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+                
+                self.mealHistory = dictionary
+                
+                self.tableView.reloadData()
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,7 +75,10 @@ class MealTableViewController: UITableViewController {
 
     //set number of rows per section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mealHistory!.count
+        if mealHistory != nil {
+            return mealHistory!.count
+        }
+        return 0
     }
 
     //set cell at each index in table view
@@ -44,18 +86,14 @@ class MealTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MealTableViewCell", for: indexPath) as? MealTableViewCell else {
             fatalError("Fatal error")
         }
-        let mealHistory = user!.value(forKey: "previousMeals") as? [String]
         
-        let name = mealHistory![indexPath.row]
-        let details = name.components(separatedBy: "`")
-        //name,cals,fat,protein,carbs,date
-        cell.mealLabel.text = details[0]
-        cell.caloriesLabel.text = details[1] + " calories"
-        cell.fatLabel.text = "Fat: " + details[3] + "g"
-        cell.proteinLabel.text = "Protein: " + details[2] + "g"
-        cell.carbsLabel.text = "Carbs: " + details[4] + "g"
-        let dateComponents = details[5].components(separatedBy: ".")
-        cell.dateLabel.text = dateComponents[1]+"/"+dateComponents[0]
+        let meal = mealHistory![indexPath.row]
+        cell.mealLabel.text = String(describing: meal["name"]!)
+        cell.caloriesLabel.text = String(describing: meal["calories"]!) + " calories"
+        cell.fatLabel.text = "Fat: " + String(describing: meal["fat"]!) + "g"
+        cell.proteinLabel.text = "Protein: " + String(describing: meal["carbs"]!) + "g"
+        cell.carbsLabel.text = "Carbs: " + String(describing: meal["protein"]!) + "g"
+        cell.dateLabel.text = String(describing: meal["date"]!)
         
         return cell
     }
