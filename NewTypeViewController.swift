@@ -53,8 +53,6 @@ class NewTypeViewController: UIViewController {
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             let postString = "id=" + String(self.user!) + "&name=" + name.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
-            print(name.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))
-            print(self.user!)
             request.httpBody = postString.data(using: .utf8)
             
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -81,6 +79,8 @@ class NewTypeViewController: UIViewController {
             
             DispatchQueue.main.sync {
                 self.saveActivity.stopAnimating()
+                self.newTypeInput.text! = ""
+                self.newTypeInput.resignFirstResponder()
                 
             }
             
