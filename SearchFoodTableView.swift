@@ -12,24 +12,59 @@ import CoreData
 class SearchFoodTableView: UITableViewController {
     
     var keepContext : NSManagedObjectContext?
-    var user: NSManagedObject?
+    var user: Int32?
+    var responseString: String?
     public static var searchText: String?
-    var results = [String]()
+    var results: [Dictionary<String, Any>]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       /* user = TabController.currentUser
-        keepContext = TabController.currentContext*/
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {        
         
-        results = getResults()
-        tableView.delegate = self
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        var notFinished = false
+        
+        DispatchQueue.global().async {
+            //GET data for graphs
+            self.user = TabController.currentUser!
+            //hit URL for lifts
+            let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/searchFood.php?search=" + SearchFoodTableView.searchText!)!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
+            }
+            task.resume()
+            
+            while !notFinished {
+                
+            }
+            
+            DispatchQueue.main.sync {
+                //build dictionary of lift data
+                let jsonData = self.responseString!.data(using: .utf8)
+                let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+                self.results = dictionary
+                
+                //reload data when process is done
+                self.tableView.reloadData()
+                
+            }
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,7 +79,10 @@ class SearchFoodTableView: UITableViewController {
 
     //set number of rows in each section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return results.count
+        if results != nil {
+            return results!.count
+        }
+        return 0
     }
 
     //set cell at each index
@@ -53,82 +91,16 @@ class SearchFoodTableView: UITableViewController {
             fatalError("fatal error")
         }
         
-        let result = results[indexPath.row]
-        let details = result.components(separatedBy: "~")
+        let result = results![indexPath.row]
         
-        cell.nameLabel.text! = details[1]
-        cell.idLabel.text! = details[0]
-        cell.brandLabel.text! = "Brand: " + details[2]
+        cell.nameLabel.text! = result["name"] as! String
+        cell.idLabel.text! = String(describing: result["id"])
         return cell
     }
     
     //handle user tap on a cell
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy"
-        let result = formatter.string(from: date)
-        let indexpath = tableView.indexPathForSelectedRow
-        let cell = tableView.cellForRow(at: indexpath!) as! SearchFoodTableViewCell
-        //let url1 = "https://api.nutritionix.com/v1_1/search/"
-        //let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=0af8b9cd&appKey=07ed209f3e49ec4e97c57be6e6fdaf00"
         
-        let url3 = "https://api.nutritionix.com/v1_1/item?id="
-        let url4 = "&appId=82868d5e&appKey=570ad5e7ef23f13c3e952eb71798b586"
-        
-        //make REST call to Nutritionix API and save the data in the users meal history
-        var isFinished: Bool = false
-        let urlString = URL(string: url3 + cell.idLabel.text! + url4)
-        var newMeal = ""
-        let task = URLSession.shared.dataTask(with: urlString!) { (data, response, error) in
-            if error != nil {
-                print("error")
-            }
-            else {
-                if let content = data {
-                    do {
-                        let myjson = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                        newMeal += myjson["item_name"]! as! String
-                        newMeal += "`"
-                        newMeal += String(myjson["nf_calories"]! as! Int)
-                        newMeal += "`"
-                        newMeal += String(myjson["nf_protein"]! as! Int)
-                        newMeal += "`"
-                        newMeal += String(myjson["nf_total_fat"]! as! Int)
-                        newMeal += "`"
-                        newMeal += String(myjson["nf_total_carbohydrate"]! as! Int)
-                        newMeal += "`"
-                        newMeal += result
-                        isFinished = true
-                    }
-                    catch {
-                        print("error")
-                    }
-                }
-                
-            }
-        }
-        task.resume()
-        
-        while(!isFinished) {
-            
-        }
-
-        let mealHistory = user!.value(forKey: "previousMeals") as? [String]
-        let newMealHistory = [newMeal] + mealHistory!
-        user!.setValue(newMealHistory, forKey: "previousMeals")
-        do {
-            try keepContext!.save()
-        }
-        catch {
-            
-        }
-        tableView.deselectRow(at: indexpath!, animated: true)
-                
-        createAlert(title: "Meal Added", message: "Meal added to your meal history.")
-        
-        
-        return
     }
     
     //create alerts
@@ -139,99 +111,5 @@ class SearchFoodTableView: UITableViewController {
         }))
         self.present(alert, animated: true, completion: nil)
     }
-    
-    //make REST call to nutritionix API and return array of the results, which will be diplayed in each cell
-    func getResults() -> [String] {
-        
-        var isFinished: Bool = false
-        
-        let url1 = "https://api.nutritionix.com/v1_1/search/"
-        let url2 = "?results=0%3A20&cal_min=0&cal_max=50000&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id&appId=592ced70&appKey=4dcb7f7bd109b3975dd3bad0020b6f2a"
-        
-        let urlString = URL(string: url1 + SearchFoodTableView.searchText! + url2)
-        var searchResults = [String]()
-        
-        let task = URLSession.shared.dataTask(with: urlString!) { (data, response, error) in
-            if error != nil {
-                print("error")
-            }
-            else {
-                if let content = data {
-                    do {
-                        let myjson = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                        let hits = myjson["hits"] as! [NSDictionary]
-                        for item in hits {
-                            var item_string: String = ""
-                            item_string += item["_id"]! as! String
-                            let info = item["fields"] as! NSDictionary
-                            item_string += "~"
-                            item_string += info["item_name"]! as! String
-                            item_string += "~"
-                            item_string += info["brand_name"]! as! String
-                            searchResults.append(item_string)
-                        }
-                        isFinished = true
-                    }
-                    catch {
-                        print("error")
-                    }
-                }
-                
-            }
-        }
-        task.resume()
-        
-        while(!isFinished) {
-            
-        }
-        
-        return searchResults
-        
-    }
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

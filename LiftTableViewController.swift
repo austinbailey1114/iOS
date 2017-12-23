@@ -16,12 +16,6 @@ class LiftTableViewController: UITableViewController {
     var responseString: String?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-            
-        
-        
-        
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -106,6 +100,7 @@ class LiftTableViewController: UITableViewController {
     
     //handle cell deletion
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
         if editingStyle == .delete {
             let id = liftHistory![indexPath.row]["id"] as! Int32
             let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/deleteLift.php?id=" + String(id))!
