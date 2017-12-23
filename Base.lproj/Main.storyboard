@@ -971,11 +971,16 @@
                                     <action selector="addType:" destination="cMM-at-GtR" eventType="touchUpInside" id="MMt-E3-21B"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Tdt-8Q-k30">
+                                <rect key="frame" x="177" y="78" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="newTypeInput" destination="ezG-kY-1PJ" id="eUS-BI-wYf"/>
+                        <outlet property="saveActivity" destination="Tdt-8Q-k30" id="Red-cq-tPh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lHe-V9-pp8" userLabel="First Responder" sceneMemberID="firstResponder"/>

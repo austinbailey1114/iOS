@@ -41,6 +41,7 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
     
     override func viewDidAppear(_ animated: Bool) {
         self.loadActivity.startAnimating()
+        
         DispatchQueue.global().async {
             self.xvalues = []
             self.yvalues = []
@@ -124,6 +125,8 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
                     self.allLifts.append(String(describing: item["name"]!))
                 }
                 
+                self.displayingType = self.allLifts[0]
+                
                 self.setChart(dates: self.xvalues!, values: self.yvalues!, types: self.types!)
                 
                 self.liftPicker.reloadAllComponents()
@@ -139,7 +142,6 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
     func setChart(dates: [String], values: [Double], types: [String]) {
         if dates.count == 0  || displayingType == nil {
             noDataLabel.isHidden = false
-            liftChartView.isHidden = true
             view.bringSubview(toFront: noDataLabel)
             return
         }
