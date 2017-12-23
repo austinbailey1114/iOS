@@ -61,6 +61,7 @@ class LiftTableViewController: UITableViewController {
                 let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
                 self.liftHistory = dictionary
                 
+                //reload data when process is done
                 self.tableView.reloadData()
                 
             }
@@ -80,6 +81,7 @@ class LiftTableViewController: UITableViewController {
 
     //set number of rows per section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //check if liftHistory is loaded in yet. Return 0 if not to avoid crash
         if liftHistory != nil {
             return liftHistory!.count
         }

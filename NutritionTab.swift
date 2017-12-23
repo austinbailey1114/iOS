@@ -11,8 +11,8 @@ import CoreData
 
 class NutritionTab: UIViewController, UITextFieldDelegate {
     
-    var user: NSManagedObject?
-    var keepContext: NSManagedObjectContext?
+    var user: Int32?
+    var responseString: String?
     
     @IBOutlet weak var searchDatabase: UITextField!
     @IBOutlet weak var todaysCals: UILabel!
@@ -21,12 +21,75 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var todaysProtein: UILabel!
         
     @IBOutlet weak var nutritionView: UIView!
+    @IBOutlet weak var loadActivity: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         searchDatabase.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         todaysProtein.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        
+        loadActivity.hidesWhenStopped = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        loadActivity.startAnimating()
+        
+        var calories = 0
+        var fat = 0
+        var carb = 0
+        var protein = 0
+        
+        DispatchQueue.global().async {
+            
+            //GET data for graphs
+            self.user = TabController.currentUser
+            //hit URL for lifts
+            var notFinished = false
+            let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/food.php?id=" + String(self.user!))!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                notFinished = true
+            }
+            task.resume()
+            
+            while !notFinished {
+                
+            }
+            
+            DispatchQueue.main.sync {
+                
+                //build dictionary of lift data
+                let jsonData = self.responseString!.data(using: .utf8)
+                let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+                
+                for item in dictionary! {
+                    calories += item["calories"]as! Int
+                    fat += item["fat"] as! Int
+                    carb += item["carbs"] as! Int
+                    protein += item["protein"] as! Int
+                }
+                
+                self.todaysCals.text! = "Today's calories: " + String(calories)
+                self.todaysFat.text! = "Today's fat: " + String(fat) + "g"
+                self.todaysCarbs.text! = "Today's carbs: " + String(carb) + " g"
+                self.todaysProtein.text! = "Today's protein: " + String(protein) + "g"
+                
+                self.loadActivity.stopAnimating()
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,49 +121,6 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
         }))
         self.present(alert, animated: true, completion: nil)
     }
-    
-    //set the labels to display what the user has input for nutrition today
-    func loadLabels() {
-        /*keepContext = TabController.currentContext
-        user = TabController.currentUser
-        //pull date
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy"
-        let result = formatter.string(from: date)
-        //add up todays nutrient totals
-        var Cals: Int = 0
-        var Fat: Int = 0
-        var Carbs: Int = 0
-        var Protein: Int = 0
-        
-        let mealHistory = user!.value(forKey: "previousMeals")
-        for meal in mealHistory as! [String] {
-            var details = meal.components(separatedBy: "`")
-            if details[5] == result {
-                Cals += Int(details[1])!
-                Protein += Int(details[2])!
-                Fat += Int(details[3])!
-                Carbs += Int(details[4])!
-            }
-            else {
-                break
-            }
-        }
-        todaysCals.text! = "Today's calories: " + String(Cals) + "cals"
-        todaysFat.text! = "Today's fat: " + String(Fat) + "g"
-        todaysCarbs.text! = "Today's carbs: " + String(Carbs) + "g"
-        todaysProtein.text! = "Today's protein: " + String(Protein) + "g"
-        */
-    }
-    
-    //set up view again whenever it is called
-    override func viewWillAppear(_ animated: Bool) {
-        self.loadLabels()
-    }
-    
-    
-
     
     /*
     // MARK: - Navigation

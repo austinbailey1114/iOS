@@ -116,6 +116,10 @@
                                     <segue destination="QRR-G3-nBp" kind="show" id="mje-jN-xvV"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="R1O-2V-Zl5">
+                                <rect key="frame" x="179" y="72" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -144,6 +148,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="loadActivity" destination="R1O-2V-Zl5" id="aTc-7o-VwC"/>
                         <outlet property="nutritionView" destination="ugG-xP-WuT" id="zGi-kb-C6r"/>
                         <outlet property="searchDatabase" destination="Q5m-4U-FpD" id="dbc-Mt-E35"/>
                         <outlet property="searchDisplayController" destination="Wqf-NP-sm0" id="qAT-Hv-Jdj"/>
