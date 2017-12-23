@@ -35,10 +35,10 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         loadActivity.startAnimating()
         
-        var calories = 0
-        var fat = 0
-        var carb = 0
-        var protein = 0
+        var calories = 0.0
+        var fat = 0.0
+        var carb = 0.0
+        var protein = 0.0
         
         DispatchQueue.global().async {
             
@@ -76,10 +76,10 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
                 let dictionary = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
                 
                 for item in dictionary! {
-                    calories += item["calories"]as! Int
-                    fat += item["fat"] as! Int
-                    carb += item["carbs"] as! Int
-                    protein += item["protein"] as! Int
+                    calories += item["calories"]as! Double
+                    fat += item["fat"] as! Double
+                    carb += item["carbs"] as! Double
+                    protein += item["protein"] as! Double
                 }
                 
                 self.todaysCals.text! = "Today's calories: " + String(calories)

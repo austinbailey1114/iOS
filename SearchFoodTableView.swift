@@ -20,6 +20,8 @@ class SearchFoodTableView: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        user = TabController.currentUser!
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {        
@@ -100,6 +102,47 @@ class SearchFoodTableView: UITableViewController {
     
     //handle user tap on a cell
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        var notFinished = false
+        
+        let id = results![indexPath.row]["id"]
+        let user_id = user!
+        
+        print(id!)
+        
+        DispatchQueue.global().async {
+            //GET data for graphs
+            self.user = TabController.currentUser!
+            //hit URL for lifts
+            let url = URL(string: "https://austinmbailey.com/projects/liftappsite/api/addFoodToHistory.php?id=" + String(describing: id!) + "&user_id=" + String(describing: user_id))!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                }
+                
+                self.responseString = String(data: data, encoding: .utf8)
+                print(self.responseString!)
+                notFinished = true
+            }
+            task.resume()
+            
+            while !notFinished {
+                
+            }
+            
+            DispatchQueue.main.sync {
+               self.createAlert(title: "Food Added Successfully", message: "Added food successfully")
+                
+            }
+        }
         
     }
     
