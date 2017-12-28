@@ -81,7 +81,7 @@ class LoginViewController: UIViewController {
                 }
                 else {
                     self.loginActivity.stopAnimating()
-                    self.titleLabel.text! = "Login Failed"
+                    self.titleLabel.text = "Login Failed"
                     
                 }
             }
