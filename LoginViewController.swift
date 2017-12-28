@@ -55,12 +55,12 @@ class LoginViewController: UIViewController {
                 }
                 
                 self.responseString = String(data: data, encoding: .utf8)
+                print(self.responseString!)
                 notFinished = true
             }
             task.resume()
             
             while !notFinished {
-                
             }
             
             DispatchQueue.main.sync {
@@ -81,14 +81,27 @@ class LoginViewController: UIViewController {
                 }
                 else {
                     self.loginActivity.stopAnimating()
-                    self.titleLabel.text = "Login Failed"
+                    //self.titleLabel.text = "Login Failed"
                     
                 }
             }
+                
             
             
         }
-       
+        
+        TabController.currentUser = 41
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let newUser = NSEntityDescription.insertNewObject(forEntityName: "UserData", into: context)
+        newUser.setValue(TabController.currentUser, forKey: "id")
+        
+        do {
+            try context.save()
+        } catch {
+            
+        }
+        self.performSegue(withIdentifier: "loginSegue", sender: nil)
+        
     }
     
     
