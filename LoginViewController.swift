@@ -55,7 +55,6 @@ class LoginViewController: UIViewController {
                 }
                 
                 self.responseString = String(data: data, encoding: .utf8)
-                print(self.responseString!)
                 notFinished = true
             }
             task.resume()
@@ -64,8 +63,12 @@ class LoginViewController: UIViewController {
             }
             
             DispatchQueue.main.sync {
-                if let userInfo = self.convertToDictionary(text: self.responseString!) {
-                    TabController.currentUser = userInfo["id"] as! Int32
+                
+                var jsonData = self.responseString!.data(using: .utf8)
+                var userInfo = try? JSONSerialization.jsonObject(with: jsonData!, options: .mutableLeaves) as! [Dictionary<String, Any>]
+                
+                if userInfo![0]["id"] != nil {
+                    TabController.currentUser = userInfo![0]["id"] as! Int32
                     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
                     let newUser = NSEntityDescription.insertNewObject(forEntityName: "UserData", into: context)
                     newUser.setValue(TabController.currentUser, forKey: "id")
@@ -78,42 +81,16 @@ class LoginViewController: UIViewController {
                     self.loginActivity.stopAnimating()
                     self.performSegue(withIdentifier: "loginSegue", sender: nil)
                     
-                }
-                else {
+                } else {
                     self.loginActivity.stopAnimating()
-                    //self.titleLabel.text = "Login Failed"
-                    
                 }
+                
             }
                 
             
             
         }
         
-        TabController.currentUser = 41
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let newUser = NSEntityDescription.insertNewObject(forEntityName: "UserData", into: context)
-        newUser.setValue(TabController.currentUser, forKey: "id")
-        
-        do {
-            try context.save()
-        } catch {
-            
-        }
-        self.performSegue(withIdentifier: "loginSegue", sender: nil)
-        
-    }
-    
-    
-    func convertToDictionary(text: String) -> [String: Any]? {
-        if let data = text.data(using: .utf8) {
-            do {
-                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        return nil
     }
     
     override func didReceiveMemoryWarning() {
