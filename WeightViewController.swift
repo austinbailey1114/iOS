@@ -25,12 +25,27 @@ class WeightViewController: UIViewController {
     var user: Int32?
     var keepContext: NSManagedObjectContext?
     
+    @IBOutlet weak var inputWidth: NSLayoutConstraint!
+    @IBOutlet weak var inputPrompt: NSLayoutConstraint!
+    @IBOutlet weak var weightChartViewWidth: NSLayoutConstraint!
+    @IBOutlet weak var superWeightViewWidth: NSLayoutConstraint!
+    @IBOutlet weak var titleWidth: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //set constraints
+        let screenSize: CGRect = UIScreen.main.bounds
+        inputWidth.constant = screenSize.width * 0.90
+        inputPrompt.constant = -(inputWidth.constant / 2.0) + 100
+        weightChartViewWidth.constant = screenSize.width * 0.90
+        superWeightViewWidth.constant = screenSize.width * 0.90
+        titleWidth.constant = screenSize.width * 0.90
+        
+        //add borders
         newWeightInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         titleLabel2.addBorder(side: .bottom, thickness: 1.1, color: UIColor.lightGray)
         loadActivity.hidesWhenStopped = true
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -221,16 +236,5 @@ class WeightViewController: UIViewController {
             }
         }
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

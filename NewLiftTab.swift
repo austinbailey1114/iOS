@@ -30,9 +30,31 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
     @IBOutlet weak var typeLabel: UILabel!
 
     @IBOutlet var mainView: UIView!
+    @IBOutlet weak var weightInputWidth: NSLayoutConstraint!
+    @IBOutlet weak var repsInputWidth: NSLayoutConstraint!
+    @IBOutlet weak var typeInputWidth: NSLayoutConstraint!
+    @IBOutlet weak var dateInputWidth: NSLayoutConstraint!
+    
+    @IBOutlet weak var weightPromptCenter: NSLayoutConstraint!
+    @IBOutlet weak var repsPromptCenter: NSLayoutConstraint!
+    @IBOutlet weak var typePromptCenter: NSLayoutConstraint!
+    @IBOutlet weak var datePromptCenter: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //set constraints
+        let screenSize: CGRect = UIScreen.main.bounds
+        weightInputWidth.constant = screenSize.width * 0.90
+        repsInputWidth.constant = screenSize.width * 0.90
+        typeInputWidth.constant = screenSize.width * 0.90
+        dateInputWidth.constant = screenSize.width * 0.90
+        
+        weightPromptCenter.constant = -(weightInputWidth.constant / 2.0) + 100
+        repsPromptCenter.constant = -(repsInputWidth.constant / 2.0) + 100
+        typePromptCenter.constant = -(typeInputWidth.constant / 2.0) + 100
+        datePromptCenter.constant = -(dateInputWidth.constant / 2.0) + 100
+        
         
        //set liftPicker as inputview to typeInput
         let liftPicker = UIPickerView()
