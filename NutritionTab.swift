@@ -23,8 +23,14 @@ class NutritionTab: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var nutritionView: UIView!
     @IBOutlet weak var loadActivity: UIActivityIndicatorView!
     
+    @IBOutlet weak var inputWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var promptCenter: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        inputWidthConstraint.constant = screenSize.width * 0.90
+        promptCenter.constant = -(inputWidthConstraint.constant / 2.0) + 100
 
         searchDatabase.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         todaysProtein.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)

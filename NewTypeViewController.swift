@@ -17,8 +17,14 @@ class NewTypeViewController: UIViewController {
     var user: Int32?
     var responseString: String?
     
+    @IBOutlet weak var newTypeInputWidth: NSLayoutConstraint!
+    @IBOutlet weak var newTypePromptCenter: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        newTypeInputWidth.constant = screenSize.width * 0.90
+        newTypePromptCenter.constant = -(newTypeInputWidth.constant / 2.0) + 100
         
         newTypeInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         saveActivity.hidesWhenStopped = true

@@ -26,6 +26,11 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
     @IBOutlet weak var noDataLabel: UILabel!
     
     @IBOutlet weak var loadActivity: UIActivityIndicatorView!
+    
+    @IBOutlet weak var titleLabelWidth: NSLayoutConstraint!
+    @IBOutlet weak var graphBackgroundWidth: NSLayoutConstraint!
+    @IBOutlet weak var pickerViewWidth: NSLayoutConstraint!
+    @IBOutlet weak var liftChartWidth: NSLayoutConstraint!
     //create global variables for graph data
     var xvalues: [String]?
     var yvalues: [Double]?
@@ -35,6 +40,13 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
     var displayingType: String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        titleLabelWidth.constant = screenSize.width * 0.90
+        graphBackgroundWidth.constant = screenSize.width * 0.90
+        pickerViewWidth.constant = screenSize.width * 0.90
+        liftChartWidth.constant = screenSize.width * 0.90
+        
         
         loadActivity.hidesWhenStopped = true
     }
