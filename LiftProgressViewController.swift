@@ -194,7 +194,7 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
             }
         }
         //add data to the graph
-        let liftline = LineChartDataSet(values: liftChartEntry, label: displayingType! as? String)
+        let liftline = LineChartDataSet(values: liftChartEntry, label: displayingType!.replacingOccurrences(of: "_", with: " ") as? String)
         liftline.setColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:1.0))
         liftline.drawCircleHoleEnabled = false
         liftline.setCircleColor(UIColor(red:0.91, green:0.30, blue:0.24, alpha:1.0))
@@ -280,37 +280,5 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
         displayingType = allLifts[row].replacingOccurrences(of: " ", with: "_")
         setChart(dates: xvalues!, values: yvalues!, types: types!)
     }
-
-    //reload all data on the view
-    override func viewWillAppear(_ animated: Bool) {
-        //Build lifting graph
-        /*var xvalues = [String]()
-        var yvalues = [Double]()
-        user = TabController.currentUser
-        let templiftHistory = user!.value(forKey: "previousLifts") as? [String]
-        let liftHistory = templiftHistory!.reversed()
-        for lift in liftHistory {
-            var details = lift.components(separatedBy: ",")
-            yvalues.append(calculateMax(weight: details[0], reps: details[1]))
-            let dateData = details[3].components(separatedBy: ".")
-            xvalues.append(dateData[1] + "/" + dateData[0] + "," + details[2] + "," + String(calculateMax(weight: details[0], reps: details[1])))
-        }
-        
-        setChart(dataPoints: xvalues, values: yvalues)*/
-        
-    }
-    
-    
-    
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

@@ -46,9 +46,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="food, brand, etc." textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q5m-4U-FpD">
-                                <rect key="frame" x="-11.5" y="97" width="343" height="50"/>
+                                <rect key="frame" x="-40" y="97" width="400" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="343" id="9VV-mB-M7K"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="400" id="9VV-mB-M7K"/>
                                     <constraint firstAttribute="height" constant="50" id="tvo-1r-O0j"/>
                                 </constraints>
                                 <nil key="textColor"/>
@@ -606,20 +606,20 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Bodyweight History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e0a-Mm-Cka">
-                                <rect key="frame" x="-11.5" y="170" width="343" height="45"/>
+                                <rect key="frame" x="-40" y="170" width="400" height="45"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="4AB-bf-Ztz"/>
-                                    <constraint firstAttribute="width" constant="343" id="Cit-pJ-mFd"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="400" id="Cit-pJ-mFd"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="pounds" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="e4R-Wm-4ro">
-                                <rect key="frame" x="-11.5" y="86" width="343" height="50"/>
+                                <rect key="frame" x="-40" y="86" width="400" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="FaZ-DT-UYb"/>
-                                    <constraint firstAttribute="width" constant="343" id="pp7-hM-xXm"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="400" id="pp7-hM-xXm"/>
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
@@ -700,20 +700,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="pounds" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D6v-1g-vXi">
-                                <rect key="frame" x="-11.5" y="98" width="343" height="50"/>
+                                <rect key="frame" x="-40" y="98" width="400.5" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="BhP-1E-14u"/>
-                                    <constraint firstAttribute="width" constant="343" id="Pdr-EF-EKF"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="400" id="Pdr-EF-EKF"/>
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="repetitions" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IIh-jJ-s4x">
-                                <rect key="frame" x="-11.5" y="156" width="343" height="50"/>
+                                <rect key="frame" x="-40" y="156" width="400" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="UP0-JL-TOF"/>
-                                    <constraint firstAttribute="width" constant="343" id="ypv-ew-4fi"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="400" id="ypv-ew-4fi"/>
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
@@ -729,9 +729,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="select below" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h1j-Hw-OBa">
-                                <rect key="frame" x="-11.5" y="214" width="343" height="50"/>
+                                <rect key="frame" x="-40" y="214" width="400" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="343" id="UTb-zq-WN8"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="400" id="UTb-zq-WN8"/>
                                     <constraint firstAttribute="height" constant="50" id="vY7-Ai-W0b"/>
                                 </constraints>
                                 <color key="textColor" red="0.90588235289999997" green="0.29803921570000003" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -748,10 +748,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Today" placeholder="date" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZJm-qo-eL3">
-                                <rect key="frame" x="-11.5" y="272" width="343" height="50"/>
+                                <rect key="frame" x="-40" y="272" width="400" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="37i-o3-IXA"/>
-                                    <constraint firstAttribute="width" constant="343" id="ZxN-p7-zpC"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="400" id="ZxN-p7-zpC"/>
                                 </constraints>
                                 <color key="textColor" red="0.90588235289999997" green="0.29803921570000003" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
@@ -1017,9 +1017,9 @@
                                 </constraints>
                             </activityIndicatorView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="type" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ezG-kY-1PJ">
-                                <rect key="frame" x="-11" y="79" width="343" height="50"/>
+                                <rect key="frame" x="-39.5" y="79" width="400" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="343" id="M4Z-ou-hHi"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="400" id="M4Z-ou-hHi"/>
                                     <constraint firstAttribute="height" constant="50" id="NDf-mR-8aF"/>
                                 </constraints>
                                 <nil key="textColor"/>
