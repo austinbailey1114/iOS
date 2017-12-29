@@ -14,7 +14,9 @@
         <scene sceneID="KTT-1V-CKQ">
             <objects>
                 <navigationController title="Nutrition" id="dYk-hT-Bbu" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="FTa-hf-Hgz"/>
+                    <tabBarItem key="tabBarItem" title="Nutrition" id="FTa-hf-Hgz">
+                        <inset key="imageInsets" minX="0.0" minY="18" maxX="0.0" maxY="12"/>
+                    </tabBarItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="62b-v3-Qf8">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -481,7 +483,10 @@
         <scene sceneID="AKr-5Z-X0X">
             <objects>
                 <navigationController title="Weight Tracking" id="ags-Cn-xkO" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="oOa-ak-t9l"/>
+                    <tabBarItem key="tabBarItem" title="Bodyweight" id="oOa-ak-t9l">
+                        <inset key="imageInsets" minX="0.0" minY="18" maxX="0.0" maxY="10"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-10"/>
+                    </tabBarItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WCp-rL-y2t">
@@ -501,11 +506,11 @@
             </objects>
             <point key="canvasLocation" x="1489" y="-1021"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Log Out-->
         <scene sceneID="n6H-O0-SCH">
             <objects>
                 <navigationController id="2l3-ug-WL2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="more" id="XiC-sx-mCp"/>
+                    <tabBarItem key="tabBarItem" title="Log Out" id="XiC-sx-mCp"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qly-6L-EBH">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1054,7 +1059,9 @@
         <scene sceneID="IXT-KB-BkA">
             <objects>
                 <navigationController title="Lift Tab" id="OCQ-kg-Mie" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="yzC-8f-Jx9"/>
+                    <tabBarItem key="tabBarItem" title="Lift" id="yzC-8f-Jx9">
+                        <inset key="imageInsets" minX="0.0" minY="18" maxX="0.0" maxY="10"/>
+                    </tabBarItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="szf-h8-nMX">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>

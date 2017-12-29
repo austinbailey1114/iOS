@@ -30,15 +30,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="iTunesArtwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="H7j-SH-5Jv">
-                                <rect key="frame" x="123" y="148" width="128" height="128"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hugeIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="DhH-XW-gNs">
+                                <rect key="frame" x="87" y="76" width="200" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="AWp-2G-SKY"/>
+                                    <constraint firstAttribute="width" constant="200" id="BMd-kB-k8o"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="p3o-KW-ZCd" firstAttribute="top" secondItem="DhH-XW-gNs" secondAttribute="bottom" constant="8" symbolic="YES" id="0QN-vZ-5LI"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="p3o-KW-ZCd" secondAttribute="bottom" constant="324" id="1yU-RO-vSi"/>
-                            <constraint firstItem="p3o-KW-ZCd" firstAttribute="top" secondItem="H7j-SH-5Jv" secondAttribute="bottom" constant="8" symbolic="YES" id="DDm-ez-FbH"/>
-                            <constraint firstItem="p3o-KW-ZCd" firstAttribute="centerX" secondItem="H7j-SH-5Jv" secondAttribute="centerX" id="oAq-cl-pyF"/>
+                            <constraint firstItem="DhH-XW-gNs" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Bwj-V2-vVc"/>
                             <constraint firstItem="p3o-KW-ZCd" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ogo-Tz-gvw"/>
                         </constraints>
                     </view>
@@ -49,6 +53,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="iTunesArtwork.png" width="512" height="512"/>
+        <image name="hugeIcon.png" width="1536" height="1536"/>
     </resources>
 </document>
