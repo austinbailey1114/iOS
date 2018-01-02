@@ -17,8 +17,24 @@ class NewUserViewController: UIViewController {
     
     var responseString: String?
     
+    @IBOutlet weak var nameWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var passwordWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var emailWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var usernameWidthConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        nameInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        usernameInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        passwordInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        emailInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        nameWidthConstraint.constant = screenSize.width * 0.90
+        usernameWidthConstraint.constant = screenSize.width * 0.90
+        passwordWidthConstraint.constant = screenSize.width * 0.90
+        emailWidthConstraint.constant = screenSize.width * 0.90
 
         // Do any additional setup after loading the view.
     }
@@ -71,6 +87,8 @@ class NewUserViewController: UIViewController {
             }
             
         }
+        
+        
         
     }
     override func didReceiveMemoryWarning() {
