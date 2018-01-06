@@ -84,6 +84,8 @@ class NewUserViewController: UIViewController {
             
             DispatchQueue.main.sync {
                 
+                self.performSegue(withIdentifier: "backToLogin", sender: nil)
+                
             }
             
         }

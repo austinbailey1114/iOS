@@ -137,7 +137,9 @@ class LiftProgressViewController: UIViewController, UIPickerViewDelegate, UIPick
                     self.allLifts.append(String(describing: item["name"]!))
                 }
                 
-                self.displayingType = self.allLifts[0]
+                if self.allLifts.count > 0 {
+                    self.displayingType = self.allLifts[0]
+                }
                 
                 self.setChart(dates: self.xvalues!, values: self.yvalues!, types: self.types!)
                 

@@ -1307,6 +1307,7 @@
                         <outlet property="passwordWidthConstraint" destination="2Of-6D-GSy" id="JJD-PP-Txf"/>
                         <outlet property="usernameInput" destination="YVs-uM-XXu" id="JS1-H2-y3C"/>
                         <outlet property="usernameWidthConstraint" destination="6Gi-9g-rql" id="QjF-QG-RAd"/>
+                        <segue destination="mzD-Pp-R19" kind="show" identifier="backToLogin" id="9xW-ZQ-YUV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I1v-62-FLv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1343,4 +1344,7 @@
         <image name="cooking-utensil.png" width="30" height="30"/>
         <image name="dumbbell.png" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="9xW-ZQ-YUV"/>
+    </inferredMetricsTieBreakers>
 </document>
