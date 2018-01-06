@@ -294,34 +294,6 @@ class NewLiftTab: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, U
         dateInput.text! = selectedDate
     }
     
-    //compare dates for insertion purposes
-    func compareDates(oldDate: String, newDate: String) -> Int {
-        //returns -1 for new date is earlier date, 0 for same date, 1 for later date
-        let oldDateComponents = oldDate.components(separatedBy: ".")
-        let newDateComponents = newDate.components(separatedBy: ".")
-        if oldDateComponents[2].integerValue! < newDateComponents[2].integerValue! {
-            return 1
-        }
-        else if oldDateComponents[2].integerValue! > newDateComponents[2].integerValue! {
-            return -1
-        }
-        if oldDateComponents[1].integerValue! < newDateComponents[1].integerValue! {
-            return 1
-        }
-        else if newDateComponents[1].integerValue! < oldDateComponents[1].integerValue! {
-            return -1
-        }
-        else {
-            if oldDateComponents[0].integerValue! < newDateComponents[0].integerValue! {
-                return 1
-            }
-            else if newDateComponents[0].integerValue! < oldDateComponents[0].integerValue! {
-                return -1
-            }
-            else { return 0 }
-        }
-    }
-    
     @objc func addNew() {
         performSegue(withIdentifier: "addNewType", sender: nil)
     }

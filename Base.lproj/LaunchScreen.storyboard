@@ -21,29 +21,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LiftApp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3o-KW-ZCd">
-                                <rect key="frame" x="153" y="284" width="68" height="59"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="59" id="dgq-nn-fsc"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="22"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hugeIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="DhH-XW-gNs">
-                                <rect key="frame" x="87" y="76" width="200" height="200"/>
+                                <rect key="frame" x="97" y="244" width="180" height="179"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="AWp-2G-SKY"/>
-                                    <constraint firstAttribute="width" constant="200" id="BMd-kB-k8o"/>
+                                    <constraint firstAttribute="height" constant="179" id="HVy-yF-nHE"/>
+                                    <constraint firstAttribute="width" constant="180" id="Ig7-Hq-zFo"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="p3o-KW-ZCd" firstAttribute="top" secondItem="DhH-XW-gNs" secondAttribute="bottom" constant="8" symbolic="YES" id="0QN-vZ-5LI"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="p3o-KW-ZCd" secondAttribute="bottom" constant="324" id="1yU-RO-vSi"/>
-                            <constraint firstItem="DhH-XW-gNs" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Bwj-V2-vVc"/>
-                            <constraint firstItem="p3o-KW-ZCd" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ogo-Tz-gvw"/>
+                            <constraint firstItem="DhH-XW-gNs" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="cNz-ub-Hb4"/>
+                            <constraint firstItem="DhH-XW-gNs" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="kWq-Ph-Eyf"/>
                         </constraints>
                     </view>
                 </viewController>
