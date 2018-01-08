@@ -25,6 +25,8 @@ class NewUserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationItem.hidesBackButton = false
+        
         nameInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         usernameInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
         passwordInput.addBorder(side: .bottom, thickness: 0.7, color: UIColor.lightGray)
